@@ -100,6 +100,7 @@ export default {
         })
 
 
+        console.log('sdfdsfdf')
         this.pageLoaded = true
 
     },
