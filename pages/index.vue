@@ -1,10 +1,127 @@
 <template>
-    <div v-show='pageLoaded' class="m-8 roboto">
 
-        Little Riddle
-      
+    <div class='h-screen' :class="fullAnswer?'bg-red-500':'bg-green-500'">
+    
+    <div class="bg-red-500">Little Riddle</div>
+    <div :class="fullAnswer?'bg-red-500':'bg-green-500'" class="h-full text-center">
+
+
+        <div class="lato text-2xl mt-4">{{  riddle.hint  }}</div>
+
+       
+
+        <div class="mt-8 mx-4">
+
+<div class="flex items-center justify-center mx-auto roboto"> 
+    <div class='uppercase flex items-center grow mr-1 max-w-12 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(letter,index) in firstWordAnswer">
+{{ riddleWordArray[index] || '\u00A0' }}
+</div>
+</div>
+
+
+<div class="flex items-center justify-center mx-auto mt-4 roboto"> 
+<div class='uppercase flex items-center grow max-w-12 mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+{{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
+</div>
+</div>
+
+<hr class="mt-6" />
+
+<div class='lato inline-block mt-4  p-2'>Give me a: <span class='lato rounded border p-1 m-1' @click="nextHint()">Hint</span><span class='lato rounded border p-1 m-1' @click="hintKey()">Letter</span></div>
+
+<div class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
+
+</div>
+
+
 
     </div>
+    <div class="w-full absolute bottom-0 left-0 bg-blue-500 p-2">
+
+       
+       
+
+
+        <div class="flex justify-between items-stretch  roboto">
+
+            <div @click='pressKey(key)' class='uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            
+                {{key}}
+            
+            </div>
+
+        </div>
+
+        <div class="px-4 my-2">
+
+        <div class="w-full flex justify-between roboto">
+
+            <div @click='pressKey(key)' class='uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            
+            {{key}}
+        
+        </div>
+
+    </div>
+
+    </div>
+
+    <div class="w-full flex justify-between roboto">
+
+        <div @click='clearKey()' class='uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+            
+            x
+        
+        </div>
+
+        <div @click='pressKey(key)' class='uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+            
+            {{key}}
+        
+        </div>
+
+        <div @click='deleteKey()' class='uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+            
+            x
+        
+        </div>
+
+        </div>
+
+
+    </div>
+
+
+        <!-- <h1>Guess the mystery rhyming words using a little clue</h1>
+
+        <div>Clue: 'Small Puzzle'</div>
+        <div>Answer: 'Little Riddle'</div>
+
+        <button class="bg-green-500 text-xl py-2 px-4 text-white rounded-xl">Play Now</button> -->
+
+        <!-- 
+
+       
+        <div class="mt-8">
+
+        <div class="flex items-center justify-center mx-auto"> 
+            <div class='w-8 h-8 p-2 mr-1 border rounded' v-for="firstWordletter in firstWordAnswer">
+        {{ firstWordletter }}
+        </div>
+    </div>
+       
+
+    <div class="flex items-center justify-center mx-auto mt-4"> 
+        <div class='w-8 h-8 p-2 mr-1 border rounded' v-for="secondWordletter in secondWordAnswer">
+        {{ secondWordletter }}
+        </div>
+        </div>
+
+    </div> -->
+
+   
+</div>
+   
 
 </template>
 
@@ -12,6 +129,8 @@
 <script>
 
 import CryptoJS from 'crypto-js'
+
+import data from '@/assets/riddles.json';
 
 
 
@@ -49,6 +168,12 @@ export default {
     data: function() {
         return {
 
+            riddleWordArray : [],
+            riddles : [],
+            riddle : null,
+            cluesIndex : -1,
+
+            
             pageLoaded : false,
             dataStore: store,
             productDescription : "sdfsdf",
@@ -112,6 +237,83 @@ export default {
 
     computed: {
 
+        fullAnswer() {
+
+
+            return this.riddleWordArray.every(item => item !== '')
+
+
+        },
+
+        keyboard() {
+
+            var row1 = "qwertyuiop".split("")
+            var row2 = "asdfghjkl".split("")
+            var row3 = "zxcvbnm".split("")
+
+            return [row1,row2,row3]
+
+
+        },
+
+        riddleWord() {
+
+            var riddleWordArray = this.riddle.rhyme.replace(/\s+/g, '').split("");
+            var riddleAnswer = []
+            riddleWordArray.forEach(letter => riddleAnswer.push(""))
+
+            return riddleAnswer
+            //return riddleWordArray.split("")
+
+        },
+
+        riddleWordLettersArray() {
+
+var riddleWordArray = this.riddle.rhyme.replace(/\s+/g, '').split("");
+
+
+return riddleWordArray
+//return riddleWordArray.split("")
+
+},
+
+        firstWord() {
+
+            return this.riddle.rhyme.split(' ')[0].split("")
+
+
+        },
+
+        firstWordAnswer() {
+
+            var letters =  this.riddle.rhyme.split(' ')[0].split("")
+            var firstWordAnswer = []
+            letters.forEach(letter => firstWordAnswer.push(""))
+
+            return firstWordAnswer
+
+
+},
+
+
+secondWordAnswer() {
+
+var letters =  this.riddle.rhyme.split(' ')[1].split("")
+var secondWordAnswer = []
+letters.forEach(letter => secondWordAnswer.push(""))
+
+return secondWordAnswer
+
+
+},
+
+        secondWord() {
+
+return this.riddle.rhyme.split(' ')[1].split("")
+
+
+},
+
 
 numerOfLetters() { //determine if the user can edit this plan
 
@@ -127,6 +329,24 @@ numerOfLetters() { //determine if the user can edit this plan
     },
 
     async created() {
+
+        console.log('$$$$$$$')
+
+        this.riddles = data;
+
+        const randomIndex = Math.floor(Math.random() * this.riddles.length);
+      this.riddle = this.riddles[randomIndex];
+
+      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
+
+
+      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
+
+      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+
+      
+
+        //this.riddle = this.riddles
 
         const message = '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';
 const password = 'my secret password';
@@ -148,9 +368,121 @@ console.log(JSON.parse(plaintext)[0]);
 
     methods: {
 
+
+        nextHint : function() {
+
+            if ( this.cluesIndex === - 1 ) {
+
+                this.cluesIndex = 0
+
+            } else {
+
+                this.cluesIndex = (this.cluesIndex + 1) % this.riddle.clues.length;
+
+            }
+
+            
+
+
+        },
+
+
+        clearKey : function() {
+
+
+            this.riddleWordArray = []
+
+        },
+
+        addValueToRandomBlankSlot : function(array) {
+
+
+  // Step 1: Identify blank slots
+  const blankIndices = array.reduce((acc, item, index) => {
+    if (item === '' || item === null || item === undefined) {
+      acc.push(index);
+    }
+    return acc;
+  }, []);
+
+  // Check if there are any blank slots
+  if (blankIndices.length === 0) {
+    console.log('No blank slots available');
+    return array;
+  }
+
+  // Step 2: Pick a random blank slot
+  const randomIndex = blankIndices[Math.floor(Math.random() * blankIndices.length)];
+
+  // Step 3: Add value to the chosen slot
+  array[randomIndex] = this.riddleWordLettersArray[randomIndex];
+
+  return array;
+},
+
+
+        deleteKey : function() {
+
+
+            this.riddleWordArray.pop()
+
+
+        },
+
+        hintKey : function(key) {
+
+            const blankIndex = this.riddleWordArray.findIndex(item => item === '');
+            if ( blankIndex === 0 ) {
+
+                console.log('first one')
+                this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
+
+
+            } else {
+
+                this.addValueToRandomBlankSlot(this.riddleWordArray);
+                console.log('second one')
+
+
+
+            }
+
+            
+
+                
+               
+
+               
+
+
+
+
+        },
+
        
 
+            pressKey : function(key) {
 
+               
+
+                
+                console.log(key)
+
+                const blankIndex = this.riddleWordArray.findIndex(item => item === '');
+
+                console.log(blankIndex)
+
+                // Check if a blank entry was found
+                if (blankIndex !== -1) {
+                    // Set the new value at the found index
+                    this.riddleWordArray[blankIndex] = key;
+                }
+                
+
+
+
+
+            },
 
 
 
@@ -186,7 +518,9 @@ console.log(JSON.parse(plaintext)[0]);
 
 <style>
 
-
+html, body {
+  overflow: hidden;
+}
 
 
 
