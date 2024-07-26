@@ -2,7 +2,7 @@
 
     <div class='h-screen'>
     
-    <div class="luckiest bg-white mt-2 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
+    <div class="luckiest bg-white mt-6 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
     <div  class="h-full text-center">
 
 
@@ -30,7 +30,7 @@
 
 <div class="mt-10">
 <div @click='nextRiddle($event)' class='cursor-pointer inline-block border rounded-xl py-2 px-4 text-3xl text-white bg-purple-500' v-if="solved">Next Riddle</div>
-<div v-else class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
+<div v-else class='inline-block rounded py-2 px-4 capitalize bg-purple-500 text-2xl text-white lato mt-2' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
 </div>
 
 
