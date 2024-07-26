@@ -1,26 +1,26 @@
 <template>
 
-    <div class='h-screen' :class="fullAnswer?solved?'bg-green-500':'bg-red-500':'bg-white'">
+    <div class='h-screen'>
     
-    <div class="bg-white mt-4 text-center text-2xl">Little Riddle:</div>
+    <div class="bg-white mt-2 md:mt-8 text-center text-2xl">Little Riddle:</div>
     <div  class="h-full text-center">
 
 
-        <div class="lato text-2xl mt-2 mx-2">{{  riddle.hint  }}</div>
+        <div class="flex  h-16 lato text-2xl mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>{{  riddle.hint  }}</div></div>
 
        
 
-        <div class="mt-8 mx-4">
+        <div class="mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":""' class='uppercase flex items-center grow mr-1 max-w-12 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"text-5xl":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":""' class='uppercase flex items-center grow max-w-12 mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",solved?"text-5xl":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
@@ -149,6 +149,7 @@ import animejs from 'animejs';
 
 
 import data from '@/assets/riddles.json';
+import confetti from 'canvas-confetti';
 
 
 
@@ -605,6 +606,10 @@ document.body.removeChild(textArea);
 
         },
 
+        randomInRange : function(min, max) {
+  return Math.random() * (max - min) + min;
+},
+
         
 //console.log(ciphertext.toString());
 
@@ -817,8 +822,39 @@ document.body.removeChild(textArea);
 
     watch: {
 
-        currentStep(newVal, oldVal) {
+        solved(newVal, oldVal) {
 
+            var vue = this
+
+            if ( newVal === true && oldVal === false ) {
+
+                var duration = 1000;
+var animationEnd = Date.now() + duration;
+var defaults = { startVelocity: 30, spread: 560, ticks: 60, zIndex: 0 };
+
+                var interval = setInterval(function() {
+  var timeLeft = animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    return clearInterval(interval);
+  }
+
+  var particleCount = 50 * (timeLeft / duration);
+  // since particles fall down, start a bit higher than random
+  confetti({ ...defaults, particleCount, origin: { x: vue.randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+  confetti({ ...defaults, particleCount, origin: { x: vue.randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+}, 50);
+
+
+/*
+                confetti({
+  particleCount: 100,
+  spread: 70,
+  origin: { y: 0.6 }
+});
+*/
+
+            }
           
 
         }
