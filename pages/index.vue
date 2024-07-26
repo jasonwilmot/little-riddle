@@ -2,36 +2,34 @@
 
     <div class='h-screen' :class="fullAnswer?solved?'bg-green-500':'bg-red-500':'bg-white'">
     
-    <div class="bg-red-500">Little Riddle</div>
+    <div class="bg-white mt-4 text-center text-2xl">Little Riddle:</div>
     <div  class="h-full text-center">
 
 
-        <div class="lato text-2xl mt-4">{{  riddle.hint  }}</div>
+        <div class="lato text-2xl mt-2 mx-2">{{  riddle.hint  }}</div>
 
        
 
         <div class="mt-8 mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div class='uppercase flex items-center grow mr-1 max-w-12 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":""' class='uppercase flex items-center grow mr-1 max-w-12 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div class='uppercase flex items-center grow max-w-12 mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":""' class='uppercase flex items-center grow max-w-12 mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
 
 <hr class="mt-6" />
 
-<div class='lato inline-block mt-4  p-2'>Give me a: <span class='cursor-pointer lato rounded border p-1 m-1' @click="nextHint()">Hint</span><span class='cursor-pointer lato rounded border p-1 m-1' @click="hintKey()">Letter</span></div>
-
 <div class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
 
-<button class='cursor-pointer' @click="shareRiddle()">Share Riddle</button>
+
 
 </div>
 
@@ -46,7 +44,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div @click='pressKey(key)' class='cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -58,7 +56,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div @click='pressKey(key)' class='cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -70,28 +68,44 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey()' class='cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+        <div @click='clearKey($event)' ref="parentDiv" class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
             
-            x
+            <div class='flex'>
+              <TrashIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+            </div>
         
         </div>
 
-        <div @click='pressKey(key)' class='cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div @click='pressKey($event,key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div @click='deleteKey()' class='cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+        <div @click='deleteKey($event)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
             
-            x
+            <div class='flex'>
+              <BackspaceIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+            </div>
         
         </div>
 
         </div>
 
+        <div class="w-full mt-2 flex justify-between roboto">
+
+            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint()">Hint</div>
+
+            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey()">Letter</div>
+
+            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle()">Share Riddle</div>
+
+</div>
+
 
     </div>
+
+    
 
 
         <!-- <h1>Guess the mystery rhyming words using a little clue</h1>
@@ -131,6 +145,7 @@
 <script>
 
 import CryptoJS from 'crypto-js'
+import animejs from 'animejs';
 
 
 import data from '@/assets/riddles.json';
@@ -149,7 +164,9 @@ import {
 
 import {
     CheckIcon,
-    HeartIcon
+    HeartIcon,
+    BackspaceIcon,
+    TrashIcon
 } from '@heroicons/vue/24/outline'
 import axios from 'axios';
 import qs from 'qs'
@@ -160,7 +177,7 @@ export default {
 
     components: {
         CheckIcon,
-        HeartIcon
+        HeartIcon, BackspaceIcon, TrashIcon
     },
 
     //======================================================================================
@@ -255,6 +272,15 @@ export default {
     },
 
     computed: {
+
+
+        nextBlankIndex() {
+
+            return this.riddleWordArray.findIndex(item => item === '');
+
+
+
+        },
 
         solved() {
 
@@ -601,44 +627,46 @@ document.body.removeChild(textArea);
         },
 
 
-        clearKey : function() {
+        clearKey : function(event) {
 
+            this.animateKeyPress(event)
 
             this.riddleWordArray = this.riddleWordArray.map(() => "")
 
         },
 
+
         addValueToRandomBlankSlot : function(array) {
 
 
-  // Step 1: Identify blank slots
-  const blankIndices = array.reduce((acc, item, index) => {
-    if (item === '' || item === null || item === undefined) {
-      acc.push(index);
-    }
-    return acc;
-  }, []);
+            // Step 1: Identify blank slots
+            const blankIndices = array.reduce((acc, item, index) => {
+                if (item === '' || item === null || item === undefined) {
+                acc.push(index);
+                }
+                return acc;
+            }, []);
 
-  // Check if there are any blank slots
-  if (blankIndices.length === 0) {
-    console.log('No blank slots available');
-    return array;
-  }
+            // Check if there are any blank slots
+            if (blankIndices.length === 0) {
+                console.log('No blank slots available');
+                return array;
+            }
 
-  // Step 2: Pick a random blank slot
-  const randomIndex = blankIndices[Math.floor(Math.random() * blankIndices.length)];
+            // Step 2: Pick a random blank slot
+            const randomIndex = blankIndices[Math.floor(Math.random() * blankIndices.length)];
 
-  // Step 3: Add value to the chosen slot
-  array[randomIndex] = this.riddleWordLettersArray[randomIndex];
+            // Step 3: Add value to the chosen slot
+            array[randomIndex] = this.riddleWordLettersArray[randomIndex];
 
-  return array;
+            return array;
 },
 
 
-        deleteKey : function() {
+        deleteKey : function(event) {
 
            
-
+            this.animateKeyPress(event)
 
             const blankIndex = this.riddleWordArray.findIndex(item => item === '');
             console.log(blankIndex)
@@ -695,9 +723,49 @@ document.body.removeChild(textArea);
 
         },
 
+
+        findElementWithClass : function(element, className) {
+      // Base case: if element has the desired class, return it
+      if (element.classList && element.classList.contains(className)) {
+        return element;
+      }
+      // Recursive case: if element has a parent, recurse with the parent element
+      if (element.parentElement) {
+        return this.findElementWithClass(element.parentElement, className);
+      }
+      // If no parent element exists and the class was not found, return null
+      return null;
+    },
+  
+
+
+        animateKeyPress : function(event) {
+
+            //find the highest level key element.  this prevents us from animating a child element
+            //like an image on a key
+            const targetClass = 'key';
+            const element = this.findElementWithClass(event.target, targetClass);
+
+        
+            animejs({
+                    targets: element,
+                    translateY: 7,
+                    duration : 50,
+                    direction: 'alternate',
+                    easing: 'easeInOutSine'
+                });
+
+
+
+        },
+
        
 
-            pressKey : function(key) {
+            pressKey : function(event,key) {
+
+                //console.log(event)
+
+                this.animateKeyPress(event)
 
                
                 if ( !this.fullAnswer ) {
@@ -708,6 +776,16 @@ document.body.removeChild(textArea);
                         if (blankIndex !== -1) {
                             // Set the new value at the found index
                             this.riddleWordArray[blankIndex] = key;
+
+                            animejs({
+                                targets: '#letter' + blankIndex,
+                                scale: 1.2,
+                                duration : 70,
+                                delay : 0,
+                                direction: 'alternate',
+                                easing: 'easeInOutSine'
+                            });
+
                         }
 
                 } else {
