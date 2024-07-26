@@ -25,7 +25,7 @@
 </div>
 </div>
 
-<hr class="mt-6" />
+
 
 <div class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
 
@@ -44,7 +44,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -52,11 +52,11 @@
 
         </div>
 
-        <div class="px-4 my-2">
+        <div class="px-2 my-3">
 
         <div class="w-full flex justify-between roboto">
 
-            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -68,7 +68,7 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey($event)' ref="parentDiv" class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+        <div @click='clearKey($event)' ref="parentDiv" class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <TrashIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -76,13 +76,13 @@
         
         </div>
 
-        <div @click='pressKey($event,key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div @click='pressKey($event,key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div @click='deleteKey($event)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-14 text-center text-3xl  my-auto'>
+        <div @click='deleteKey($event)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <BackspaceIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -841,9 +841,10 @@ html, body {
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* Internet Explorer/Edge */
-    
+      touch-action: manipulation; /* Prevent zooming */
 }
 
+* { touch-action: manipulation; }
 
 
 
