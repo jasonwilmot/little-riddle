@@ -188,6 +188,8 @@ export default {
 
     async mounted() {
 
+       
+
         //this needs to be in mounted, and not in create() or bad things happen
         useHead({
 
@@ -341,7 +343,7 @@ numerOfLetters() { //determine if the user can edit this plan
 
     async created() {
 
-       // if (process.browser) {
+        if(!process.server){
 
         this.riddles = data;
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
@@ -350,6 +352,14 @@ numerOfLetters() { //determine if the user can edit this plan
 
       var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
       riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+
+        }
+
+
+
+       // if (process.browser) {
+
+       
 
        // }
 
