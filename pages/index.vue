@@ -2,25 +2,25 @@
 
     <div class='h-screen'>
     
-    <div class="bg-white mt-2 md:mt-8 text-center text-2xl">Little Riddle:</div>
+    <div class="luckiest bg-white mt-2 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
     <div  class="h-full text-center">
 
 
-        <div class="flex  h-16 lato text-2xl mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>{{  riddle.hint  }}</div></div>
+        <div class="bitter text-3xl text-gray-700 flex  h-16 lato  mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
 
        
 
         <div id='answer' class="mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"text-6xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",solved?"text-6xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
@@ -29,7 +29,7 @@
 
 
 <div class="mt-10">
-<div @click='nextRiddle($event)' class='cursor-pointer inline-block border rounded-xl py-2 px-4 text-3xl text-gray-600' v-if="solved">Next Riddle</div>
+<div @click='nextRiddle($event)' class='cursor-pointer inline-block border rounded-xl py-2 px-4 text-3xl text-white bg-purple-500' v-if="solved">Next Riddle</div>
 <div v-else class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
 </div>
 
@@ -40,7 +40,7 @@
 
 
     </div>
-    <div class="w-full absolute bottom-0 left-0 bg-blue-500 p-2">
+    <div class="w-full absolute bottom-0 left-0 bg-purple-100 p-2">
 
        
        
@@ -48,7 +48,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div @click='pressKey($event, key)' class='border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -60,7 +60,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div @click='pressKey($event, key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div @click='pressKey($event, key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -72,24 +72,24 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey($event)' ref="parentDiv" class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div @click='clearKey($event)' ref="parentDiv" class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
-              <TrashIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+              <TrashIcon class='text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
         
         </div>
 
-        <div @click='pressKey($event,key)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div @click='pressKey($event,key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div @click='deleteKey($event)' class='key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div @click='deleteKey($event)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
-              <BackspaceIcon class='my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+              <BackspaceIcon class=' text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
         
         </div>
@@ -98,11 +98,11 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint()">Hint</div>
+            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint()">Hint</div>
 
-            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey()">Letter</div>
+            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey()">Letter</div>
 
-            <div class='grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle()">Share Riddle</div>
+            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle()">Share Riddle</div>
 
 </div>
 
@@ -864,10 +864,13 @@ document.body.removeChild(textArea);
       const viewportHeight = window.innerHeight;
       const normalizedCenterY = elementCenterY / viewportHeight;
       
+      var emojiArray = ['💥','💝','💖','🦄','🐱️','⭐️','🌟️']
+
+     
       
       var scalar = 4;
-    var unicorn = confetti.shapeFromText({ text: '🦄', scalar });
-    var blob = confetti.shapeFromText({ text: '🆎️', scalar });
+    var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
+    var blob = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
             
       // Use confetti to create an effect that expands over the entire viewport
       const duration = 5 * 1000;

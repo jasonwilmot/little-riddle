@@ -10,8 +10,11 @@ export default defineNuxtConfig({
   
   googleFonts: {
     families: {
+      Merriweather:true,
+      Bitter:true,
       Roboto: true,
       'Space+Mono':true,
+      'Luckiest+Guy':true,
       'Josefin+Sans': true,
       Lato: [100, 300],
       Yellowtail : true,
