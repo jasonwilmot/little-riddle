@@ -343,7 +343,7 @@ numerOfLetters() { //determine if the user can edit this plan
 
 
        
-
+console.log(this.$route)
 
 
         if (process.browser) {
@@ -360,18 +360,18 @@ store.protocol = store.getProtocol()
 
         this.riddles = data;
 
-        if ( process.browser ) {
+        //if ( process.browser ) {
 
-            const currentUrl = window.location.href;
+           // const currentUrl = window.location.href;
 
     // Parse the URL to extract the query string
-    const queryString = currentUrl.split('?')[1];
+    //const queryString = currentUrl.split('?')[1];
 
     // Check if the URL has a query string
-    if (queryString) {
+    if (this.$route.query) {
       // Parse the query string using qs
-      const queryParams = qs.parse(queryString);
-      this.riddle = JSON.parse(this.decrypt(queryParams.riddle))
+     // const queryParams = qs.parse(queryString);
+      this.riddle = JSON.parse(this.decrypt(this.$route.query.riddle))
     } else {
 
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
@@ -389,7 +389,7 @@ store.protocol = store.getProtocol()
 
 
 
-        }
+        
 
         
 
