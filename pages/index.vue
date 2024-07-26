@@ -170,7 +170,14 @@ export default {
 
             riddleWordArray : [],
             riddles : [],
-            riddle : null,
+            riddle : {
+      "rhyme": "",
+      "type": "",
+      "hint": "",
+      "clues": [
+        ""
+      ]
+    },
             cluesIndex : -1,
 
             
@@ -187,6 +194,14 @@ export default {
     },
 
     async mounted() {
+
+        this.riddles = data;
+        const randomIndex = Math.floor(Math.random() * this.riddles.length);
+      this.riddle = this.riddles[randomIndex];
+      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
+
+      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
+      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
        
 
@@ -251,8 +266,16 @@ export default {
 
         fullAnswer() {
 
+            if ( this.riddleWordArray.length > 0 ) {
 
             return this.riddleWordArray.every(item => item !== '')
+
+            } else {
+
+
+                return false
+
+            }
 
 
         },
@@ -311,11 +334,20 @@ return riddleWordArray
 
 secondWordAnswer() {
 
+    try { 
+
 var letters =  this.riddle.rhyme.split(' ')[1].split("")
 var secondWordAnswer = []
 letters.forEach(letter => secondWordAnswer.push(""))
 
 return secondWordAnswer
+
+    } catch(error) {
+
+
+        return ""
+
+    }
 
 
 },
@@ -343,17 +375,11 @@ numerOfLetters() { //determine if the user can edit this plan
 
     async created() {
 
-        if(!process.server){
+       // if(process.server){
 
-        this.riddles = data;
-        const randomIndex = Math.floor(Math.random() * this.riddles.length);
-      this.riddle = this.riddles[randomIndex];
-      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
+        
 
-      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
-      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
-
-        }
+       // }
 
 
 
