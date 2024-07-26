@@ -195,6 +195,8 @@ export default {
 
     async mounted() {
 
+        window.addEventListener('keydown', this.handleKeydown);
+
         this.riddles = data;
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
       this.riddle = this.riddles[randomIndex];
@@ -456,6 +458,32 @@ store.protocol = store.getProtocol()
     },
 
     methods: {
+
+        handleKeydown : function(event) {
+      // Check if the key is alphanumeric or delete
+      const key = event.key;
+
+      console.log(key)
+
+      const isAlphanumeric = /^[a-z0-9]$/i.test(key); // Check if alphanumeric
+      const isDelete = key === 'Backspace' || key === 'Delete';
+     
+      if (isAlphanumeric || isDelete) {
+
+        if ( isDelete ) {
+
+            this.deleteKey()
+
+        } else {
+
+
+            this.pressKey(key)
+
+        }
+       // this.lastKey = key;
+       // console.log('Key pressed:', key);
+      }
+    },
 
 
         arraysEqual : function(arr1, arr2) {
