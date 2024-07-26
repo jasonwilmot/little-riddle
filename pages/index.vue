@@ -341,7 +341,7 @@ numerOfLetters() { //determine if the user can edit this plan
 
     async created() {
 
-        if (process.browser) {
+       // if (process.browser) {
 
         this.riddles = data;
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
@@ -351,7 +351,7 @@ numerOfLetters() { //determine if the user can edit this plan
       var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
       riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
-        }
+       // }
 
 
       /*
