@@ -341,7 +341,16 @@ numerOfLetters() { //determine if the user can edit this plan
 
     async created() {
 
+        this.riddles = data;
+        const randomIndex = Math.floor(Math.random() * this.riddles.length);
+      this.riddle = this.riddles[randomIndex];
+      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
+      
+      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
+      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
+
+      /*
        
 console.log(this.$route)
 
@@ -396,7 +405,7 @@ store.protocol = store.getProtocol()
         
       
 
-      
+      */
 
        
 
