@@ -10,28 +10,32 @@
 
        
 
-        <div class="mx-4">
+        <div id='answer' class="mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"text-5xl":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"text-6xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",solved?"text-5xl":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",solved?"text-6xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
 
-
-
-<div class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
-
-
-
 </div>
+
+
+<div class="mt-10">
+<div @click='nextRiddle($event)' class='cursor-pointer inline-block border rounded-xl py-2 px-4 text-3xl text-gray-600' v-if="solved">Next Riddle</div>
+<div v-else class='uppercase lato mt-4 text-xl' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
+</div>
+
+
+
+
 
 
 
@@ -216,12 +220,8 @@ export default {
         window.addEventListener('keydown', this.handleKeydown);
 
         this.riddles = data;
-        const randomIndex = Math.floor(Math.random() * this.riddles.length);
-      this.riddle = this.riddles[randomIndex];
-      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
-
-      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
-      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+        
+        this.buildRiddle()
 
        
 
@@ -485,6 +485,34 @@ store.protocol = store.getProtocol()
     },
 
     methods: {
+
+
+        buildRiddle : function() {
+
+
+            const randomIndex = Math.floor(Math.random() * this.riddles.length);
+      this.riddle = this.riddles[randomIndex];
+      this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
+
+      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
+      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+
+
+        },
+
+
+        nextRiddle : function(event) {
+
+
+            this.clearKey(event)
+            this.riddleWordArray = []
+            this.cluesIndex = - 1
+            this.riddle.clues = []
+            this.buildRiddle()
+
+
+
+        },
 
         handleKeydown : function(event) {
       // Check if the key is alphanumeric or delete
@@ -828,36 +856,47 @@ document.body.removeChild(textArea);
 
             if ( newVal === true && oldVal === false ) {
 
-                var duration = 1000;
-var animationEnd = Date.now() + duration;
-var defaults = { startVelocity: 30, spread: 560, ticks: 60, zIndex: 0 };
+                const element = document.getElementById('answer')
+      const rect = element.getBoundingClientRect();
+      const elementCenterY = rect.top + rect.height / 2;
+      
+      // Calculate normalized center Y position
+      const viewportHeight = window.innerHeight;
+      const normalizedCenterY = elementCenterY / viewportHeight;
+      
+      
+      var scalar = 4;
+    var unicorn = confetti.shapeFromText({ text: '🦄', scalar });
+    var blob = confetti.shapeFromText({ text: '🆎️', scalar });
+            
+      // Use confetti to create an effect that expands over the entire viewport
+      const duration = 5 * 1000;
+      const animationEnd = Date.now() + duration;
+      const defaults = {  shapes: [unicorn,blob],
+  scalar, startVelocity: 30, spread: 360, ticks: 60, zIndex: 0};
+      const particleCount = 100
 
-                var interval = setInterval(function() {
-  var timeLeft = animationEnd - Date.now();
+      
+        // since particles fall down, start a bit higher than random
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x:.5, y: normalizedCenterY } }));
 
-  if (timeLeft <= 0) {
-    return clearInterval(interval);
-  }
+        animejs({
+                                targets: '#answer',
+                                scale: 1.2,
+                                duration : 1200,
+                                delay : 100,
+                                direction: 'alternate',
+                                easing: 'easeOutQuart'
 
-  var particleCount = 50 * (timeLeft / duration);
-  // since particles fall down, start a bit higher than random
-  confetti({ ...defaults, particleCount, origin: { x: vue.randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-  confetti({ ...defaults, particleCount, origin: { x: vue.randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-}, 50);
+                            });
+     
 
+            
+    
+    
+}
 
-/*
-                confetti({
-  particleCount: 100,
-  spread: 70,
-  origin: { y: 0.6 }
-});
-*/
-
-            }
-          
-
-        }
+    }
 
     },
 
