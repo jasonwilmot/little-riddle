@@ -20,14 +20,14 @@
         <div id='answer' class="mt-1 mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink text-gray-800 text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
@@ -41,17 +41,17 @@
 
 <div class="md:mt-8 mt-6">
     <transition name="fade">
-<div @click='nextRiddle($event)' class=' cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' class=' bg-purple-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-purple-700 border-purple-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
     <span class="my-auto bitter">Next Riddle</span>
-    <ChevronRightIcon class='my-auto text-white ml-1 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+    <ChevronRightIcon class='my-auto text-purple-700 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
     </div>
 
 </div>
 </transition>
 <div>
-<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-purple-400 border text-purple-400 italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
 </div>
 
 <div>
@@ -67,7 +67,7 @@
 
 
     </div>
-    <div class="w-full absolute bottom-0 left-0 bg-purple-100 p-2">
+    <div class="w-full border border-t-1 border-r-0 border-l-0 border-b-0 border-gray-300 absolute bottom-0 left-0 bg-gray-100 p-2 pt-3">
 
        
        
@@ -75,7 +75,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-purple-100 border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -87,7 +87,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -99,7 +99,7 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey($event)' ref="parentDiv" class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div @click='clearKey($event)' ref="parentDiv" class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <TrashIcon class='text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -107,13 +107,13 @@
         
         </div>
 
-        <div :id='"key" + key' @click='pressKey($event,key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div :id='"key" + key' @click='pressKey($event,key)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div id='deleteKey' @click='deleteKey($event)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div id='deleteKey' @click='deleteKey($event)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <BackspaceIcon class=' text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -125,20 +125,20 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            <div :class='hintHeat' class='bg-purple-100 key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
                 +{{ hintCount }}
             
             </div>
 
-            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
-            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='solved?"bg-green-500 border text-white border-green-500":"border border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
             
 
@@ -746,7 +746,7 @@ return new Promise(resolve => {
             animejs({
   targets: '#hintContainer',
 
-  color: '#000000',
+  color: '#374151',
   duration : 3000
 });
      
