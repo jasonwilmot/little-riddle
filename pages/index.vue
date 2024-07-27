@@ -10,22 +10,22 @@
 
         <div class='flex' v-show='riddle.hint !== ""' id="riddleContainer">
 
-            <div class='my-auto' v-show="catTime">
+            <div class='mt-16' v-show="catTime">
 
             <!-- <img v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
             <img v-if='animalIndex === 1' src="/images/dog.webp" /> -->
-            <img class='h-48' v-if='animalIndex === 0' src="/images/donkey.gif" />
-            <img class='h-48' v-if='animalIndex === 1' src="/images/elephant.gif" />
-            <img class='h-48' v-if='animalIndex === 2' src="/images/goatgif.gif" />
-            <img class='h-48' v-if='animalIndex === 3' src="/images/llama.gif" />
-            <img class='h-48' v-if='animalIndex === 4' src="/images/monkey.gif" />
-            <img class='h-48' v-if='animalIndex === 5' src="/images/ostrich.gif" />
-            <img class='h-48' v-if='animalIndex === 6' src="/images/pig.gif" />
-            <img class='h-48' v-if='animalIndex === 7' src="/images/ram.gif" />
-            <img class='h-48' v-if='animalIndex === 8' src="/images/rhino.gif" />
-            <img class='h-48' v-if='animalIndex === 9' src="/images/sheep.gif" />
-            <img class='h-48' v-if='animalIndex === 10' src="/images/yak.gif" />
-            <img class='h-48' v-if='animalIndex === 11' src="/images/zebra.gif" />
+            <img class='h-48' v-show='animalIndex === 0' src="/images/donkey.gif" />
+            <img class='h-48' v-show='animalIndex === 1' src="/images/elephant.gif" />
+            <img class='h-48' v-show='animalIndex === 2' src="/images/goatgif.gif" />
+            <img class='h-48' v-show='animalIndex === 3' src="/images/llama.gif" />
+            <img class='h-48' v-show='animalIndex === 4' src="/images/monkey.gif" />
+            <img class='h-48' v-show='animalIndex === 5' src="/images/ostrich.gif" />
+            <img class='h-48' v-show='animalIndex === 6' src="/images/pig.gif" />
+            <img class='h-48' v-show='animalIndex === 7' src="/images/ram.gif" />
+            <img class='h-48' v-show='animalIndex === 8' src="/images/rhino.gif" />
+            <img class='h-48' v-show='animalIndex === 9' src="/images/sheep.gif" />
+            <img class='h-48' v-show='animalIndex === 10' src="/images/yak.gif" />
+            <img class='h-48' v-show='animalIndex === 11' src="/images/zebra.gif" />
 
             </div>
 
@@ -905,7 +905,7 @@ return new Promise(resolve => {
            
             var movement = window.innerWidth
 
-            var showAnimalIndex = this.getRandomNumber(0,6)
+            var showAnimalIndex = this.getRandomNumber(0,2)
            var showAnimal = showAnimalIndex === 2 ? true : false
 
 
