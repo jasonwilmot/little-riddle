@@ -6,13 +6,13 @@
 
     
 
-    <div  class="h-full text-center">
+    <div  class="text-center">
 
-        <div v-if='riddle.rhyme !== ""' id="riddleContainer">
+        <div v-show='riddle.hint !== ""' id="riddleContainer">
 
             <div class='flex my-4 mx-4 text-xl text-gray-500 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle below.  Every answer is made of two words that always rhyme. If you get stuck, use a hint!</div></div>
 
-        <div  class="bitter text-3xl text-gray-700 flex  mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+        <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
 
         
        
@@ -20,14 +20,14 @@
         <div id='answer' class="mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
-<div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? "text-gray-700 ":"text-green-500 ":"text-red-500 ",solved?"text-gray-800 text-5xl font-bold":"border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div class="flex items-center justify-center mx-auto mt-4 "> 
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink text-gray-800 text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
@@ -41,7 +41,7 @@
 
 <div class="mt-8">
     <transition name="fade">
-<div @click='nextRiddle($event)' class='key cursor-pointer inline-block border rounded-xl py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' class=' cursor-pointer inline-block border rounded-xl py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
     <span class="my-auto bitter">Next Riddle</span>
@@ -71,7 +71,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div @click='pressKey($event, key)' class='border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -83,7 +83,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div @click='pressKey($event, key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -103,13 +103,13 @@
         
         </div>
 
-        <div @click='pressKey($event,key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div :id='"key" + key' @click='pressKey($event,key)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div @click='deleteKey($event)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div id='deleteKey' @click='deleteKey($event)' class='border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <BackspaceIcon class=' text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -195,6 +195,7 @@ import {
 
 
 
+import { autoTextSize } from 'auto-text-size'
 
 
 
@@ -224,6 +225,7 @@ export default {
     data: function() {
         return {
 
+            fontSizeSet : false,
             points : null,
             waitingForNextRiddle : false,
             started : false,
@@ -255,6 +257,16 @@ export default {
     },
 
     async mounted() {
+
+       // if (process.browser) {
+
+//these are just some helpers for local dev / prod
+store.localHost = store.isHostedLocally()
+store.functionEndpoint = store.getFunctionEndpoint()
+store.hostName = store.getHostname()
+store.protocol = store.getProtocol()
+
+//}
 
         window.addEventListener('keydown', this.handleKeydown);
 
@@ -312,6 +324,14 @@ export default {
     },
 
     computed: {
+
+
+        maxScore() {
+
+            return this.calculateScrabbleScore(this.riddle.rhyme.replace(/\s+/g, '')) * 10
+
+
+        },
 
 
         nextBlankIndex() {
@@ -525,6 +545,90 @@ store.protocol = store.getProtocol()
 
     methods: {
 
+        delay : function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+},
+
+
+waitForElm: function (selector) {
+
+var a = "jason"
+var b = "rachel"
+
+return new Promise(resolve => {
+    if (document.querySelector(selector)) {
+        return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(mutations => {
+
+
+        if (a === b) { console.log(mutations) }
+
+
+
+        if (document.querySelector(selector)) {
+            resolve(document.querySelector(selector));
+            observer.disconnect();
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+});
+},
+
+
+        adjustFontSizeToFit : async function() {
+
+           await this.delay(200)
+            //await store.waitForElm("#hintContainer")
+
+            const box = document.getElementById('hintContainer');
+      const textElement = document.getElementById('hint');
+
+      autoTextSize({
+                
+                mode : "box",
+                containerEl : box,
+                innerEl : textElement,
+                maxFontSizePx : 40,
+
+
+            })
+           
+
+            animejs({
+  targets: '#hintContainer',
+
+  color: '#000000',
+  duration : 3000
+});
+     
+     
+    },
+
+
+        calculateScrabbleScore : function(word) {
+
+            const scrabbleScores = {
+                a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4, i: 1, j: 8, k: 5, l: 1,
+                m: 3, n: 1, o: 1, p: 3, q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8,
+                y: 4, z: 10
+            };
+
+            word = word.toLowerCase(); // Ensure the word is in lowercase
+            let score = 0;
+
+            for (let char of word) {
+                score += scrabbleScores[char] || 0; // Add the score of the character, default to 0 if not found
+            }
+
+            return score;
+
+        },
 
         buildRiddle : function() {
 
@@ -552,6 +656,20 @@ store.protocol = store.getProtocol()
         this.newPlayer = false
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
       this.riddle = this.riddles[randomIndex];
+
+      /*
+      this.riddle = {
+      "rhyme": "fat cat",
+      "type": "noun",
+      "hint": "A busy suitcase meets an aggressive invader.",
+      "clues": [
+        "Well fed tiger",
+        "Obese lion",
+        "Voluptuous feline"
+      ]
+
+      }
+      */
       
         
       }
@@ -561,6 +679,7 @@ store.protocol = store.getProtocol()
       var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
       riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
+      this.adjustFontSizeToFit()
 
             
 
@@ -621,19 +740,19 @@ store.protocol = store.getProtocol()
 
       console.log(key)
 
-      const isAlphanumeric = /^[a-z0-9]$/i.test(key); // Check if alphanumeric
+      const isAlphanumeric = /^[a-z]$/i.test(key); // Check if alphanumeric
       const isDelete = key === 'Backspace' || key === 'Delete';
      
       if (isAlphanumeric || isDelete) {
 
         if ( isDelete ) {
 
-            this.deleteKey()
+            this.deleteKey(event,key,true)
 
         } else {
 
 
-            this.pressKey(key)
+            this.pressKey(event,key,true)
 
         }
        // this.lastKey = key;
@@ -812,10 +931,10 @@ document.body.removeChild(textArea);
 },
 
 
-        deleteKey : function(event) {
+        deleteKey : function(event,key,keyboard) {
 
            
-            this.animateKeyPress(event)
+            this.animateKeyPress(event,keyboard,key)
 
             const blankIndex = this.riddleWordArray.findIndex(item => item === '');
             console.log(blankIndex)
@@ -893,14 +1012,43 @@ document.body.removeChild(textArea);
   
 
 
-        animateKeyPress : function(event) {
+        animateKeyPress : function(event,keyboard, key) {
 
             this.started = true
 
+            var element
+
+            if ( keyboard ) {
+
+               
+
+                if ( key === 'Backspace' || key === 'Delete ') {
+
+                    
+                    element = document.getElementById('deleteKey')
+                  
+
+                } else {
+
+
+                    element = document.getElementById('key' + key)
+               
+
+
+                }
+                
+
+            } else {
+
+                const targetClass = 'key';
+                element = this.findElementWithClass(event.target, targetClass);
+
+            }
+            
+
             //find the highest level key element.  this prevents us from animating a child element
             //like an image on a key
-            const targetClass = 'key';
-            const element = this.findElementWithClass(event.target, targetClass);
+            
 
         
             animejs({
@@ -917,11 +1065,11 @@ document.body.removeChild(textArea);
 
        
 
-            pressKey : function(event,key) {
+            pressKey : function(event,key,keyboard) {
 
                 //console.log(event)
 
-                this.animateKeyPress(event)
+                this.animateKeyPress(event,keyboard,key)
 
                
                 if ( !this.fullAnswer ) {
