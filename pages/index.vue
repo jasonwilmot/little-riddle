@@ -125,9 +125,9 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div class='key text-white border-purple-400  bg-purple-400 grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
-                +{{ riddle.score }}
+                +{{ hintCount }}
             
             </div>
 
@@ -136,9 +136,9 @@
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+            <a :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600 grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div v-else class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
             
 
@@ -231,6 +231,7 @@ export default {
     data: function() {
         return {
 
+            hintCount : 0,
             copiedToClipboard : false,
             firstRiddlePlayed : false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet : false,
@@ -362,6 +363,58 @@ export default {
 
     computed: {
 
+
+        hintHeat : function() {
+
+            switch (this.hintCount) {
+                case 0:
+    return "border-purple-500 text-purple-600"
+    break;
+  case 1:
+    return "bg-purple-200 border-purple-200 text-purple-600"
+    break;
+  case 2:
+  return "bg-purple-300 border-purple-300 text-purple-600"
+    break;
+  case 3:
+  return "bg-purple-400 border-purple-400 text-white"
+    break;
+  case 4:
+  return "bg-purple-500 border-purple-500 text-white"
+    break;
+  case 5:
+  return "bg-purple-600 border-purple-600 text-white"
+    break;
+  case 6:
+  return "bg-purple-700 border-purple-700 text-white"
+    break;
+ 
+  default:
+    return "bg-purple-700 border-purple-700 text-white"
+}
+
+
+
+
+        },
+
+        shareCopy : function() {
+
+            if ( this.solved ) {
+
+                return "I solved this Little Riddle with " + this.hintCount + " hints:"
+
+
+            } else {
+
+                return "Try and solve this Little Riddle:"
+
+
+            }
+
+
+        },
+
         encrypt : function() {
 
             return encodeURIComponent(CryptoJS.AES.encrypt(JSON.stringify(this.riddle), "littleriddle"))
@@ -421,7 +474,17 @@ return isMobile } else {
 
         solved() {
 
-            return this.arraysEqual(this.riddleWordLettersArray, this.riddleWordArray)
+            if ( this.riddle.rhyme === "" ) {
+
+                return false
+
+            } else {
+
+                return this.arraysEqual(this.riddleWordLettersArray, this.riddleWordArray)
+
+            }
+
+            
 
             
 
@@ -712,6 +775,8 @@ return new Promise(resolve => {
 
         buildRiddle : function() {
 
+            this.hintCount = 0
+
             //let's see if the user has already played a puzzle and doesn't need instructions
             const onboarded = localStorage.getItem("onboarded");
 
@@ -901,7 +966,10 @@ tempInput.select();
 document.execCommand("copy");
 document.body.removeChild(tempInput);
 
+if ( !this.isMobile ) {
 this.copiedToClipboard = true
+
+}
 
 //store.highlightElement(highlightElementID)
 
@@ -1002,6 +1070,8 @@ document.body.removeChild(textArea);
 
         deductCredit : function() {
 
+            this.hintCount++
+
             this.riddle.score = this.riddle.score - 5
 
 
@@ -1089,6 +1159,7 @@ document.body.removeChild(textArea);
             } else {
 
                 this.addValueToRandomBlankSlot(this.riddleWordArray);
+                //this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
                 console.log('second one')
 
 
@@ -1276,6 +1347,8 @@ document.body.removeChild(textArea);
   scalar, startVelocity: 30, spread: 360, ticks: 60, zIndex: 0};
       const particleCount = 100
 
+      var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
+
       
         // since particles fall down, start a bit higher than random
         confetti(Object.assign({}, defaults, { particleCount, origin: { x:.5, y: normalizedCenterY } }));
@@ -1283,7 +1356,7 @@ document.body.removeChild(textArea);
         animejs({
                                 targets: '#answer',
                                 scale: 1.2,
-                                duration : 900,
+                                duration : 700,
                                 delay : 100,
                                 direction: 'alternate',
                                 easing: 'easeOutQuart',
