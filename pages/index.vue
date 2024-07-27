@@ -3,34 +3,57 @@
     <div class='h-screen'>
     
     <div class="luckiest bg-white mt-6 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
+
+    
+
     <div  class="h-full text-center">
 
+        <div v-if='riddle.rhyme !== ""' id="riddleContainer">
 
-        <div class="bitter text-3xl text-gray-700 flex  h-16 lato  mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+            <div class='flex my-4 mx-4 text-xl text-gray-500 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle below.  Every answer is made of two words that always rhyme. If you get stuck, use a hint!</div></div>
 
+        <div  class="bitter text-3xl text-gray-700 flex  mt-2 mb-4 mx-4"><div class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+
+        
        
 
         <div id='answer' class="mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center   my-auto' v-for="(letter,index) in firstWordAnswer">
+    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center grow mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
 {{ riddleWordArray[index] || '\u00A0' }}
 </div>
 </div>
 
 
 <div class="flex items-center justify-center mx-auto mt-4 roboto"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",solved?"text-5xl font-bold":"border text-3xl",fullAnswer?solved?"text-green-500":"text-red-500":"text-gray-800"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? "text-gray-700 ":"text-green-500 ":"text-red-500 ",solved?"text-gray-800 text-5xl font-bold":"border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center grow max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
 </div>
 
 </div>
 
+</div>
 
-<div class="mt-10">
-<div @click='nextRiddle($event)' class='cursor-pointer inline-block border rounded-xl py-2 px-4 text-3xl text-white bg-purple-500' v-if="solved">Next Riddle</div>
-<div v-else class='inline-block rounded py-2 px-4 capitalize bg-purple-500 text-2xl text-white lato mt-2' v-if="cluesIndex > -1">{{  riddle.clues[cluesIndex]  }}</div>
+
+
+
+<div class="mt-8">
+    <transition name="fade">
+<div @click='nextRiddle($event)' class='key cursor-pointer inline-block border rounded-xl py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+    
+    <div class="flex">
+    <span class="my-auto bitter">Next Riddle</span>
+    <ChevronRightIcon class='my-auto text-white ml-1 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+    </div>
+
+</div>
+</transition>
+<div>
+<div v-if="!solved && cluesIndex > -1" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+</div>
+
 </div>
 
 
@@ -98,11 +121,11 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint()">Hint</div>
+            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
-            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey()">Letter</div>
+            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            <div class='border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle()">Share Riddle</div>
+            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share Riddle</div>
 
 </div>
 
@@ -171,6 +194,7 @@ import {
     CheckIcon,
     HeartIcon,
     BackspaceIcon,
+    ChevronRightIcon,
     TrashIcon
 } from '@heroicons/vue/24/outline'
 import axios from 'axios';
@@ -182,13 +206,17 @@ export default {
 
     components: {
         CheckIcon,
-        HeartIcon, BackspaceIcon, TrashIcon
+        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon
     },
 
     //======================================================================================
     //======================================================================================
     data: function() {
         return {
+
+            waitingForNextRiddle : false,
+            started : false,
+            newPlayer : true,
 
             riddleWordArray : [],
             riddles : [],
@@ -489,13 +517,36 @@ store.protocol = store.getProtocol()
 
         buildRiddle : function() {
 
+            const value = localStorage.getItem("onboarded");
+            if (value === null) {
 
-            const randomIndex = Math.floor(Math.random() * this.riddles.length);
+                this.riddle = {
+      "rhyme": "fat cat",
+      "type": "noun",
+      "hint": "Overweight feline",
+      "clues": [
+        "Well fed tiger",
+        "Obese lion",
+        "Voluptuous feline"
+      ]
+    }
+        
+      } else {
+
+        this.newPlayer = false
+        const randomIndex = Math.floor(Math.random() * this.riddles.length);
       this.riddle = this.riddles[randomIndex];
+      
+        
+      }
+
       this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
       var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
       riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+
+
+            
 
 
         },
@@ -503,12 +554,46 @@ store.protocol = store.getProtocol()
 
         nextRiddle : function(event) {
 
+            this.animateKeyPress(event)
 
-            this.clearKey(event)
+            this.waitingForNextRiddle = false
+           
+            var movement = window.innerWidth
+
+
+            animejs({
+        targets: '#riddleContainer',
+        translateX: movement, // Move left by half of the viewport width
+        duration: 700,
+        easing: 'easeInOutQuad',
+        complete: () => {
+
+            localStorage.setItem('onboarded', 'onboarded');
+            this.newPlayer = false
+
+          // Perform the action
+          console.log('Action performed!');
+          this.clearKey(event)
             this.riddleWordArray = []
             this.cluesIndex = - 1
             this.riddle.clues = []
             this.buildRiddle()
+
+            document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
+
+           // document.getElementById('riddleContainer').style.left = -window.innerWidth + "px"
+          
+          // Move the div back to the original position
+          animejs({
+            targets: '#riddleContainer',
+            translateX: 0,
+            duration: 1000,
+            easing: 'easeInOutQuad'
+          });
+        }
+      });
+
+            
 
 
 
@@ -606,7 +691,9 @@ document.body.removeChild(textArea);
 },
 
 
-        shareRiddle : function() {
+        shareRiddle : function(event) {
+
+            this.animateKeyPress(event)
 
             this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + encodeURIComponent(this.encrypt()))
 
@@ -642,7 +729,9 @@ document.body.removeChild(textArea);
 //console.log(ciphertext.toString());
 
 
-        nextHint : function() {
+        nextHint : function(event) {
+
+            this.animateKeyPress(event)
 
             if ( this.cluesIndex === - 1 ) {
 
@@ -719,7 +808,9 @@ document.body.removeChild(textArea);
 
         },
 
-        hintKey : function(key) {
+        hintKey : function(event) {
+
+            this.animateKeyPress(event)
 
             if ( !this.fullAnswer ) {
 
@@ -773,6 +864,8 @@ document.body.removeChild(textArea);
 
 
         animateKeyPress : function(event) {
+
+            this.started = true
 
             //find the highest level key element.  this prevents us from animating a child element
             //like an image on a key
@@ -852,9 +945,15 @@ document.body.removeChild(textArea);
 
         solved(newVal, oldVal) {
 
+
+
             var vue = this
 
+            
+
             if ( newVal === true && oldVal === false ) {
+
+                vue.waitingForNextRiddle = true
 
                 const element = document.getElementById('answer')
       const rect = element.getBoundingClientRect();
@@ -866,6 +965,7 @@ document.body.removeChild(textArea);
       
       var emojiArray = ['💥','💝','💖','🦄','🐱️','⭐️','🌟️']
 
+      //var emojiArray = [this.riddle.rhyme]
      
       
       var scalar = 4;
@@ -886,7 +986,7 @@ document.body.removeChild(textArea);
         animejs({
                                 targets: '#answer',
                                 scale: 1.2,
-                                duration : 1200,
+                                duration : 900,
                                 delay : 100,
                                 direction: 'alternate',
                                 easing: 'easeOutQuart'
@@ -923,6 +1023,13 @@ html, body {
 }
 
 * { touch-action: manipulation; }
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .7s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
 
 
 
