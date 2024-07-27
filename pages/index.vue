@@ -2,37 +2,61 @@
 
     <div class='h-screen'>
     
-    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
+    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-purple-500"><a href='/'>Little Riddle:</a></div>
 
     
 
     <div  class="text-center">
 
-        <div v-show='riddle.hint !== ""' id="riddleContainer">
+        <div class='flex' v-show='riddle.hint !== ""' id="riddleContainer">
 
-            <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
+            <div class='my-auto' v-show="catTime">
 
-        <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+            <!-- <img v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
+            <img v-if='animalIndex === 1' src="/images/dog.webp" /> -->
+            <img class='h-48' v-if='animalIndex === 0' src="/images/donkey.gif" />
+            <img class='h-48' v-if='animalIndex === 1' src="/images/elephant.gif" />
+            <img class='h-48' v-if='animalIndex === 2' src="/images/goatgif.gif" />
+            <img class='h-48' v-if='animalIndex === 3' src="/images/llama.gif" />
+            <img class='h-48' v-if='animalIndex === 4' src="/images/monkey.gif" />
+            <img class='h-48' v-if='animalIndex === 5' src="/images/ostrich.gif" />
+            <img class='h-48' v-if='animalIndex === 6' src="/images/pig.gif" />
+            <img class='h-48' v-if='animalIndex === 7' src="/images/ram.gif" />
+            <img class='h-48' v-if='animalIndex === 8' src="/images/rhino.gif" />
+            <img class='h-48' v-if='animalIndex === 9' src="/images/sheep.gif" />
+            <img class='h-48' v-if='animalIndex === 10' src="/images/yak.gif" />
+            <img class='h-48' v-if='animalIndex === 11' src="/images/zebra.gif" />
 
-        
-       
-
-        <div id='answer' class="mt-1 mx-4">
-
-<div class="flex items-center justify-center mx-auto roboto"> 
-    <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
-{{ riddleWordArray[index] || '\u00A0' }}
-</div>
-</div>
+            </div>
 
 
-<div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
-<div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
-{{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
-</div>
-</div>
+            <div v-show="!catTime">
 
-</div>
+                        <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
+
+                    <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+
+                    
+                
+
+                    <div id='answer' class="mt-1 mx-4">
+
+            <div class="flex items-center justify-center mx-auto roboto"> 
+                <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+            {{ riddleWordArray[index] || '\u00A0' }}
+            </div>
+            </div>
+
+
+            <div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
+            <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+            {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
+            </div>
+            </div>
+
+            </div>
+
+            </div>
 
 </div>
 
@@ -231,6 +255,8 @@ export default {
     data: function() {
         return {
 
+            animalIndex : 0,
+            catTime : false,
             hintCount : 0,
             copiedToClipboard : false,
             firstRiddlePlayed : false, //need this to jump to next puzzle for shared puzzles
@@ -865,7 +891,13 @@ return new Promise(resolve => {
         },
 
 
-        nextRiddle : function(event) {
+        nextRiddle : async function(event) {
+
+            this.catTime = false
+
+            await this.delay(100)
+
+            var vue = this
 
             this.animateKeyPress(event)
 
@@ -873,13 +905,17 @@ return new Promise(resolve => {
            
             var movement = window.innerWidth
 
+            var showAnimalIndex = this.getRandomNumber(0,6)
+           var showAnimal = showAnimalIndex === 2 ? true : false
+
+
 
             animejs({
         targets: '#riddleContainer',
         translateX: movement, // Move left by half of the viewport width
         duration: 700,
-        easing: 'easeInOutQuad',
-        complete: () => {
+        easing: 'easeInQuad',
+        complete: async () => {
 
             localStorage.setItem('onboarded', 'onboarded');
             this.newPlayer = false
@@ -887,23 +923,79 @@ return new Promise(resolve => {
           // Perform the action
           console.log('Action performed!');
           this.clearKey(event)
+
             this.riddleWordArray = []
             this.cluesIndex = - 1
             this.riddle.clues = []
             this.firstRiddlePlayed = true
             this.buildRiddle()
 
+            
+            console.log('before')
+            await this.delay(250)
+            console.log('after')
+
             document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
+
+            if ( !showAnimal ) {
+
+                console.log('no animal!!!!!!')
+
+                animejs({
+            targets: '#riddleContainer',
+            translateX: 0,
+            duration: 1000,
+            easing: 'easeInOutQuad',
+            })
+
+
+
+            } else {
+
+                console.log('gonna show animal!!!!!!')
+
+            this.catTime = true
+            await this.delay(100)
+
+            this.animalIndex = this.getRandomNumber(0,11)
 
            // document.getElementById('riddleContainer').style.left = -window.innerWidth + "px"
           
           // Move the div back to the original position
           animejs({
             targets: '#riddleContainer',
+            translateX: movement,
+            duration: 2000,
+            delay : 200,
+            easing: 'linear',
+            complete: async () => {
+
+                
+
+            document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
+
+            vue.catTime = false
+            await this.delay(100)
+
+            animejs({
+            targets: '#riddleContainer',
             translateX: 0,
             duration: 1000,
-            easing: 'easeInOutQuad'
+            easing: 'easeInOutQuad',
+            })
+
+
+        
+
+        
+
+
+
+
+            }
           });
+
+        }
         }
       });
 
