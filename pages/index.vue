@@ -132,7 +132,7 @@
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-orange-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + store.protocol + '//' + store.hostName + '/?riddle=' + encodeURIComponent(this.encrypt)">Share</a>
+            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-orange-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encodeURIComponent(this.encrypt)">Share</a>
 
             <div v-else class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
@@ -262,16 +262,15 @@ export default {
 
     async mounted() {
 
-     
-        if ( process.browser ) {
+        var url = useRequestURL()
+        console.log(url)
 
-            //these are just some helpers for local dev / prod
-            store.localHost = store.isHostedLocally()
-            store.functionEndpoint = store.getFunctionEndpoint()
-            store.hostName = store.getHostname()
-            store.protocol = store.getProtocol()
+        store.hostName = url.hostname
+        store.protocol = url.protocol
 
-        }
+        console.log(store.hostName)
+        console.log( store.protocol)
+
 
 
         //listen for keyboard events for dekstop players
