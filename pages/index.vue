@@ -10,14 +10,14 @@
 
         <div v-show='riddle.hint !== ""' id="riddleContainer">
 
-            <div class='flex md:my-4 my-2 mx-4 text-xl text-gray-500 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle below.  Every answer is made of two words that always rhyme!</div></div>
+            <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
 
-        <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+        <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
 
         
        
 
-        <div id='answer' class="mx-4">
+        <div id='answer' class="mt-1 mx-4">
 
 <div class="flex items-center justify-center mx-auto roboto"> 
     <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-yellow-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
@@ -26,7 +26,7 @@
 </div>
 
 
-<div class="flex items-center justify-center mx-auto mt-4 "> 
+<div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
 <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-yellow-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink text-gray-800 text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
 {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
 </div>
@@ -39,7 +39,7 @@
 
 
 
-<div class="mt-8">
+<div class="md:mt-8 mt-6">
     <transition name="fade">
 <div @click='nextRiddle($event)' class=' cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
@@ -51,7 +51,7 @@
 </div>
 </transition>
 <div>
-<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
 </div>
 
 <div>
@@ -136,9 +136,9 @@
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600 grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+            <a :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='solved?"bg-green-500 text-white border-green-500":"border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='solved?"bg-green-500 border text-white border-green-500":"border border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
             
 
@@ -1061,6 +1061,13 @@ document.body.removeChild(textArea);
 
             }
 
+           if ( this.newPlayer ) {
+
+            this.riddle.hint = this.riddle.clues[this.cluesIndex]
+
+
+           }
+
             
             this.deductCredit()
 
@@ -1305,6 +1312,10 @@ document.body.removeChild(textArea);
 
         },
 
+        getRandomNumber : function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
         
 
     },
@@ -1329,9 +1340,10 @@ document.body.removeChild(textArea);
       
       // Calculate normalized center Y position
       const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
       const normalizedCenterY = elementCenterY / viewportHeight;
       
-      var emojiArray = ['💥','💝','💖','🦄','🐱️','⭐️','🌟️']
+      var emojiArray = ['💥','💝','💖','🦄','🐱️','⭐️','🌟️','🍌️','🍏️','💜️','🍊️']
 
       //var emojiArray = [this.riddle.rhyme]
      
@@ -1344,22 +1356,25 @@ document.body.removeChild(textArea);
       const duration = 5 * 1000;
       const animationEnd = Date.now() + duration;
       const defaults = {  shapes: [unicorn,blob],
-  scalar, startVelocity: 30, spread: 360, ticks: 60, zIndex: 0};
-      const particleCount = 100
+  scalar, spread: viewportWidth, ticks: 60, zIndex: 0, angle: 10};
+      const particleCount = this.getRandomNumber(50,150)
+      const angle = this.getRandomNumber(80,100)
+      const startVelocity = this.getRandomNumber(20,60)
+      const spread = this.getRandomNumber(Math.round(viewportWidth/1.5),viewportWidth)
 
       var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
 
       
         // since particles fall down, start a bit higher than random
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x:.5, y: normalizedCenterY } }));
+        confetti(Object.assign({}, defaults, { startVelocity: 30, spread: spread, angle: angle, particleCount, origin: { x:.5, y: normalizedCenterY } }));
 
         animejs({
                                 targets: '#answer',
                                 scale: 1.2,
-                                duration : 700,
+                                duration : 500,
                                 delay : 100,
                                 direction: 'alternate',
-                                easing: 'easeOutQuart',
+                                easing: 'easeOutCirc',
                                 
 
                             });
