@@ -2,7 +2,7 @@
 
     <div class='h-screen'>
     
-    <div class="luckiest bg-white mt-6 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
+    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-purple-500">Little Riddle:</div>
 
     
 
@@ -10,7 +10,7 @@
 
         <div v-show='riddle.hint !== ""' id="riddleContainer">
 
-            <div class='flex my-4 mx-4 text-xl text-gray-500 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle below.  Every answer is made of two words that always rhyme. If you get stuck, use a hint!</div></div>
+            <div class='flex md:my-4 my-2 mx-4 text-xl text-gray-500 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle below.  Every answer is made of two words that always rhyme!</div></div>
 
         <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
 
