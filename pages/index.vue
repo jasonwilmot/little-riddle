@@ -367,6 +367,8 @@ export default {
 
         isMobile() {
 
+            if ( process.browser ) {
+
 // User agent string method
 let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -388,7 +390,12 @@ if (!isMobile) {
     isMobile = window.getComputedStyle(bodyElement).getPropertyValue('content').indexOf('mobile') !== -1;
 }
 
-return isMobile
+return isMobile } else {
+
+
+    return true
+
+}
 },
 
 
