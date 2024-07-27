@@ -41,7 +41,7 @@
 
 <div class="mt-8">
     <transition name="fade">
-<div @click='nextRiddle($event)' class=' cursor-pointer inline-block border rounded-xl py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' class=' cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-white bg-purple-500 border-purple-300 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
     <span class="my-auto bitter">Next Riddle</span>
@@ -51,7 +51,11 @@
 </div>
 </transition>
 <div>
-<div v-if="!solved && cluesIndex > -1" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+</div>
+
+<div>
+<div v-if="copiedToClipboard" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-lg'>Riddle link copied to clipboard</div>
 </div>
 
 </div>
@@ -132,7 +136,7 @@
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encodeURIComponent(encrypt)">Share</a>
+            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
             <div v-else class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
@@ -227,6 +231,7 @@ export default {
     data: function() {
         return {
 
+            copiedToClipboard : false,
             firstRiddlePlayed : false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet : false,
             points : null,
@@ -265,7 +270,7 @@ export default {
         var url = useRequestURL()
         console.log(url)
 
-        store.hostName = url.hostname
+        store.hostName = url.host
         store.protocol = url.protocol
 
         console.log(store.hostName)
@@ -359,7 +364,7 @@ export default {
 
         encrypt : function() {
 
-            return CryptoJS.AES.encrypt(JSON.stringify(this.riddle), "littleriddle");
+            return encodeURIComponent(CryptoJS.AES.encrypt(JSON.stringify(this.riddle), "littleriddle"))
 
 
         },
@@ -774,6 +779,8 @@ return new Promise(resolve => {
             }
 
             
+
+            
       //remove any blank clues that came over from chatgpt
       this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
@@ -894,6 +901,8 @@ tempInput.select();
 document.execCommand("copy");
 document.body.removeChild(tempInput);
 
+this.copiedToClipboard = true
+
 //store.highlightElement(highlightElementID)
 
 
@@ -937,7 +946,7 @@ document.body.removeChild(textArea);
 
             this.animateKeyPress(event)
 
-            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + encodeURIComponent(this.encrypt))
+            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + this.encrypt)
 
 
 
@@ -969,6 +978,8 @@ document.body.removeChild(textArea);
 
 
         nextHint : function(event) {
+
+            this.copiedToClipboard = false //just hide any previous clipboard stuff
 
             this.animateKeyPress(event)
 
@@ -1061,6 +1072,8 @@ document.body.removeChild(textArea);
         },
 
         hintKey : function(event) {
+
+           
 
             this.animateKeyPress(event)
 
