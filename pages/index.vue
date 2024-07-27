@@ -263,12 +263,15 @@ export default {
     async mounted() {
 
      
+        if ( process.browser ) {
 
             //these are just some helpers for local dev / prod
             store.localHost = store.isHostedLocally()
             store.functionEndpoint = store.getFunctionEndpoint()
             store.hostName = store.getHostname()
             store.protocol = store.getProtocol()
+
+        }
 
 
         //listen for keyboard events for dekstop players
