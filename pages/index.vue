@@ -184,7 +184,7 @@ import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
 
 
-import data from '@/assets/riddles.json';
+import data from '@/assets/finaloutput1722052481315.json';
 import confetti from 'canvas-confetti';
 
 
