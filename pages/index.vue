@@ -1019,13 +1019,14 @@ document.body.removeChild(textArea);
                                 duration : 900,
                                 delay : 100,
                                 direction: 'alternate',
-                                easing: 'easeOutQuart'
+                                easing: 'easeOutQuart',
+                                
 
                             });
      
 
             
-    
+                            this.newPlayer = false
     
 }
 
