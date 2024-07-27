@@ -132,7 +132,7 @@
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             
-            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-orange-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encodeURIComponent(this.encrypt)">Share</a>
+            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encodeURIComponent(encrypt)">Share</a>
 
             <div v-else class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
