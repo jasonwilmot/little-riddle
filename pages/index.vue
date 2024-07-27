@@ -121,11 +121,20 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
+            <div class='key border-purple-500 text-purple-600  flex grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+                
+                <PuzzlePieceIcon class='my-auto text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6 mr-1' />
+                <span class="my-auto">{{ points }}</span>
+            
+            </div>
+
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share Riddle</div>
+
+            
 
 </div>
 
@@ -195,6 +204,7 @@ import {
     HeartIcon,
     BackspaceIcon,
     ChevronRightIcon,
+    PuzzlePieceIcon,
     TrashIcon
 } from '@heroicons/vue/24/outline'
 import axios from 'axios';
@@ -206,7 +216,7 @@ export default {
 
     components: {
         CheckIcon,
-        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon
+        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon
     },
 
     //======================================================================================
@@ -214,6 +224,7 @@ export default {
     data: function() {
         return {
 
+            points : null,
             waitingForNextRiddle : false,
             started : false,
             newPlayer : true,
@@ -520,6 +531,9 @@ store.protocol = store.getProtocol()
             const value = localStorage.getItem("onboarded");
             if (value === null) {
 
+                localStorage.setItem('points', 500);
+                this.points = 500
+
                 this.riddle = {
       "rhyme": "fat cat",
       "type": "noun",
@@ -532,6 +546,8 @@ store.protocol = store.getProtocol()
     }
         
       } else {
+
+        this.points = localStorage.getItem("points")
 
         this.newPlayer = false
         const randomIndex = Math.floor(Math.random() * this.riddles.length);
@@ -744,6 +760,17 @@ document.body.removeChild(textArea);
             }
 
             
+            this.deductCredit()
+
+
+        },
+
+
+        deductCredit : function() {
+
+
+            localStorage.setItem('points', localStorage.getItem("points") - 1);
+            this.points = localStorage.getItem("points")
 
 
         },
@@ -829,6 +856,9 @@ document.body.removeChild(textArea);
 
 
             }
+
+
+            this.deductCredit()
 
             
 
