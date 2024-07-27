@@ -121,10 +121,9 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div class='key border-purple-500 text-purple-600  flex grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            <div class='key text-white border-purple-400  bg-purple-400 grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
-                <PuzzlePieceIcon class='my-auto text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6 mr-1' />
-                <span class="my-auto">{{ points }}</span>
+                +{{ riddle.score }}
             
             </div>
 
@@ -132,7 +131,10 @@
 
             <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            <div class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share Riddle</div>
+            
+            <a v-if='isMobile' @click="shareRiddle($event)" class='key border-purple-500 text-orange-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + store.protocol + '//' + store.hostName + '/?riddle=' + encodeURIComponent(this.encrypt)">Share</a>
+
+            <div v-else class='key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
             
 
@@ -225,6 +227,7 @@ export default {
     data: function() {
         return {
 
+            firstRiddlePlayed : false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet : false,
             points : null,
             waitingForNextRiddle : false,
@@ -234,6 +237,7 @@ export default {
             riddleWordArray : [],
             riddles : [],
             riddle : {
+                "score":200,
       "rhyme": "",
       "type": "",
       "hint": "",
@@ -258,21 +262,47 @@ export default {
 
     async mounted() {
 
-       // if (process.browser) {
+     
 
-//these are just some helpers for local dev / prod
-store.localHost = store.isHostedLocally()
-store.functionEndpoint = store.getFunctionEndpoint()
-store.hostName = store.getHostname()
-store.protocol = store.getProtocol()
+            //these are just some helpers for local dev / prod
+            store.localHost = store.isHostedLocally()
+            store.functionEndpoint = store.getFunctionEndpoint()
+            store.hostName = store.getHostname()
+            store.protocol = store.getProtocol()
 
-//}
 
+        //listen for keyboard events for dekstop players
         window.addEventListener('keydown', this.handleKeydown);
 
+        //grab all of the riddles
         this.riddles = data;
         
-        this.buildRiddle()
+        //build the riddle
+       // const currentUrl = window.location.href;
+
+    // Parse the URL to extract the query string
+    //const queryString = currentUrl.split('?')[1];
+
+    // Check if the URL has a query string
+   // if (this.$route.query.riddle) {
+
+    //    console.log(this.$route.query)
+      // Parse the query string using qs
+     // const queryParams = qs.parse(queryString);
+   //  this.riddle = JSON.parse(this.decrypt(this.$route.query.riddle))
+
+    //} else {
+
+        
+      this.buildRiddle()
+     
+
+      
+    //}
+
+
+
+        
 
        
 
@@ -324,6 +354,39 @@ store.protocol = store.getProtocol()
     },
 
     computed: {
+
+        encrypt : function() {
+
+            return CryptoJS.AES.encrypt(JSON.stringify(this.riddle), "littleriddle");
+
+
+        },
+
+        isMobile() {
+
+// User agent string method
+let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Screen resolution method
+if (!isMobile) {
+    let screenWidth = window.screen.width;
+    let screenHeight = window.screen.height;
+    isMobile = (screenWidth < 768 || screenHeight < 768);
+}
+
+// Touch events method
+if (!isMobile) {
+    isMobile = (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
+}
+
+// CSS media queries method
+if (!isMobile) {
+    let bodyElement = document.getElementsByTagName('body')[0];
+    isMobile = window.getComputedStyle(bodyElement).getPropertyValue('content').indexOf('mobile') !== -1;
+}
+
+return isMobile
+},
 
 
         maxScore() {
@@ -545,6 +608,9 @@ store.protocol = store.getProtocol()
 
     methods: {
 
+
+       
+
         delay : function(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
 },
@@ -632,53 +698,84 @@ return new Promise(resolve => {
 
         buildRiddle : function() {
 
-            const value = localStorage.getItem("onboarded");
-            if (value === null) {
+            //let's see if the user has already played a puzzle and doesn't need instructions
+            const onboarded = localStorage.getItem("onboarded");
 
+            //if this is a new user
+            if (onboarded === null) {
+
+                //set some points for them
                 localStorage.setItem('points', 500);
                 this.points = 500
 
-                this.riddle = {
-      "rhyme": "fat cat",
-      "type": "noun",
-      "hint": "Overweight feline",
-      "clues": [
-        "Well fed tiger",
-        "Obese lion",
-        "Voluptuous feline"
-      ]
-    }
-        
-      } else {
+            //if this is an exiting user, grab their existing points
+            } else {
 
-        this.points = localStorage.getItem("points")
+                this.points = localStorage.getItem("points")
+                this.newPlayer = false
 
-        this.newPlayer = false
-        const randomIndex = Math.floor(Math.random() * this.riddles.length);
-      this.riddle = this.riddles[randomIndex];
+            }
 
-      /*
-      this.riddle = {
-      "rhyme": "fat cat",
-      "type": "noun",
-      "hint": "A busy suitcase meets an aggressive invader.",
-      "clues": [
-        "Well fed tiger",
-        "Obese lion",
-        "Voluptuous feline"
-      ]
 
-      }
-      */
-      
-        
-      }
+            //if this is a shared riddle show that riddle, even if they are a new user
+            if (this.$route.query.riddle) {
 
+                if ( this.firstRiddlePlayed ) {
+
+                //if this isn't a new user, grab a random puzzle
+                const randomIndex = Math.floor(Math.random() * this.riddles.length);
+                this.riddle = this.riddles[randomIndex];
+
+
+                } else {
+
+                    this.riddle = JSON.parse(this.decrypt(this.$route.query.riddle))
+
+                }
+
+
+            //if this isn't a shared riddle
+            } else {
+
+                //give them a super easy riddle to start
+                if ( onboarded === null ) {
+
+                    this.riddle = {
+
+                    "rhyme": "fat cat",
+                    "type": "noun",
+                    "hint": "Overweight feline",
+                    "clues": [
+                        "Well fed tiger",
+                        "Obese lion",
+                        "Voluptuous feline"
+                     ]
+
+                    }
+
+
+                } else {
+
+                //if this isn't a new user, grab a random puzzle
+                const randomIndex = Math.floor(Math.random() * this.riddles.length);
+                this.riddle = this.riddles[randomIndex];
+
+                }
+
+            }
+
+            
+      //remove any blank clues that came over from chatgpt
       this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
+      //create an empty array that we use to store letters entered by user
       var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
       riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
+      this.riddle.score = this.maxScore
+
+      //make the riddle fit into the fixed height box to prevent use expanding to far
+      //for small screens.  we need to conserve real estate.
       this.adjustFontSizeToFit()
 
             
@@ -712,6 +809,7 @@ return new Promise(resolve => {
             this.riddleWordArray = []
             this.cluesIndex = - 1
             this.riddle.clues = []
+            this.firstRiddlePlayed = true
             this.buildRiddle()
 
             document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
@@ -830,18 +928,15 @@ document.body.removeChild(textArea);
 
             this.animateKeyPress(event)
 
-            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + encodeURIComponent(this.encrypt()))
+            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + encodeURIComponent(this.encrypt))
+
+
 
 
         },
 
 
-        encrypt : function() {
-
-            return CryptoJS.AES.encrypt(JSON.stringify(this.riddle), "littleriddle");
-
-
-        },
+        
 
 
         decrypt : function(message) {
@@ -887,9 +982,11 @@ document.body.removeChild(textArea);
 
         deductCredit : function() {
 
+            this.riddle.score = this.riddle.score - 5
 
-            localStorage.setItem('points', localStorage.getItem("points") - 1);
-            this.points = localStorage.getItem("points")
+
+            //localStorage.setItem('points', localStorage.getItem("points") - 1);
+            //this.points = localStorage.getItem("points")
 
 
         },
