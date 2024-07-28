@@ -28,7 +28,8 @@ props: ['user','store'],
 methods: {
 
    async signout() {
-        const { error } = await this.store.supabase.auth.signOut()
+    console.log(signout)
+       // const { error } = await this.store.supabase.auth.signOut()
 
         
 },

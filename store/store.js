@@ -3,7 +3,7 @@ import axios from 'axios'
 export const store = {
 
     vue : null,
-    supabase : null,
+  
 
     protocol : null,
     hostName : null,
@@ -85,88 +85,7 @@ export const store = {
 
 
 
-    getUser: async function (supabase) {
-
-
-        
-
-
-        const {
-            data: {
-                user
-            }
-        } = await supabase.auth.getUser()
-
-        if (user) {
-
-
-           // alert('we got a user somehow')
-           // return true
-            return user
-
-        } else {
-
-          //  alert('we noooooo a user somehow')
-            return false
-
-
-        }
-
-
-    },
-
-
-
-
-
-    setupPage: async function(vue) {
-
-       // 
-
-        await new Promise(async (resolve, reject) => {
-
-
-        store.vue = vue
-
-        //need to check this as nuxt throws an error if this isn't the browser.  not sure
-        //I understand this all that well
-        if (process.browser) {
-
-            //these are just some helpers for local dev / prod
-            store.localHost = store.isHostedLocally()
-            store.functionEndpoint = store.getFunctionEndpoint()
-            store.hostName = store.getHostname()
-            store.protocol = store.getProtocol()
-
-        }
-
-
-        //grab supabase instance
-       // store.supabase = createClient(store.SUPABASE_URL, store.SUPABASE_ANON_KEY);
-
-        store.supabase = useSupabaseClient()
-
-        //see if the user is logged in
-       vue.user = await store.getUser(store.supabase)
-
-
-        //if they are logged in, let's grab what we know about them
-        if (vue.user) {
-
-           
-           // store.maximumReached = await store.getCustomerProfile()
-
-        }
-
-        //after we are all done we can show the page
-       
-            //await store.delay(5000);
-            resolve(vue.user);
-
-    })
-
-
-    }, 
+   
 
 
     getRefreshedOAuthToken : async function() {

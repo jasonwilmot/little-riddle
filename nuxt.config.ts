@@ -32,20 +32,10 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
-    '@nuxtjs/supabase',
     "@nuxtjs/google-fonts"
   ],
   
 
-  //had to add this in to stop supabase from doing wierd shit
-  supabase: {
-    redirect: false,
-    redirectOptions: {
-      login: '/login',
-      callback: '/confirm',
-      exclude: ['', '/', '/plan'],
-      cookieRedirect: false,
-    }
-  },
+  
  
 })
