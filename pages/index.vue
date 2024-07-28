@@ -6,15 +6,27 @@
 
     
 
-    <div  class="text-center">
+    <div  class="text-center h-full">
 
         <div class='flex' v-show='riddle.hint !== ""' id="riddleContainer">
 
-            <div class='mt-16' v-show="catTime">
+            <div class="w-full p-2" v-show="make">
+            
+                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{ makeRiddle }}</div>
+                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeAnswer1}}</div>
+                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeAnswer2}}</div>
+                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeClue1}}</div>
+                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeClue2}}</div>
+            
+            
+            </div>
 
-            <!-- <img v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
-            <img v-if='animalIndex === 1' src="/images/dog.webp" /> -->
-            <img class='h-48' v-show='animalIndex === 0' src="/images/donkey.gif" />
+            <div class='mt-12 grow flex justify-end' v-show="catTime && !make">
+
+             <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
+            <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" />
+            <img class='h-72' v-if='animalIndex === 2' src="/images/doggie.webp" />
+            <!-- <img class='h-48 align-right' v-show='animalIndex === 0' src="/images/donkey.gif" />
             <img class='h-48' v-show='animalIndex === 1' src="/images/elephant.gif" />
             <img class='h-48' v-show='animalIndex === 2' src="/images/goatgif.gif" />
             <img class='h-48' v-show='animalIndex === 3' src="/images/llama.gif" />
@@ -25,16 +37,16 @@
             <img class='h-48' v-show='animalIndex === 8' src="/images/rhino.gif" />
             <img class='h-48' v-show='animalIndex === 9' src="/images/sheep.gif" />
             <img class='h-48' v-show='animalIndex === 10' src="/images/yak.gif" />
-            <img class='h-48' v-show='animalIndex === 11' src="/images/zebra.gif" />
+            <img class='h-48' v-show='animalIndex === 11' src="/images/zebra.gif" /> -->
 
             </div>
 
 
-            <div v-show="!catTime">
+            <div class='grow' v-show="!catTime && !make">
 
                         <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
 
-                    <div   id='hintContainer' style='height : 76px; color:#ffffff;' class="bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
+                    <div  id='hintContainer' style='height : 76px; color:#ffffff;' class="flex bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
 
                     
                 
@@ -159,10 +171,25 @@
 
             <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            
-            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
 
-            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-else class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+           
+
+                <a :class='1 === 1?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+
+            <div :class='1 === 1?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            
+           
+
+            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+
+            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+
+
+
+            
+            
+            
 
             
 
@@ -214,7 +241,7 @@ import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
 
 
-import data from '@/assets/finaloutput1722052481315.json';
+import data from '@/assets/saturdayNightoutput1722131985702.json';
 import confetti from 'canvas-confetti';
 
 
@@ -255,6 +282,18 @@ export default {
     data: function() {
         return {
 
+            makeRiddle : "&nbsp;",
+            makeAnswer1 : "",
+            makeAnswer2 : "",
+            makeClue1 : "",
+            makeClue2 : "",
+
+                
+
+            productDescription : "In this clever twist on classic word puzzles, players must guess two rhyming words based on a single, cryptic clue.",
+            productName : "Little Riddle",
+
+            make : false,
             animalIndex : 0,
             catTime : false,
             hintCount : 0,
@@ -712,7 +751,13 @@ store.protocol = store.getProtocol()
     methods: {
 
 
-       
+       makePersonalRiddle : function() {
+
+
+        console.log('making')
+
+
+       },
 
         delay : function(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -903,39 +948,44 @@ return new Promise(resolve => {
 
             this.waitingForNextRiddle = false
            
+
             var movement = window.innerWidth
 
-            var showAnimalIndex = this.getRandomNumber(0,2)
-           var showAnimal = showAnimalIndex === 2 ? true : false
+
+            
+            var showAnimal = this.getRandomNumber(0,4) === 2 ? true : false
 
 
 
             animejs({
-        targets: '#riddleContainer',
-        translateX: movement, // Move left by half of the viewport width
-        duration: 700,
-        easing: 'easeInQuad',
-        complete: async () => {
 
-            localStorage.setItem('onboarded', 'onboarded');
-            this.newPlayer = false
+                targets: '#riddleContainer',
+                translateX: movement, // Move left by half of the viewport width
+                duration: 700,
+                easing: 'easeInQuad',
 
-          // Perform the action
-          console.log('Action performed!');
-          this.clearKey(event)
+                complete: async () => {
 
-            this.riddleWordArray = []
-            this.cluesIndex = - 1
-            this.riddle.clues = []
-            this.firstRiddlePlayed = true
-            this.buildRiddle()
+                    //set the flag to eliminate onboarding and hide the instructions
+                    //on the next term
+                    localStorage.setItem('onboarded', 'onboarded');
+                    this.newPlayer = false
+
+          
+                    //clear out the old and in with the new
+                    this.clearKey(event)
+                    this.riddleWordArray = []
+                    this.cluesIndex = - 1
+                    this.riddle.clues = []
+                    this.firstRiddlePlayed = true
+                    this.buildRiddle()
 
             
-            console.log('before')
-            await this.delay(250)
-            console.log('after')
+                    //adding this may help with the wierd race conditions
+                    await this.delay(250)
+           
 
-            document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
+                    document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
 
             if ( !showAnimal ) {
 
@@ -957,14 +1007,14 @@ return new Promise(resolve => {
             this.catTime = true
             await this.delay(100)
 
-            this.animalIndex = this.getRandomNumber(0,11)
+            this.animalIndex = this.getRandomNumber(0,2)
 
            // document.getElementById('riddleContainer').style.left = -window.innerWidth + "px"
           
           // Move the div back to the original position
           animejs({
             targets: '#riddleContainer',
-            translateX: movement,
+            translateX: movement / 1.7,
             duration: 2000,
             delay : 200,
             easing: 'linear',
@@ -1013,6 +1063,12 @@ return new Promise(resolve => {
 
       const isAlphanumeric = /^[a-z]$/i.test(key); // Check if alphanumeric
       const isDelete = key === 'Backspace' || key === 'Delete';
+
+      if ( key === 'Enter' && this.solved ) {
+
+        this.nextRiddle(event)
+
+      }
      
       if (isAlphanumeric || isDelete) {
 
@@ -1370,6 +1426,12 @@ document.body.removeChild(textArea);
                             // Set the new value at the found index
                             this.riddleWordArray[blankIndex] = key;
 
+                            if ( this.riddleWordArray[blankIndex] !== this.riddleWordLettersArray[blankIndex] ) { 
+
+                                this.hintCount++
+
+                            }
+
                             animejs({
                                 targets: '#letter' + blankIndex,
                                 scale: 1.2,
@@ -1413,6 +1475,41 @@ document.body.removeChild(textArea);
     },
 
     watch: {
+
+        makeRiddle(newVal, oldVal) {
+
+            this.makePersonalRiddle()
+
+
+        },
+
+        makeAnswer1(newVal, oldVal) {
+
+this.makePersonalRiddle()
+
+
+},
+
+makeAnswer2(newVal, oldVal) {
+
+this.makePersonalRiddle()
+
+
+},
+
+makeClue1(newVal, oldVal) {
+
+this.makePersonalRiddle()
+
+
+},
+
+makeClue2(newVal, oldVal) {
+
+this.makePersonalRiddle()
+
+
+},
 
         solved(newVal, oldVal) {
 
