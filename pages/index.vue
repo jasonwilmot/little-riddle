@@ -188,7 +188,7 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div :class='hintHeat' class='bg-blue-100 key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
                 +{{ hintCount }}
             
@@ -465,29 +465,29 @@ export default {
 
             switch (this.hintCount) {
                 case 0:
-    return "border-blue-500 text-blue-600"
+    return "border-blue-500 bg-blue-100 text-blue-600"
     break;
   case 1:
-    return "bg-blue-200 border-blue-200 text-blue-600"
+    return "bg-red-200 border-red-200 text-red-600"
     break;
   case 2:
-  return "bg-blue-300 border-blue-300 text-blue-600"
+  return "bg-red-300 border-red-300 text-red-600"
     break;
   case 3:
-  return "bg-blue-400 border-blue-400 text-white"
+  return "bg-red-400 border-red-400 text-white"
     break;
   case 4:
-  return "bg-blue-500 border-blue-500 text-white"
+  return "bg-red-500 border-red-500 text-white"
     break;
   case 5:
-  return "bg-blue-600 border-blue-600 text-white"
+  return "bg-red-600 border-red-600 text-white"
     break;
   case 6:
-  return "bg-blue-700 border-blue-700 text-white"
+  return "bg-red-700 border-red-700 text-white"
     break;
  
   default:
-    return "bg-blue-700 border-blue-700 text-white"
+    return "bg-red-700 border-red-700 text-white"
 }
 
 
