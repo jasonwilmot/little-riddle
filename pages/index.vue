@@ -2,41 +2,41 @@
 
     <div class='h-screen'>
     
-    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-purple-500"><a href='/'>Little Riddle:</a></div>
+    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-blue-500"><a href='/'>Little Riddle:</a></div>
 
     
 
     <div  class="text-center h-full">
 
-        <div class='flex' v-show='riddle.hint !== "" && !this.make || this.make' id="riddleContainer">
+        <div class='flex' v-show='riddle.hint !== "" && !make || make' id="riddleContainer">
 
             <div class="w-full p-2" v-show="make">
             
-                <div @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-purple-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1 cursor align-center"></span>
+                <div @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1 cursor align-center"></span>
                 
                 <span v-if='makeRiddle === ""' class="text-gray-400">{{ placeholderArray[0] }}</span>
                 
                 </div>
 
-                <div @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-purple-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
+                <div @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeAnswer1 === ""' class="text-gray-400">{{ placeholderArray[1] }}</span>
 
                 </div>
 
-                <div @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-purple-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
+                <div @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeAnswer2 === ""' class="text-gray-400">{{ placeholderArray[2] }}</span>
                 
                 </div>
 
-                <div @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-purple-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
+                <div @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeClue1 === ""' class="text-gray-400">{{ placeholderArray[3] }}</span>
                 
                 </div>
 
-                <div @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-purple-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+                <div @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeClue2 === ""' class="text-gray-400">{{ placeholderArray[4] }}</span>
                 
@@ -52,7 +52,7 @@
 
              <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
             <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" />
-            <img class='h-72' v-if='animalIndex === 2' src="/images/doggie.webp" />
+            <img class='h-48' v-if='animalIndex === 2' src="/images/doggie.webp" />
             <!-- <img class='h-48 align-right' v-show='animalIndex === 0' src="/images/donkey.gif" />
             <img class='h-48' v-show='animalIndex === 1' src="/images/elephant.gif" />
             <img class='h-48' v-show='animalIndex === 2' src="/images/goatgif.gif" />
@@ -104,17 +104,17 @@
 
 <div class="md:mt-8 mt-6">
     <transition name="fade">
-<div @click='nextRiddle($event)' class=' bg-purple-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-purple-700 border-purple-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' class=' bg-blue-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-700 border-blue-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
     <span class="my-auto bitter">Next Riddle</span>
-    <ChevronRightIcon class='my-auto text-purple-700 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
+    <ChevronRightIcon class='my-auto text-blue-700 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
     </div>
 
 </div>
 </transition>
 <div>
-<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-purple-400 border text-purple-400 italic text-2xl'>{{  riddle.clues[cluesIndex]  }}</div>
+<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
 </div>
 
 <div>
@@ -138,7 +138,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-purple-100 border-purple-500 text-purple-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -150,7 +150,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -162,24 +162,24 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey($event)' ref="parentDiv" class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div @click='clearKey($event)' ref="parentDiv" class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
-              <TrashIcon class='text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+              <TrashIcon class='text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
         
         </div>
 
-        <div :id='"key" + key' @click='pressKey($event,key)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div :id='"key" + key' @click='pressKey($event,key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div id='deleteKey' @click='deleteKey($event)' class='bg-purple-100 border-purple-500 text-purple-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div id='deleteKey' @click='deleteKey($event)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
-              <BackspaceIcon class=' text-purple-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+              <BackspaceIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
         
         </div>
@@ -188,31 +188,31 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div :class='hintHeat' class='bg-purple-100 key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            <div :class='hintHeat' class='bg-blue-100 key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
                 +{{ hintCount }}
             
             </div>
 
-            <div v-if='!make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+            <div v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
-            <div v-if='!make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+            <div v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            <div v-if='make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
+            <div v-if='make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
 
-            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
+            <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
 
            
 
-                <a :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+                <a :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
             
            
 
-            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
 
 
@@ -465,29 +465,29 @@ export default {
 
             switch (this.hintCount) {
                 case 0:
-    return "border-purple-500 text-purple-600"
+    return "border-blue-500 text-blue-600"
     break;
   case 1:
-    return "bg-purple-200 border-purple-200 text-purple-600"
+    return "bg-blue-200 border-blue-200 text-blue-600"
     break;
   case 2:
-  return "bg-purple-300 border-purple-300 text-purple-600"
+  return "bg-blue-300 border-blue-300 text-blue-600"
     break;
   case 3:
-  return "bg-purple-400 border-purple-400 text-white"
+  return "bg-blue-400 border-blue-400 text-white"
     break;
   case 4:
-  return "bg-purple-500 border-purple-500 text-white"
+  return "bg-blue-500 border-blue-500 text-white"
     break;
   case 5:
-  return "bg-purple-600 border-purple-600 text-white"
+  return "bg-blue-600 border-blue-600 text-white"
     break;
   case 6:
-  return "bg-purple-700 border-purple-700 text-white"
+  return "bg-blue-700 border-blue-700 text-white"
     break;
  
   default:
-    return "bg-purple-700 border-purple-700 text-white"
+    return "bg-blue-700 border-blue-700 text-white"
 }
 
 
