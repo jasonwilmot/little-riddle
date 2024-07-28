@@ -8,15 +8,42 @@
 
     <div  class="text-center h-full">
 
-        <div class='flex' v-show='riddle.hint !== ""' id="riddleContainer">
+        <div class='flex' v-show='riddle.hint !== "" && !this.make || this.make' id="riddleContainer">
 
             <div class="w-full p-2" v-show="make">
             
-                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{ makeRiddle }}</div>
-                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeAnswer1}}</div>
-                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeAnswer2}}</div>
-                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeClue1}}</div>
-                <div class='w-full border border-purple-500 w-full p-2 mb-2 rounded text-lg'>{{makeClue2}}</div>
+                <div @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-purple-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1 cursor align-center"></span>
+                
+                <span v-if='makeRiddle === ""' class="text-gray-400">{{ placeholderArray[0] }}</span>
+                
+                </div>
+
+                <div @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-purple-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeAnswer1 === ""' class="text-gray-400">{{ placeholderArray[1] }}</span>
+
+                </div>
+
+                <div @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-purple-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeAnswer2 === ""' class="text-gray-400">{{ placeholderArray[2] }}</span>
+                
+                </div>
+
+                <div @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-purple-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeClue1 === ""' class="text-gray-400">{{ placeholderArray[3] }}</span>
+                
+                </div>
+
+                <div @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-purple-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeClue2 === ""' class="text-gray-400">{{ placeholderArray[4] }}</span>
+                
+                </div>
+
+                
+                
             
             
             </div>
@@ -167,17 +194,19 @@
             
             </div>
 
-            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+            <div v-if='!make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
-            <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+            <div v-if='!make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+
+            <div v-if='make' class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
 
             <div class='bg-purple-100 key border-purple-500 text-purple-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
 
            
 
-                <a :class='1 === 1?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+                <a :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-purple-100 border-purple-500 text-purple-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='1 === 1?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-purple-100 border border-purple-500 text-purple-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
             
            
 
@@ -282,11 +311,14 @@ export default {
     data: function() {
         return {
 
-            makeRiddle : "&nbsp;",
+            makerFocusIndex : 0,
+            makeRiddle : "",
             makeAnswer1 : "",
             makeAnswer2 : "",
             makeClue1 : "",
             makeClue2 : "",
+
+            placeholderArray : ["Enter your riddle","Rhyming Word 1","Rhyming Word 2","Clue 1","Clue 2"],
 
                 
 
@@ -539,7 +571,7 @@ return isMobile } else {
 
         solved() {
 
-            if ( this.riddle.rhyme === "" ) {
+            if ( this.riddle.rhyme === "" || this.riddleWordArray.length === 0 ) {
 
                 return false
 
@@ -750,11 +782,50 @@ store.protocol = store.getProtocol()
 
     methods: {
 
+        focusMakerField : function(makerFocusIndex,event) {
+
+            console.log(event.target.innerHTML)
+
+            this.makerFocusIndex = makerFocusIndex
+
+            if ( this.placeholderArray.includes(event.target.innerHTML) ) {
+
+                event.target.innerHTML = ""
+
+                if ( this.makerFocusIndex === 1) { this.makeRiddle = "" }
+                if ( this.makerFocusIndex === 2) { this.makeAnswer1 = "" }
+                if ( this.makerFocusIndex === 3) { this.makeAnswer2 = "" }
+                if ( this.makerFocusIndex === 4) { this.makeClue1 = "" }
+                if ( this.makerFocusIndex === 5) { this.makeClue2 = "" }
+
+
+            }
+
+
+        },
+
 
        makePersonalRiddle : function() {
 
 
         console.log('making')
+
+        this.riddle = {
+
+            "rhyme": this.makeAnswer1.toLowerCase() + " " + this.makeAnswer2.toLowerCase(),
+            "type": "noun",
+            "hint": this.makeRiddle.replace(/&nbsp;/g, ' '),
+            "clues": [
+                this.makeClue1.replace(/&nbsp;/g, ' '),
+                this.makeClue2.replace(/&nbsp;/g, ' '),
+            ]
+
+        }
+
+        //this.make = true
+
+        this.postRiddle()
+
 
 
        },
@@ -916,21 +987,33 @@ return new Promise(resolve => {
 
             
 
+     this.postRiddle()
             
-      //remove any blank clues that came over from chatgpt
+     
+
+            
+
+
+        },
+
+
+        postRiddle : function() {
+
+            this.riddleWordArray = []
+
+             //remove any blank clues that came over from chatgpt
       this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
-      //create an empty array that we use to store letters entered by user
-      var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
-      riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+//create an empty array that we use to store letters entered by user
+var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
+riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
-      this.riddle.score = this.maxScore
+this.riddle.score = this.maxScore
 
-      //make the riddle fit into the fixed height box to prevent use expanding to far
-      //for small screens.  we need to conserve real estate.
-      this.adjustFontSizeToFit()
+//make the riddle fit into the fixed height box to prevent use expanding to far
+//for small screens.  we need to conserve real estate.
+this.adjustFontSizeToFit()
 
-            
 
 
         },
@@ -1059,7 +1142,7 @@ return new Promise(resolve => {
       // Check if the key is alphanumeric or delete
       const key = event.key;
 
-      console.log(key)
+      console.log("*" + key + "*")
 
       const isAlphanumeric = /^[a-z]$/i.test(key); // Check if alphanumeric
       const isDelete = key === 'Backspace' || key === 'Delete';
@@ -1084,6 +1167,13 @@ return new Promise(resolve => {
         }
        // this.lastKey = key;
        // console.log('Key pressed:', key);
+      }
+
+      if ( key === ' ' && this.make ) {
+
+
+        this.pressKey(event,"Space")
+
       }
     },
 
@@ -1278,6 +1368,26 @@ document.body.removeChild(textArea);
            
             this.animateKeyPress(event,keyboard,key)
 
+            if ( this.make ) {
+
+                const nbsp = '&nbsp;';
+                
+
+                if ( this.makerFocusIndex === 1 && this.makeRiddle.endsWith(nbsp) ) { this.makeRiddle = this.makeRiddle.slice(0, -nbsp.length); return}
+                if ( this.makerFocusIndex === 2 && this.makeAnswer1.endsWith(nbsp) ) { this.makeAnswer1 = this.makeAnswer1.slice(0, -nbsp.length); return }
+                if ( this.makerFocusIndex === 3 && this.makeAnswer2.endsWith(nbsp) ) { this.makeAnswer2 = this.makeAnswer2.slice(0, -nbsp.length); return }
+                if ( this.makerFocusIndex === 4 && this.makeClue1.endsWith(nbsp) ) { this.makeClue1 = this.makeClue1.slice(0, -nbsp.length); return }
+                if ( this.makerFocusIndex === 5 && this.makeClue2.endsWith(nbsp) ) { this.makeClue2 = this.makeClue2.slice(0, -nbsp.length); return }
+
+                if ( this.makerFocusIndex === 1 && !this.makeRiddle.endsWith(nbsp) ) { this.makeRiddle = this.makeRiddle.slice(0, -1)}
+                if ( this.makerFocusIndex === 2 && !this.makeAnswer1.endsWith(nbsp) ) { this.makeAnswer1 = this.makeAnswer1.slice(0, -1)}
+                if ( this.makerFocusIndex === 3 && !this.makeAnswer2.endsWith(nbsp) ) { this.makeAnswer2 = this.makeAnswer2.slice(0, -1)}
+                if ( this.makerFocusIndex === 4 && !this.makeClue1.endsWith(nbsp) ) { this.makeClue1 = this.makeClue1.slice(0, -1)}
+                if ( this.makerFocusIndex === 5 && !this.makeClue2.endsWith(nbsp) ) { this.makeClue2 = this.makeClue2.slice(0, -1)}
+
+
+            } else {
+
             const blankIndex = this.riddleWordArray.findIndex(item => item === '');
             console.log(blankIndex)
             if ( blankIndex === - 1 ) {
@@ -1293,6 +1403,8 @@ document.body.removeChild(textArea);
 
 
             }
+
+        }
 
         },
 
@@ -1416,6 +1528,31 @@ document.body.removeChild(textArea);
 
                 this.animateKeyPress(event,keyboard,key)
 
+
+                if ( this.make ) {
+
+                   
+
+                    if ( key === 'Space') { 
+
+                        if ( this.makerFocusIndex === 2 || this.makerFocusIndex === 3 ) { return }
+                        
+                        key = '&nbsp;'
+                    
+                    }
+
+                    console.log('#####')
+                    console.log(key)
+
+                    if ( this.makerFocusIndex === 1 ) { this.makeRiddle = this.makeRiddle + key.toLowerCase()}
+                    if ( this.makerFocusIndex === 2 ) { this.makeAnswer1 = this.makeAnswer1 + key.toLowerCase()}
+                    if ( this.makerFocusIndex === 3 ) { this.makeAnswer2 = this.makeAnswer2 + key.toLowerCase()}
+                    if ( this.makerFocusIndex === 4 ) { this.makeClue1 = this.makeClue1 + key.toLowerCase()}
+                    if ( this.makerFocusIndex === 5 ) { this.makeClue2 = this.makeClue2 + key.toLowerCase()}
+
+
+                } else {
+
                
                 if ( !this.fullAnswer ) {
 
@@ -1450,7 +1587,7 @@ document.body.removeChild(textArea);
                 }
                 
 
-
+            }
 
 
             },
@@ -1605,6 +1742,21 @@ html, body {
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0;
 }
+
+.cursor {
+            display: inline-block;
+            width: 2px;
+            height: 18px;
+            background-color: black;
+            position: absolute;
+            animation: blink 1s step-start 0s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                background-color: transparent;
+            }
+        }
 
 
 
