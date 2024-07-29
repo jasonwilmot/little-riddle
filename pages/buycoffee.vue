@@ -4,20 +4,73 @@
     
     <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-blue-500"><a href='/'>Little Riddle:</a></div>
 
+    <div :class='success?"border-blue-300":"border-gray-300"' class="flex mx-4 my-4 rounded ">
+
+       
+
+    <div :class='success?"bg-blue-200":"bg-gray-200"' class='p-1 rounded-l-lg'><img class='my-auto rounded round-xl h-16' src="/images/jasonAndGrandma.jpg" /></div>
+    <div :class='success?"bg-blue-200":"bg-gray-200"' class="text-2xl  grow flex rounded-r-lg"><div class='mx-auto my-auto lato font-bold'>{{ success ? "Thank You!!!!" : "Treat us to a coffee"}} </div></div>
+
+
+    </div>
+
+    <div v-show="!success">
+
+    <div class="text-gray-600 lato mx-6 my-4">
+
+       <div class="mb-2">I'm Jason (jason@bytejelly.com), the humble maker of Little Riddle, a puzzle game originally created as a gift to my grandmother who loves word games.</div> 
+
+
+       <div class="mb-2">If you want to show your thanks and play 2000+ more riddles, consider buying myself and grandma two hot coffees for $5.00. ☕❤️ </div>
+
+       
+
+
+    </div>
+
     
 
-    Buy a coffee
-
-    <div class="mx-4">
+    <div class="mx-4 rounded p-2 border bg-blue-100">
+        <input class="mb-2 text-lg text-left shadow appearance-none border rounded w-full py-3 bg-white px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" v-model='note' placeholder="Please enter a note or suggestion" />
     <form id="payment-form">
-  <div id="payment-element">
+  <div id="payment-element" class="text-2xl text-center shadow appearance-none border rounded w-full py-2 bg-white px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     <!-- Elements will create form elements here -->
   </div>
-  <div @click='handlePayment' class='bg-blue-500 p-2 rounded border text-white' id="submit">Submit</div>
-  <div id="error-message">
+  <button @click='handlePayment($event)' class='flex flex-row  mt-2 rounded-xl bg-green-500 p-2 px-4 rounded border text-white text-xl'>
+
+    <CubeTransparentIcon v-if="processing" class="flex-none text-white spinner ml-1 mr-2 min-w-6 min-h-6 my-auto h-6 w-6 text-gray-700 cursor-pointer" />
+                    <CreditCardIcon v-else class="flex-none text-white ml-1 mr-2 my-auto min-w-6 min-h-6 h-6 w-6 text-gray-700 cursor-pointer" />
+                    <span class='flex-none my-auto mr-1 text-lg text-white'>Support ${{ ammount / 100 }}</span>
+    
+    
+
+  </button>
+  <div id="error-message" class="mt-1 pl-3 text-base text-red-600">
     <!-- Display error message to your customers here -->
   </div>
 </form>
+</div>
+
+</div>
+
+<div v-show="success">
+
+    <div class="text-gray-600 lato mx-6 my-4">
+
+<div class="mb-2">Thanks for the coffee and supporting Little Riddle. You now have access to 2000+ riddles and will also receive any new riddles forever.  </div> 
+
+
+<div class="mb-2">Your receipt number is: <span class="font-bold text-blue-500">{{  this.receipt }}</span>.  Please tuck it away somewhere for safe keeping.</div>
+
+ <div class="mb-2">Thanks again! Jason and Claire</div>
+
+ <div class="mb-2"><a class='mt-2 bg-blue-500 text-white p-2 rounded px-4 py-2 inline-block font-bold' href='/'>Return to Little Riddle</a></div>
+
+
+</div>
+
+
+
 </div>
 
    
@@ -29,12 +82,7 @@
 
 <script>
 
-import CryptoJS from 'crypto-js'
-import animejs from 'animejs';
 
-
-import data from '@/assets/saturdayNightoutput1722131985702.json';
-import confetti from 'canvas-confetti';
 
 
 
@@ -44,7 +92,6 @@ import {
 
 
 
-import { autoTextSize } from 'auto-text-size'
 
 
 
@@ -55,7 +102,7 @@ import {
     BackspaceIcon,
     ChevronRightIcon,
     PuzzlePieceIcon,
-    TrashIcon
+    TrashIcon, CubeTransparentIcon, TableCellsIcon, CreditCardIcon
 } from '@heroicons/vue/24/outline'
 import axios from 'axios';
 import qs from 'qs'
@@ -66,7 +113,7 @@ export default {
 
     components: {
         CheckIcon,
-        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon
+        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon, TableCellsIcon, CubeTransparentIcon, CreditCardIcon
     },
 
     //======================================================================================
@@ -74,6 +121,10 @@ export default {
     data: function() {
         return {
 
+            processing : false,
+            success : false,
+            note : "",
+            ammount : 500,
             nudgeVariation : 1,
             nudge : false,
             nudgeInterval : 1,
@@ -184,18 +235,15 @@ export default {
         this.pageLoaded = true
 
 
-        const response = await fetch('/api/getPaymentIntent');
-        const {client_secret: clientSecret} = await response.json();
+        
 
-        console.log(clientSecret)
-
-        await this.delay(2000)
+        await this.delay(1000)
 
         store.stripe = Stripe('pk_test_51PhhMRAf1FjVNxtqASumSmURU1lFSRcfC5oQaqo4RFdXhEcck5Wo3zr6Mr3vn2t3t5Uw6PRTTgiOsMjVtVFYAyEB006rbreBBJ');
         
 
         const options = {
-  clientSecret: clientSecret,
+  //clientSecret: clientSecret,
   // Fully customizable with appearance API.
   appearance: {/*...*/},
 };
@@ -203,9 +251,26 @@ export default {
 // Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in a previous step
 store.elements = store.stripe.elements(options);
 
+var style = {
+            base: {
+                // Add your base input styles here. For example:
+                fontSize: '18px',
+                color: "#000000",
+                lineHeight: '1.8',
+                "::placeholder": {
+                    color: "#A9A9A9"
+                }
+
+            }
+        };
+
 // Create and mount the Payment Element
-const paymentElement = store.elements.create('payment');
-paymentElement.mount('#payment-element');
+store.paymentElement = store.elements.create('card',{
+
+    style: style
+
+});
+store.paymentElement.mount('#payment-element');
 
     },
 
@@ -241,29 +306,74 @@ paymentElement.mount('#payment-element');
 
     methods: {
 
-        handlePayment : async function() {
+        handlePayment : async function(event) {
 
-            var elements = store.elements
+            event.preventDefault();
 
-            const {error} = await store.stripe.confirmPayment({
-    //`Elements` instance that was used to create the Payment Element
-    elements,
-    confirmParams: {
-      return_url:  store.protocol + "//" +  store.hostName + "/thanks/"
+            this.processing = true
+
+            var vue = this
+
+            const response = await fetch('/api/getPaymentIntent', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
     },
-  });
+    body: JSON.stringify({ note: this.note })
+  })
 
-  if (error) {
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Show error to your customer (for example, payment
-    // details incomplete)
-    const messageContainer = document.querySelector('#error-message');
-    messageContainer.textContent = error.message;
-  } else {
-    // Your customer will be redirected to your `return_url`. For some payment
-    // methods like iDEAL, your customer will be redirected to an intermediate
-    // site first to authorize the payment, then redirected to the `return_url`.
-  }
+         //   const response = await fetch('/api/getPaymentIntent');
+        const {client_secret: clientSecret} = await response.json();
+
+        console.log(clientSecret)
+
+        //store.clientSecret = clientSecret
+
+        var elements = store.elements
+
+        store.stripe
+  .confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: store.paymentElement,
+      metadata: {
+                        user_text: this.note
+                    }
+      //billing_details: {
+        //name: 'Jenny Rosen',
+      //},
+    },
+  })
+  .then(function(result) {
+    console.log(result)
+
+    if ( result.paymentIntent.status === "succeeded") {
+
+        vue.success = true
+        vue.receipt = result.paymentIntent.id
+        localStorage.setItem('donated', result.paymentIntent.id);
+
+
+    } else {
+
+        this.processing = false
+
+
+    }
+    // Handle result.error or result.paymentIntent
+  }).catch(error => {
+
+    console.log(error)
+    vue.processing = false
+
+
+  
+  }    ) 
+
+           
+
+           
+
+  
             
 
         },
@@ -365,6 +475,24 @@ html, body {
                 background-color: transparent;
             }
         }
+
+        .spinner {
+    /*  border: 4px solid #f3f3f3; Light grey */
+    /* border-top: 4px solid #3498db; /* Blue */
+
+    animation: spin 1.5s linear infinite;
+
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 
 
