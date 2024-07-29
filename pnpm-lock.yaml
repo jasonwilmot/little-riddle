@@ -44,6 +44,9 @@ importers:
       qs:
         specifier: ^6.12.3
         version: 6.12.3
+      stripe:
+        specifier: ^16.5.0
+        version: 16.5.0
       wavesurfer.js:
         specifier: ^7.8.2
         version: 7.8.2
@@ -3879,6 +3882,10 @@ packages:
 
   strip-literal@2.1.0:
     resolution: {integrity: sha512-Op+UycaUt/8FbN/Z2TWPBLge3jWrP3xj10f3fnYxf052bKuS3EKs1ZQcVGjnEMdsNVAM+plXRdmjrZ/KgG3Skw==}
+
+  stripe@16.5.0:
+    resolution: {integrity: sha512-5qY2Va8pmnqS/dcKsQKJnk9kkYCtS6hqjN7kktZEmdxVohZHvbT9pOWK8UUKRInTXYkCNl6x505tO5416KLPsQ==}
+    engines: {node: '>=12.*'}
 
   strnum@1.0.5:
     resolution: {integrity: sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==}
@@ -9172,6 +9179,11 @@ snapshots:
   strip-literal@2.1.0:
     dependencies:
       js-tokens: 9.0.0
+
+  stripe@16.5.0:
+    dependencies:
+      '@types/node': 20.11.6
+      qs: 6.12.3
 
   strnum@1.0.5: {}
 
