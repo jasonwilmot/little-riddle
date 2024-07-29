@@ -10,6 +10,46 @@
 
         <div class='flex' v-show='riddle.hint !== "" && !make || make' id="riddleContainer">
 
+
+            <div class="w-full p-2 mx-auto" v-show="nudge">
+            
+                <div v-if='nudgeVariation === 1' class='flex flex-col'>
+              <div class="text-2xl mx-auto px-4 my-4 text-gray-600">Appreciate Little Riddle?  Send a kind note and get all 2000+ riddles plus future riddles forever.</div>
+            
+               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+
+               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
+
+               </div>
+
+               <div v-if='nudgeVariation === 2' class='flex flex-col'>
+               <div class="text-2xl mx-auto my-4 text-gray-600 px-4 ">Enjoying Little Riddle?  Show your appreciation, send me a note, and get all the riddle packs.</div>
+
+              
+               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=607FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+
+               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">Maybe Next Time</div>
+
+               </div>
+
+
+               <div v-if='nudgeVariation === 3' class='flex flex-col'>
+               <div class="text-2xl mx-auto my-4 px-4 text-gray-600">Want more Little Riddles?  Make a small donation, make some suggestions, and get all new riddles forever.</div>
+
+
+               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=BD5FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+
+
+               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
+               </div>
+
+              
+               
+
+                
+            
+            </div>
+
             <div class="w-full p-2" v-show="make">
             
                 <div @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1 cursor align-center"></span>
@@ -48,7 +88,7 @@
             
             </div>
 
-            <div class='mt-12 grow flex justify-end' v-show="catTime && !make">
+            <div class='mt-12 grow flex justify-end' v-show="catTime && !make & !nudge">
 
              <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
             <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" />
@@ -69,7 +109,7 @@
             </div>
 
 
-            <div class='grow' v-show="!catTime && !make">
+            <div class='grow' v-show="!catTime && !make && !nudge">
 
                         <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
 
@@ -311,6 +351,10 @@ export default {
     data: function() {
         return {
 
+            nudgeVariation : 1,
+            nudge : false,
+            nudgeInterval : 1,
+            riddleCount : 0,
             makerFocusIndex : 0,
             makeRiddle : "",
             makeAnswer1 : "",
@@ -1018,11 +1062,39 @@ this.adjustFontSizeToFit()
 
         },
 
+        
+
 
         nextRiddle : async function(event) {
 
-            this.catTime = false
+            //handle nudging for payment
+            if (this.riddleCount === this.nudgeInterval) {
 
+
+                this.nudgeTime = true
+
+                if ( this.nudgeVariation === 3 ) {
+
+                    this.nudgeVariation = 1
+                     
+                } else {
+
+                    this.nudgeVariation++
+
+                }
+
+                this.riddleCount = 0;
+
+             } else {
+
+                this.nudgeTime = false
+                this.riddleCount++
+
+             }
+
+           
+
+            this.catTime = false
             await this.delay(100)
 
             var vue = this
@@ -1070,7 +1142,10 @@ this.adjustFontSizeToFit()
 
                     document.getElementById('riddleContainer').style.transform = `translateX(${-window.innerWidth}px)`;
 
-            if ( !showAnimal ) {
+                    this.nudge = this.nudgeTime
+                    
+
+            if ( !showAnimal || this.nudge ) {
 
                 console.log('no animal!!!!!!')
 
