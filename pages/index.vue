@@ -310,7 +310,7 @@ import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
 
 
-import data from '@/assets/saturdayNightoutput1722131985702.json';
+import data from '@/assets/dualHints1722280784784.json';
 import confetti from 'canvas-confetti';
 
 
@@ -990,11 +990,15 @@ return new Promise(resolve => {
                 //if this isn't a new user, grab a random puzzle
                 const randomIndex = Math.floor(Math.random() * this.riddles.length);
                 this.riddle = this.riddles[randomIndex];
+                const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
 
 
                 } else {
 
                     this.riddle = JSON.parse(this.decrypt(this.$route.query.riddle))
+                    //const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                    //this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
 
                 }
 
@@ -1024,6 +1028,8 @@ return new Promise(resolve => {
                 //if this isn't a new user, grab a random puzzle
                 const randomIndex = Math.floor(Math.random() * this.riddles.length);
                 this.riddle = this.riddles[randomIndex];
+                const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
 
                 }
 
