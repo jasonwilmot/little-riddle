@@ -6,6 +6,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0',
     }
   },
+  
   devtools: { enabled: false },
   
   googleFonts: {
@@ -34,7 +35,8 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
-    "@nuxtjs/google-fonts"
+    "@nuxtjs/google-fonts",
+   
   ],
   
 

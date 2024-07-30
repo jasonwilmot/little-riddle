@@ -9,19 +9,23 @@ export default defineEventHandler(async (event) => {
   console.log(body.protocol)
 
   var stripeObj
+  let stripeKey:string = process.env.Stripe_Secret_Prod!
+  //var stripeKey = process.env.Stripe_Secret_Prod
+
+  console.log(stripeKey)
 
   if ( body.protocol === 'http:') {
 
     console.log('local-----------')
 
-    stripeObj = new stripe('sk_test_51PhhMRAf1FjVNxtqU5Q4JQSpptKeUKQGgtby41DXghdTDnOn3Qg8Ggnne2HKNC7seyZ2zyFSLRf3sun2Qgkc2Xe200nNZVA9im');
+    stripeObj = new stripe(stripeKey);
 
 
   } else {
 
     console.log('cloud-------------')
 
-    stripeObj = new stripe('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');
+    stripeObj = new stripe(stripeKey);
 
 
   }
