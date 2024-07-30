@@ -64,22 +64,24 @@
 
           <!-- animals -->
          <div class='mt-12 grow flex justify-end' v-show="catTime && !make & !nudge">
-            <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
-            <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" /> 
-            <img class='h-48' v-if='animalIndex === 2' src="/images/cat.webp" /> 
-            <img class='h-48' v-if='animalIndex === 3' src="/images/doggie2.webp" /> 
-            <img class='h-48' v-if='animalIndex === 4' src="/images/sheep.gif" />
-            <img class='h-72' v-if='animalIndex === 5' src="/images/corgieCrop.gif" /> 
-            <img class='h-48' v-if='animalIndex === 6' src="/images/ostrich.gif" /> 
-            <img class='h-48' v-if='animalIndex === 7' src="/images/gorilla.gif" /> 
+            <img class='h-48' v-if='animalIndex === 0' :src="animalImageArray[0]" />
+            <img class='h-72' v-if='animalIndex === 1' :src="animalImageArray[1]" /> 
+            <img class='h-48' v-if='animalIndex === 2' :src="animalImageArray[2]" /> 
+            <img class='h-48' v-if='animalIndex === 3' :src="animalImageArray[3]" /> 
+            <img class='h-48' v-if='animalIndex === 4' :src="animalImageArray[4]" />
+            <img class='h-72' v-if='animalIndex === 5' :src="animalImageArray[5]" /> 
+            <img class='h-48' v-if='animalIndex === 6' :src="animalImageArray[6]" /> 
+            <img class='h-48' v-if='animalIndex === 7' :src="animalImageArray[7]" /> 
          </div>
+
+         
 
           <!-- main container -->
          <div class='grow' v-show="!catTime && !make && !nudge">
 
              <!-- new player -->
             <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'>
-               <div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div>
+               <div class='max-w-2xl mx-auto lato'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div>
             </div>
 
              <!-- riddle container -->
@@ -238,6 +240,8 @@ export default {
     data: function() {
         return {
 
+            animalImageArray : ["/images/cute-animated-cat-tutorial.gif" ,"/images/dog.webp","/images/cat.webp","/images/doggie2.webp","/images/sheep.gif","/images/corgieCrop.gif", "/images/ostrich.gif","/images/gorilla.gif" ],
+
             disabled: false,
             nudgeVariation: 1,
             nudge: false,
@@ -289,6 +293,18 @@ export default {
     },
 
     async mounted() {
+
+
+        //preload the animals so they always show
+        this.animalImageArray.forEach(animalImage => {
+
+            var image = new Image();
+            image.src = animalImage;
+
+
+        })
+
+        
 
         var url = useRequestURL()
         
@@ -803,7 +819,31 @@ export default {
             }
         },
 
+
+        incrementRiddleCount : function() {
+
+
+            let count = localStorage.getItem('riddleCount');
+            if (count === null) {
+                count = 0;
+            } else {
+                count = parseInt(count);
+            }
+
+            // Increment the counter
+            count++;
+
+            // Store the updated value back in localStorage
+            localStorage.setItem('riddleCount', count);
+
+
+
+        },
+
+
         nextRiddle: async function(event) {
+
+            this.incrementRiddleCount()
 
             animejs({
                 targets: "#nextRiddleButton",
@@ -1117,17 +1157,17 @@ export default {
 
             console.log(this.hintCount)
 
-            animejs({
-                targets: '#hint' + this.hintCount,
-                rotate: [
-                    { value: -360, duration: 300 },
+            //animejs({
+               // targets: '#hint' + this.hintCount,
+               // rotate: [
+                   // { value: -360, duration: 300 },
                     // { value: 10, duration: 100 },
                     // { value: -10, duration: 100 },
                     // { value: 0, duration: 50 },
 
-                ],
-                easing: 'easeInOutQuad'
-            });
+               // ],
+               // easing: 'easeInOutQuad'
+           // });
 
             //localStorage.setItem('points', localStorage.getItem("points") - 1);
             //this.points = localStorage.getItem("points")
