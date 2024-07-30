@@ -41,6 +41,9 @@ importers:
       heroicons:
         specifier: ^2.1.5
         version: 2.1.5
+      howler:
+        specifier: ^2.2.4
+        version: 2.2.4
       npm:
         specifier: ^10.8.2
         version: 10.8.2
@@ -2167,6 +2170,9 @@ packages:
   hosted-git-info@7.0.1:
     resolution: {integrity: sha512-+K84LB1DYwMHoHSgaOY/Jfhw3ucPmSET5v98Ke/HdNSw4a0UktWzyW1mjhjpuxxTqOOsfWT/7iVshHmVZ4IpOA==}
     engines: {node: ^16.14.0 || >=18.0.0}
+
+  howler@2.2.4:
+    resolution: {integrity: sha512-iARIBPgcQrwtEr+tALF+rapJ8qSc+Set2GJQl7xT1MQzWaVkFebdJhR3alVlSiUf5U7nAANKuj3aWpwerocD5w==}
 
   html-entities@2.5.2:
     resolution: {integrity: sha512-K//PSRMQk4FZ78Kyau+mZurHn3FH0Vwr+H36eE0rPbeYkRRi9YxceYPhuN60UwWorxyKHhqoAJl2OFKa4BVtaA==}
@@ -7040,6 +7046,8 @@ snapshots:
   hosted-git-info@7.0.1:
     dependencies:
       lru-cache: 10.1.0
+
+  howler@2.2.4: {}
 
   html-entities@2.5.2: {}
 

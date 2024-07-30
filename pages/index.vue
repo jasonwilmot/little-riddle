@@ -210,6 +210,7 @@ import data from '@/assets/dualHints1722280784784.json';
 import confetti from 'canvas-confetti';
 import { store } from "../store/store.js";
 import { autoTextSize } from 'auto-text-size'
+import {Howl} from 'howler';
 
 import {
     CheckIcon,
@@ -240,6 +241,8 @@ export default {
     data: function() {
         return {
 
+            clickSounds : [],
+            randomNoteArray : [],
             animalImageArray : ["/images/cute-animated-cat-tutorial.gif" ,"/images/dog.webp","/images/cat.webp","/images/doggie2.webp","/images/sheep.gif","/images/corgieCrop.gif", "/images/ostrich.gif","/images/gorilla.gif" ],
 
             disabled: false,
@@ -294,6 +297,8 @@ export default {
 
     async mounted() {
 
+        
+
 
         //preload the animals so they always show
         this.animalImageArray.forEach(animalImage => {
@@ -319,7 +324,7 @@ export default {
 
         this.buildRiddle()
 
-        /
+        
 
         //this needs to be in mounted, and not in create() or bad things happen
         useHead({
@@ -788,6 +793,21 @@ export default {
 
             this.postRiddle()
 
+            //grab a random instrument
+        var instrumentArray = ['telepluck', 'idiophone', 'flute', 'englishhorn', 'xyloclean', 'clarinet', 'newviola', 'newviolin', 'newpiano', 'newoldpiano', 'sitar', 'zither', 'bamblong']
+        this.randomInstrument = instrumentArray[Math.floor(Math.random() * instrumentArray.length)]
+
+
+        
+        this.keyPressSound1 = new Howl({src: "/sounds/click1.mp3",
+                preload: true
+        })
+        
+
+       
+
+        
+
         },
 
         postRiddle: function() {
@@ -894,7 +914,7 @@ export default {
             var movement = window.innerWidth
 
             //var showAnimal = this.getRandomNumber(0,6) === 2 ? true : false
-            var showAnimal = this.getRandomNumber(0, 0) === 0 ? true : false
+            var showAnimal = this.getRandomNumber(0, 7) === 3 ? true : false
 
             animejs({
 
@@ -1372,6 +1392,9 @@ export default {
 
         pressKey: function(event, key, keyboard) {
 
+            this.keyPressSound1.play()
+
+
             // this.disabled = true
 
             //console.log(event)
@@ -1407,6 +1430,10 @@ export default {
                     if (blankIndex !== -1) {
                         // Set the new value at the found index
                         this.riddleWordArray[blankIndex] = key;
+
+                        console.log(blankIndex)
+
+                        
 
                         if (this.riddleWordArray[blankIndex] !== this.riddleWordLettersArray[blankIndex]) {
 
