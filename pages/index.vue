@@ -2,7 +2,23 @@
 
     <div class='h-screen'>
     
-    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl text-blue-500"><a href='/'>Little Riddle:</a></div>
+    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl"><a href='/'>
+
+        <span :class='hintCount>=1?"text-red-500":"text-blue-500"'>L</span>
+        <span :class='hintCount>=2?"text-red-500":"text-blue-500"'>I</span>
+        <span :class='hintCount>=3?"text-red-500":"text-blue-500"'>T</span>
+        <span :class='hintCount>=4?"text-red-500":"text-blue-500"'>T</span>
+        <span :class='hintCount>=5?"text-red-500":"text-blue-500"'>L</span>
+        <span :class='hintCount>=6?"text-red-500":"text-blue-500"'>E</span>
+        <span>&nbsp;</span>
+        <span :class='hintCount>=7?"text-red-500":"text-blue-500"'>R</span>
+        <span :class='hintCount>=8?"text-red-500":"text-blue-500"'>I</span>
+        <span :class='hintCount>=9?"text-red-500":"text-blue-500"'>D</span>
+        <span :class='hintCount>=10?"text-red-500":"text-blue-500"'>D</span>
+        <span :class='hintCount>=11?"text-red-500":"text-blue-500"'>L</span>
+        <span :class='hintCount>=12?"text-red-500":"text-blue-500"'>E</span>
+
+    </a></div>
 
     
 
@@ -178,7 +194,7 @@
 
         <div class="flex justify-between items-stretch  roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            <div :disabled="disabled" :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
             
                 {{key}}
             
@@ -190,7 +206,7 @@
 
         <div class="w-full flex justify-between roboto">
 
-            <div :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
+            <div :disabled="disabled" :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
             
             {{key}}
         
@@ -202,21 +218,29 @@
 
     <div class="w-full flex justify-between roboto">
 
-        <div @click='clearKey($event)' ref="parentDiv" class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <a href='/about' class="bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto"><div>
+            
+            <div class='flex'>
+              <QuestionMarkCircleIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+            </div>
+        
+        </div></a>
+
+        <!-- <div :disabled="disabled" @click='clearKey($event)' ref="parentDiv" class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <TrashIcon class='text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
         
-        </div>
+        </div> -->
 
-        <div :id='"key" + key' @click='pressKey($event,key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
+        <div :disabled="disabled" :id='"key" + key' @click='pressKey($event,key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             
             {{key}}
         
         </div>
 
-        <div id='deleteKey' @click='deleteKey($event)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+        <div :disabled="disabled" id='deleteKey' @click='deleteKey($event)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             
             <div class='flex'>
               <BackspaceIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -228,17 +252,21 @@
 
         <div class="w-full mt-2 flex justify-between roboto">
 
-            <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            
+
+            
+
+            <!-- <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
                 +{{ hintCount }}
             
-            </div>
+            </div> -->
 
-            <div v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+            <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
-            <div v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+            <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            <div v-if='make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
+            <div :disabled="disabled" v-if='make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
 
             <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
 
@@ -246,13 +274,13 @@
 
                 <a :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :disabled="disabled" :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
             
            
 
             <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
 
 
@@ -332,7 +360,7 @@ import {
     BackspaceIcon,
     ChevronRightIcon,
     PuzzlePieceIcon,
-    TrashIcon
+    TrashIcon, QuestionMarkCircleIcon
 } from '@heroicons/vue/24/outline'
 import axios from 'axios';
 import qs from 'qs'
@@ -343,7 +371,7 @@ export default {
 
     components: {
         CheckIcon,
-        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon
+        HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon, QuestionMarkCircleIcon
     },
 
     //======================================================================================
@@ -351,6 +379,7 @@ export default {
     data: function() {
         return {
 
+            disabled : false,
             nudgeVariation : 1,
             nudge : false,
             nudgeInterval : 1,
@@ -1076,8 +1105,13 @@ this.adjustFontSizeToFit()
             //handle nudging for payment
             if (this.riddleCount === this.nudgeInterval) {
 
+                var purchased = localStorage.getItem('donated');
+                if ( purchased === null ) {
 
-                this.nudgeTime = true
+                    this.nudgeTime = true
+
+                }
+              
 
                 if ( this.nudgeVariation === 3 ) {
 
@@ -1331,6 +1365,8 @@ document.body.removeChild(textArea);
 
         shareRiddle : function(event) {
 
+            this.disabled = true
+
             this.animateKeyPress(event)
 
             this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + this.encrypt)
@@ -1367,6 +1403,7 @@ document.body.removeChild(textArea);
         nextHint : function(event) {
 
             this.copiedToClipboard = false //just hide any previous clipboard stuff
+            this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1410,6 +1447,8 @@ document.body.removeChild(textArea);
 
         clearKey : function(event) {
 
+            this.disabled = true
+
             this.animateKeyPress(event)
 
             this.riddleWordArray = this.riddleWordArray.map(() => "")
@@ -1446,6 +1485,7 @@ document.body.removeChild(textArea);
 
         deleteKey : function(event,key,keyboard) {
 
+            this.disabled = true
            
             this.animateKeyPress(event,keyboard,key)
 
@@ -1491,7 +1531,7 @@ document.body.removeChild(textArea);
 
         hintKey : function(event) {
 
-           
+            this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1554,6 +1594,8 @@ document.body.removeChild(textArea);
 
             this.started = true
 
+            var vue = this
+
             var element
 
             if ( keyboard ) {
@@ -1594,7 +1636,13 @@ document.body.removeChild(textArea);
                     translateY: 7,
                     duration : 50,
                     direction: 'alternate',
-                    easing: 'easeInOutSine'
+                    easing: 'easeInOutSine',
+                    complete: async () => {
+
+                        vue.disabled = false
+
+
+                    }
                 });
 
 
@@ -1604,6 +1652,8 @@ document.body.removeChild(textArea);
        
 
             pressKey : function(event,key,keyboard) {
+
+                this.disabled = true
 
                 //console.log(event)
 
@@ -1803,7 +1853,7 @@ this.makePersonalRiddle()
 
 
 
-<style>
+<style scoped>
 
 html, body {
   overflow: hidden;

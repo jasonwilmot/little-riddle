@@ -440,7 +440,7 @@ return new Promise(resolve => {
 
 
 
-<style>
+<style scoped>
 
 html, body {
   overflow: hidden;
