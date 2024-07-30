@@ -1,115 +1,66 @@
 <template>
 
-    <div class='h-screen'>
-    
-    <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl"><a href='/'>
+<div class='h-screen'>
 
-        <span id='hint1' class='inline-block' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
-        <span id='hint2' class='inline-block' :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
-        <span id='hint3' class='inline-block' :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
-        <span id='hint4' class='inline-block' :class='hintCount>=4?"text-blue-200":"text-blue-500"'>T</span>
-        <span id='hint5' class='inline-block' :class='hintCount>=5?"text-blue-200":"text-blue-500"'>L</span>
-        <span id='hint6' class='inline-block' :class='hintCount>=6?"text-blue-200":"text-blue-500"'>E</span>
-        <span>&nbsp;</span>
-        <span id='hint7' class='inline-block' :class='hintCount>=7?"text-blue-200":"text-blue-500"'>R</span>
-        <span id='hint8' class='inline-block' :class='hintCount>=8?"text-blue-200":"text-blue-500"'>I</span>
-        <span id='hint9' class='inline-block' :class='hintCount>=9?"text-blue-200":"text-blue-500"'>D</span>
-        <span id='hint10' class='inline-block'  :class='hintCount>=10?"text-blue-200":"text-blue-500"'>D</span>
-        <span id='hint11' class='inline-block'  :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
-        <span id='hint12' class='inline-block'  :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
+  <!-- logo -->
+   <div class="luckiest bg-white mt-5 md:mt-8 text-center text-4xl"><a href='/'>
+      <span id='hint1' class='inline-block' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
+      <span id='hint2' class='inline-block' :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
+      <span id='hint3' class='inline-block' :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
+      <span id='hint4' class='inline-block' :class='hintCount>=4?"text-blue-200":"text-blue-500"'>T</span>
+      <span id='hint5' class='inline-block' :class='hintCount>=5?"text-blue-200":"text-blue-500"'>L</span>
+      <span id='hint6' class='inline-block' :class='hintCount>=6?"text-blue-200":"text-blue-500"'>E</span>
+      <span>&nbsp;</span>
+      <span id='hint7' class='inline-block' :class='hintCount>=7?"text-blue-200":"text-blue-500"'>R</span>
+      <span id='hint8' class='inline-block' :class='hintCount>=8?"text-blue-200":"text-blue-500"'>I</span>
+      <span id='hint9' class='inline-block' :class='hintCount>=9?"text-blue-200":"text-blue-500"'>D</span>
+      <span id='hint10' class='inline-block'  :class='hintCount>=10?"text-blue-200":"text-blue-500"'>D</span>
+      <span id='hint11' class='inline-block'  :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
+      <span id='hint12' class='inline-block'  :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
+      </a>
+   </div>
 
-    </a></div>
+   <div  class="text-center h-full">
+      <div class='flex' v-show='riddle.hint !== "" && !make || make' id="riddleContainer">
 
-    
-
-    <div  class="text-center h-full">
-
-        <div class='flex' v-show='riddle.hint !== "" && !make || make' id="riddleContainer">
-
-
-            <div class="w-full p-2 mx-auto" v-show="nudge">
-            
-                <div v-if='nudgeVariation === 1' class='flex flex-col'>
-              <div class="text-2xl mx-auto px-4 my-4 text-gray-600 lato">Appreciate Little Riddle?  Send a kind note and get all 2000+ riddles plus future riddles forever.</div>
-            
-              <a class='mt-2' href='/buycoffee'><button class="rounded rounded-xl py-4 px-4 bg-purple-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
-
+        <!-- nudge -->
+         <div class="w-full p-2 mx-auto" v-show="nudge">
+            <div v-if='nudgeVariation === 1' class='flex flex-col'>
+               <div class="text-2xl mx-auto px-4 my-4 text-gray-600 lato">Appreciate Little Riddle?  Send a kind note and get all 2000+ riddles plus future riddles forever.</div>
+               <a class='mt-2' href='/buycoffee'><button class="rounded rounded-xl py-4 px-4 bg-purple-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
                <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
-
-               </div>
-
-               <div v-if='nudgeVariation === 2' class='flex flex-col'>
+            </div>
+            <div v-if='nudgeVariation === 2' class='flex flex-col'>
                <div class="text-2xl mx-auto my-4 text-gray-600 px-4 lato">Enjoying Little Riddle?  Show your appreciation, send me a note, and get all the riddle packs.</div>
-
-              
                <a class='mt-2' href='/buycoffee'><button class="rounded rounded-xl  py-4 px-4 bg-yellow-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
-
                <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">Maybe Next Time</div>
-
-               </div>
-
-
-               <div v-if='nudgeVariation === 3' class='flex flex-col'>
+            </div>
+            <div v-if='nudgeVariation === 3' class='flex flex-col'>
                <div class="text-2xl mx-auto my-4 px-4 text-gray-600 lato">Want more Little Riddles?  Make a small donation, add a suggestion, and get all new riddles forever.</div>
-
-
                <a class='mt-2 inline-block' href='/buycoffee'><button class="rounded rounded-xl  py-4 px-4 bg-pink-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
-
-
                <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
-               </div>
-
-              
-               
-
-                
-            
             </div>
-
-            <div class="w-full px-2 pt-1" v-show="make">
-
-                <div class="text-xl text-gray-700 lato mb-2">Create your own riddle and share it:</div>
-            
-                <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full capitalize' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
-                
-                <span v-if='makeRiddle === "" && makerFocusIndex !== 1' class="my-auto text-gray-400">{{ placeholderArray[0] }}</span>
-                
-                </div>
-
-                <div style='height:44px' @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeAnswer1 === "" && makerFocusIndex !== 2' class="text-gray-400">{{ placeholderArray[1] }}</span>
-
-                </div>
-
-                <div style='height:44px' @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeAnswer2 === "" && makerFocusIndex !== 3' class="text-gray-400">{{ placeholderArray[2] }}</span>
-                
-                </div>
-
-                <div style='height:44px' @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeClue1 === "" && makerFocusIndex !== 4' class="text-gray-400">{{ placeholderArray[3] }}</span>
-                
-                </div>
-
-                <div style='height:44px' @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeClue2 === "" && makerFocusIndex !== 5' class="text-gray-400">{{ placeholderArray[4] }}</span>
-                
-                </div>
-
-                
-                
-            
-            
+         </div>
+         <div class="w-full px-2 pt-1" v-show="make">
+            <div class="text-xl text-gray-700 lato mb-2">Create your own riddle and share it:</div>
+            <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full capitalize' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
+               <span v-if='makeRiddle === "" && makerFocusIndex !== 1' class="my-auto text-gray-400">{{ placeholderArray[0] }}</span>
             </div>
-
-            <div class='mt-12 grow flex justify-end' v-show="catTime && !make & !nudge">
-                
-
-             <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
+            <div style='height:44px' @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
+               <span v-if='makeAnswer1 === "" && makerFocusIndex !== 2' class="text-gray-400">{{ placeholderArray[1] }}</span>
+            </div>
+            <div style='height:44px' @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
+               <span v-if='makeAnswer2 === "" && makerFocusIndex !== 3' class="text-gray-400">{{ placeholderArray[2] }}</span>
+            </div>
+            <div style='height:44px' @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
+               <span v-if='makeClue1 === "" && makerFocusIndex !== 4' class="text-gray-400">{{ placeholderArray[3] }}</span>
+            </div>
+            <div style='height:44px' @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+               <span v-if='makeClue2 === "" && makerFocusIndex !== 5' class="text-gray-400">{{ placeholderArray[4] }}</span>
+            </div>
+         </div>
+         <div class='mt-12 grow flex justify-end' v-show="catTime && !make & !nudge">
+            <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
             <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" /> 
             <img class='h-48' v-if='animalIndex === 2' src="/images/cat.webp" /> 
             <img class='h-48' v-if='animalIndex === 3' src="/images/doggie2.webp" /> 
@@ -117,212 +68,90 @@
             <img class='h-72' v-if='animalIndex === 5' src="/images/corgieCrop.gif" /> 
             <img class='h-48' v-if='animalIndex === 6' src="/images/ostrich.gif" /> 
             <img class='h-48' v-if='animalIndex === 7' src="/images/gorilla.gif" /> 
-            
-            
-
+         </div>
+         <div class='grow' v-show="!catTime && !make && !nudge">
+            <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'>
+               <div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div>
             </div>
-
-
-            <div class='grow' v-show="!catTime && !make && !nudge">
-
-                        <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'><div class='max-w-2xl mx-auto'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div></div>
-
-                    <div  id='hintContainer' style='height : 76px; color:#ffffff;' class="flex bitter text-3xl mt-2 mb-2 md:mb-4 mx-6"><div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div></div>
-
-                    
-                
-
-                    <div id='answer' class="mt-1 mx-4">
-
-            <div class="flex items-center justify-center mx-auto roboto"> 
-                <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
-            {{ riddleWordArray[index] || '\u00A0' }}
+            <div  id='hintContainer' style='height : 76px; color:#ffffff;' class="flex bitter text-3xl mt-2 mb-2 md:mb-4 mx-6">
+               <div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div>
             </div>
+            <div id='answer' class="mt-1 mx-4">
+               <div class="flex items-center justify-center mx-auto roboto">
+                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                     {{ riddleWordArray[index] || '\u00A0' }}
+                  </div>
+               </div>
+               <div class="flex items-center justify-center mx-auto md:mt-4 mt-2">
+                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+                     {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
+                  </div>
+               </div>
             </div>
-
-
-            <div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
-            <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
-            {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
+         </div>
+      </div>
+      <div v-show='!make' class="md:mt-8 mt-6">
+         <transition name="fade">
+            <div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-200 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-500 border-blue-500 border-2 ' v-if="waitingForNextRiddle && started">
+               <div class="flex">
+                  <span class="my-auto lato">Next Riddle</span>
+                  <ChevronRightIcon class='my-auto text-blue-500 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
+               </div>
             </div>
-            </div>
-
-            </div>
-
-            </div>
-
-</div>
-
-
-
-
-<div v-show='!make' class="md:mt-8 mt-6">
-    <transition name="fade">
-<div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-200 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-500 border-blue-500 border-2 ' v-if="waitingForNextRiddle && started">
-    
-    <div class="flex">
-    <span class="my-auto lato">Next Riddle</span>
-    <ChevronRightIcon class='my-auto text-blue-500 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
-    </div>
-
-</div>
-</transition>
-<div>
-<div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
-</div>
-
-<div>
-<div v-if="copiedToClipboard" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-lg'>Riddle link copied to clipboard</div>
-</div>
-
-</div>
-
-
-
-
-
-
-
-    </div>
-    <div class="w-full border border-t-1 border-r-0 border-l-0 border-b-0 border-gray-300 absolute bottom-0 left-0 bg-gray-100 p-2 pt-3">
-
-       
-       
-
-
-        <div class="flex justify-between items-stretch  roboto">
-
-            <div :disabled="disabled" :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
-            
-                {{key}}
-            
-            </div>
-
-        </div>
-
-        <div class="px-2 my-3">
-
-        <div class="w-full flex justify-between roboto">
-
+         </transition>
+         <div>
+            <div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
+         </div>
+         <div>
+            <div v-if="copiedToClipboard" class='bitter inline-block rounded py-2 px-4 capitalize bg-gray-400 text-white italic text-lg'>Riddle link copied to clipboard</div>
+         </div>
+      </div>
+   </div>
+   <div class="w-full border border-t-1 border-r-0 border-l-0 border-b-0 border-gray-300 absolute bottom-0 left-0 bg-gray-100 p-2 pt-3">
+      <div class="flex justify-between items-stretch  roboto">
+         <div :disabled="disabled" :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[0]">
+            {{key}}
+         </div>
+      </div>
+      <div class="px-2 my-3">
+         <div class="w-full flex justify-between roboto">
             <div :disabled="disabled" :id='"key" + key' @click='pressKey($event, key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[1]">
-            
+               {{key}}
+            </div>
+         </div>
+      </div>
+      <div class="w-full flex justify-between roboto">
+         <a href='/about' class="bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto">
+            <div>
+               <div class='flex'>
+                  <QuestionMarkCircleIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+               </div>
+            </div>
+         </a>
+        
+         <div :disabled="disabled" :id='"key" + key' @click='pressKey($event,key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
             {{key}}
-        
-        </div>
-
-    </div>
-
-    </div>
-
-    <div class="w-full flex justify-between roboto">
-
-        <a href='/about' class="bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto"><div>
-            
+         </div>
+         <div :disabled="disabled" id='deleteKey' @click='deleteKey($event)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             <div class='flex'>
-              <QuestionMarkCircleIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+               <BackspaceIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
-        
-        </div></a>
-
-        <!-- <div :disabled="disabled" @click='clearKey($event)' ref="parentDiv" class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
-            
-            <div class='flex'>
-              <TrashIcon class='text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
-            </div>
-        
-        </div> -->
-
-        <div :disabled="disabled" :id='"key" + key' @click='pressKey($event,key)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto' v-for="key in keyboard[2]">
-            
-            {{key}}
-        
-        </div>
-
-        <div :disabled="disabled" id='deleteKey' @click='deleteKey($event)' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
-            
-            <div class='flex'>
-              <BackspaceIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
-            </div>
-        
-        </div>
-
-        </div>
-
-        <div class="w-full mt-2 flex justify-between roboto">
-
-            
-
-            
-
-             <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
-                
-                +{{ hintCount }}
-            
-            </div> 
-
-            <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
-
-            <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
-
-            <div :disabled="disabled" v-if='make' id='space' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
-
-            <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
-
-           
-
-                <a :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
-
-            <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
-            
-           
-
-            <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
-
-            <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
-
-
-
-            
-            
-            
-
-            
-
-</div>
-
-
-    </div>
-
-    
-
-
-        <!-- <h1>Guess the mystery rhyming words using a little clue</h1>
-
-        <div>Clue: 'Small Puzzle'</div>
-        <div>Answer: 'Little Riddle'</div>
-
-        <button class="bg-green-500 text-xl py-2 px-4 text-white rounded-xl">Play Now</button> -->
-
-        <!-- 
-
-       
-        <div class="mt-8">
-
-        <div class="flex items-center justify-center mx-auto"> 
-            <div class='w-8 h-8 p-2 mr-1 border rounded' v-for="firstWordletter in firstWordAnswer">
-        {{ firstWordletter }}
-        </div>
-    </div>
-       
-
-    <div class="flex items-center justify-center mx-auto mt-4"> 
-        <div class='w-8 h-8 p-2 mr-1 border rounded' v-for="secondWordletter in secondWordAnswer">
-        {{ secondWordletter }}
-        </div>
-        </div>
-
-    </div> -->
-
+         </div>
+      </div>
+      <div class="w-full mt-2 flex justify-between roboto">
+         <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+            +{{ hintCount }}
+         </div>
+         <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+         <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
+         <div :disabled="disabled" v-if='make' id='space' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
+         <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
+         <a :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+         <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+         <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+         <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+      </div>
+   </div>
    
 </div>
    
