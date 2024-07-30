@@ -66,35 +66,37 @@
             
             </div>
 
-            <div class="w-full p-2" v-show="make">
+            <div class="w-full px-2 pt-1" v-show="make">
+
+                <div class="text-xl text-gray-700 lato mb-2">Create your own riddle and share it:</div>
             
-                <div @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
                 
-                <span v-if='makeRiddle === ""' class="text-gray-400">{{ placeholderArray[0] }}</span>
-                
-                </div>
-
-                <div @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeAnswer1 === ""' class="text-gray-400">{{ placeholderArray[1] }}</span>
-
-                </div>
-
-                <div @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
-                
-                    <span v-if='makeAnswer2 === ""' class="text-gray-400">{{ placeholderArray[2] }}</span>
+                <span v-if='makeRiddle === "" && makerFocusIndex !== 1' class="my-auto text-gray-400">{{ placeholderArray[0] }}</span>
                 
                 </div>
 
-                <div @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
                 
-                    <span v-if='makeClue1 === ""' class="text-gray-400">{{ placeholderArray[3] }}</span>
+                    <span v-if='makeAnswer1 === "" && makerFocusIndex !== 2' class="text-gray-400">{{ placeholderArray[1] }}</span>
+
+                </div>
+
+                <div style='height:44px' @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeAnswer2 === "" && makerFocusIndex !== 3' class="text-gray-400">{{ placeholderArray[2] }}</span>
                 
                 </div>
 
-                <div @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":""' class='border w-full text-left p-2 mb-3 rounded text-lg align-center h-10'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
                 
-                    <span v-if='makeClue2 === ""' class="text-gray-400">{{ placeholderArray[4] }}</span>
+                    <span v-if='makeClue1 === "" && makerFocusIndex !== 4' class="text-gray-400">{{ placeholderArray[3] }}</span>
+                
+                </div>
+
+                <div style='height:44px' @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+                
+                    <span v-if='makeClue2 === "" && makerFocusIndex !== 5' class="text-gray-400">{{ placeholderArray[4] }}</span>
                 
                 </div>
 
@@ -116,18 +118,7 @@
             <img class='h-48' v-if='animalIndex === 6' src="/images/ostrich.gif" /> 
             <img class='h-48' v-if='animalIndex === 7' src="/images/gorilla.gif" /> 
             
-            <!-- <img class='h-48 align-right' v-show='animalIndex === 0' src="/images/donkey.gif" />
-            <img class='h-48' v-show='animalIndex === 1' src="/images/elephant.gif" />
-            <img class='h-48' v-show='animalIndex === 2' src="/images/goatgif.gif" />
-            <img class='h-48' v-show='animalIndex === 3' src="/images/llama.gif" />
-            <img class='h-48' v-show='animalIndex === 4' src="/images/monkey.gif" />
-            <img class='h-48' v-show='animalIndex === 5' src="/images/ostrich.gif" />
-            <img class='h-48' v-show='animalIndex === 6' src="/images/pig.gif" />
-            <img class='h-48' v-show='animalIndex === 7' src="/images/ram.gif" />
-            <img class='h-48' v-show='animalIndex === 8' src="/images/rhino.gif" />
-            <img class='h-48' v-show='animalIndex === 9' src="/images/sheep.gif" />
-            <img class='h-48' v-show='animalIndex === 10' src="/images/yak.gif" />
-            <img class='h-48' v-show='animalIndex === 11' src="/images/zebra.gif" /> -->
+            
 
             </div>
 
@@ -144,14 +135,14 @@
                     <div id='answer' class="mt-1 mx-4">
 
             <div class="flex items-center justify-center mx-auto roboto"> 
-                <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-700  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
             {{ riddleWordArray[index] || '\u00A0' }}
             </div>
             </div>
 
 
             <div class="flex items-center justify-center mx-auto md:mt-4 mt-2"> 
-            <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-700 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+            <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
             {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
             </div>
             </div>
@@ -165,9 +156,9 @@
 
 
 
-<div class="md:mt-8 mt-6">
+<div v-show='!make' class="md:mt-8 mt-6">
     <transition name="fade">
-<div @click='nextRiddle($event)' class=' bg-blue-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-700 border-blue-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-blue-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-700 border-blue-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
     <span class="my-auto bitter">Next Riddle</span>
@@ -273,7 +264,7 @@
 
             <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
-            <div :disabled="disabled" v-if='make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
+            <div :disabled="disabled" v-if='make' id='space' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
 
             <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
 
@@ -1109,6 +1100,14 @@ this.adjustFontSizeToFit()
 
         nextRiddle : async function(event) {
 
+
+            animejs({
+        targets: "#nextRiddleButton",
+        scale: [1, 0.85, 1],  // Scale down and then back to original size
+        duration: 200,       // Duration of the animation in milliseconds
+        easing: 'easeInOutQuad'  // Easing function for smooth effect
+      });
+
             //handle nudging for payment
             if (this.riddleCount === this.nudgeInterval) {
 
@@ -1263,6 +1262,8 @@ this.adjustFontSizeToFit()
         },
 
         handleKeydown : function(event) {
+
+            event.preventDefault();
       // Check if the key is alphanumeric or delete
       const key = event.key;
 
@@ -1270,6 +1271,26 @@ this.adjustFontSizeToFit()
 
       const isAlphanumeric = /^[a-z]$/i.test(key); // Check if alphanumeric
       const isDelete = key === 'Backspace' || key === 'Delete';
+
+      if ( key === 'Tab' && this.make ) {
+
+        console.log(this.makerFocusIndex)
+
+        if ( this.makerFocusIndex === 5 ) {
+
+            this.makerFocusIndex = 1
+
+             
+       } else {
+
+            this.makerFocusIndex++ 
+
+        }
+
+        
+
+
+      }
 
       if ( key === 'Enter' && this.solved ) {
 
@@ -1296,7 +1317,7 @@ this.adjustFontSizeToFit()
       if ( key === ' ' && this.make ) {
 
 
-        this.pressKey(event,"Space")
+        this.pressKey(event,"Space",true)
 
       }
     },
@@ -1494,6 +1515,17 @@ document.body.removeChild(textArea);
             // Step 3: Add value to the chosen slot
             array[randomIndex] = this.riddleWordLettersArray[randomIndex];
 
+            animejs({
+                                targets: '#letter' + randomIndex,
+                                scale: 1.2,
+                                duration : 70,
+                                delay : 0,
+                                direction: 'alternate',
+                                easing: 'easeInOutSine'
+                            });
+
+
+
             return array;
 },
 
@@ -1558,6 +1590,15 @@ document.body.removeChild(textArea);
                 console.log('first one')
                 this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
 
+                animejs({
+                                targets: '#letter' + blankIndex,
+                                scale: 1.2,
+                                duration : 70,
+                                delay : 0,
+                                direction: 'alternate',
+                                easing: 'easeInOutSine'
+                            });
+
 
             } else {
 
@@ -1607,6 +1648,8 @@ document.body.removeChild(textArea);
 
         animateKeyPress : function(event,keyboard, key) {
 
+            console.log(key)
+
             if ( this.disabled === true ) { return }
 
             this.disabled = true
@@ -1619,9 +1662,16 @@ document.body.removeChild(textArea);
 
             if ( keyboard ) {
 
+                console.log('@@@@@@@@@@')
+
+                if ( key === 'Space') {
+
+                  
+
+                    element = document.getElementById('space') }
                
 
-                if ( key === 'Backspace' || key === 'Delete ') {
+                else if ( key === 'Backspace' || key === 'Delete ') {
 
                     
                     element = document.getElementById('deleteKey')
