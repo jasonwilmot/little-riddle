@@ -4,19 +4,19 @@
     
     <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl"><a href='/'>
 
-        <span :class='hintCount>=1?"text-red-500":"text-blue-500"'>L</span>
-        <span :class='hintCount>=2?"text-red-500":"text-blue-500"'>I</span>
-        <span :class='hintCount>=3?"text-red-500":"text-blue-500"'>T</span>
-        <span :class='hintCount>=4?"text-red-500":"text-blue-500"'>T</span>
-        <span :class='hintCount>=5?"text-red-500":"text-blue-500"'>L</span>
-        <span :class='hintCount>=6?"text-red-500":"text-blue-500"'>E</span>
+        <span id='hint1' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
+        <span :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
+        <span :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
+        <span :class='hintCount>=4?"text-blue-200":"text-blue-500"'>T</span>
+        <span :class='hintCount>=5?"text-blue-200":"text-blue-500"'>L</span>
+        <span :class='hintCount>=6?"text-blue-200":"text-blue-500"'>E</span>
         <span>&nbsp;</span>
-        <span :class='hintCount>=7?"text-red-500":"text-blue-500"'>R</span>
-        <span :class='hintCount>=8?"text-red-500":"text-blue-500"'>I</span>
-        <span :class='hintCount>=9?"text-red-500":"text-blue-500"'>D</span>
-        <span :class='hintCount>=10?"text-red-500":"text-blue-500"'>D</span>
-        <span :class='hintCount>=11?"text-red-500":"text-blue-500"'>L</span>
-        <span :class='hintCount>=12?"text-red-500":"text-blue-500"'>E</span>
+        <span :class='hintCount>=7?"text-blue-200":"text-blue-500"'>R</span>
+        <span :class='hintCount>=8?"text-blue-200":"text-blue-500"'>I</span>
+        <span :class='hintCount>=9?"text-blue-200":"text-blue-500"'>D</span>
+        <span :class='hintCount>=10?"text-blue-200":"text-blue-500"'>D</span>
+        <span :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
+        <span :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
 
     </a></div>
 
@@ -30,33 +30,33 @@
             <div class="w-full p-2 mx-auto" v-show="nudge">
             
                 <div v-if='nudgeVariation === 1' class='flex flex-col'>
-              <div class="text-2xl mx-auto px-4 my-4 text-gray-600">Appreciate Little Riddle?  Send a kind note and get all 2000+ riddles plus future riddles forever.</div>
+              <div class="text-2xl mx-auto px-4 my-4 text-gray-600 lato">Appreciate Little Riddle?  Send a kind note and get all 2000+ riddles plus future riddles forever.</div>
             
-               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+              <a class='mt-2' href='/buycoffee'><button class="rounded rounded-xl py-4 px-4 bg-purple-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
 
-               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
+               <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
 
                </div>
 
                <div v-if='nudgeVariation === 2' class='flex flex-col'>
-               <div class="text-2xl mx-auto my-4 text-gray-600 px-4 ">Enjoying Little Riddle?  Show your appreciation, send me a note, and get all the riddle packs.</div>
+               <div class="text-2xl mx-auto my-4 text-gray-600 px-4 lato">Enjoying Little Riddle?  Show your appreciation, send me a note, and get all the riddle packs.</div>
 
               
-               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=607FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+               <a class='mt-2' href='/buycoffee'><button class="rounded rounded-xl  py-4 px-4 bg-yellow-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
 
-               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">Maybe Next Time</div>
+               <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">Maybe Next Time</div>
 
                </div>
 
 
                <div v-if='nudgeVariation === 3' class='flex flex-col'>
-               <div class="text-2xl mx-auto my-4 px-4 text-gray-600">Want more Little Riddles?  Make a small donation, make some suggestions, and get all new riddles forever.</div>
+               <div class="text-2xl mx-auto my-4 px-4 text-gray-600 lato">Want more Little Riddles?  Make a small donation, add a suggestion, and get all new riddles forever.</div>
 
 
-               <div class="mx-auto mt-2"><a href="https://www.buymeacoffee.com/little_riddle"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=little_riddle&button_colour=BD5FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+               <a class='mt-2 inline-block' href='/buycoffee'><button class="rounded rounded-xl  py-4 px-4 bg-pink-500 text-white text-2xl">☕️ Buy Me A Coffee</button></a>
 
 
-               <div class='my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
+               <div class='lato cursor-pointer my-6 mx-auto text-gray-600' @click="nextRiddle($event)">No Thanks</div>
                </div>
 
               
@@ -105,10 +105,17 @@
             </div>
 
             <div class='mt-12 grow flex justify-end' v-show="catTime && !make & !nudge">
+                
 
              <img class='h-48' v-if='animalIndex === 0' src="/images/cute-animated-cat-tutorial.gif" />
-            <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" />
-            <img class='h-48' v-if='animalIndex === 2' src="/images/doggie.webp" />
+            <img class='h-72' v-if='animalIndex === 1' src="/images/dog.webp" /> 
+            <img class='h-48' v-if='animalIndex === 2' src="/images/cat.webp" /> 
+            <img class='h-48' v-if='animalIndex === 3' src="/images/doggie2.webp" /> 
+            <img class='h-48' v-if='animalIndex === 4' src="/images/sheep.gif" />
+            <img class='h-72' v-if='animalIndex === 5' src="/images/corgieCrop.gif" /> 
+            <img class='h-48' v-if='animalIndex === 6' src="/images/ostrich.gif" /> 
+            <img class='h-48' v-if='animalIndex === 7' src="/images/gorilla.gif" /> 
+            
             <!-- <img class='h-48 align-right' v-show='animalIndex === 0' src="/images/donkey.gif" />
             <img class='h-48' v-show='animalIndex === 1' src="/images/elephant.gif" />
             <img class='h-48' v-show='animalIndex === 2' src="/images/goatgif.gif" />
@@ -256,11 +263,11 @@
 
             
 
-            <!-- <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+             <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
                 
                 +{{ hintCount }}
             
-            </div> -->
+            </div> 
 
             <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
 
@@ -272,9 +279,9 @@
 
            
 
-                <a :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+                <a :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-            <div :disabled="disabled" :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+            <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
             
            
 
@@ -382,7 +389,7 @@ export default {
             disabled : false,
             nudgeVariation : 1,
             nudge : false,
-            nudgeInterval : 1,
+            nudgeInterval : 5,
             riddleCount : 0,
             makerFocusIndex : 0,
             makeRiddle : "",
@@ -541,26 +548,26 @@ export default {
     return "border-blue-500 bg-blue-100 text-blue-600"
     break;
   case 1:
-    return "bg-red-200 border-red-200 text-red-600"
+    return "bg-blue-200 border-blue-200 text-blue-600"
     break;
   case 2:
-  return "bg-red-300 border-red-300 text-red-600"
+  return "bg-blue-300 border-blue-300 text-blue-600"
     break;
   case 3:
-  return "bg-red-400 border-red-400 text-white"
+  return "bg-blue-400 border-blue-400 text-white"
     break;
   case 4:
-  return "bg-red-500 border-red-500 text-white"
+  return "bg-blue-500 border-blue-500 text-white"
     break;
   case 5:
-  return "bg-red-600 border-red-600 text-white"
+  return "bg-blue-600 border-blue-600 text-white"
     break;
   case 6:
-  return "bg-red-700 border-red-700 text-white"
+  return "bg-blue-700 border-blue-700 text-white"
     break;
  
   default:
-    return "bg-red-700 border-red-700 text-white"
+    return "bg-blue-700 border-blue-700 text-white"
 }
 
 
@@ -1148,7 +1155,7 @@ this.adjustFontSizeToFit()
 
 
             
-            var showAnimal = this.getRandomNumber(0,4) === 2 ? true : false
+            var showAnimal = this.getRandomNumber(0,6) === 2 ? true : false
 
 
 
@@ -1205,14 +1212,16 @@ this.adjustFontSizeToFit()
             this.catTime = true
             await this.delay(100)
 
-            this.animalIndex = this.getRandomNumber(0,2)
+            this.animalIndex = this.getRandomNumber(0,7)
+
+            
 
            // document.getElementById('riddleContainer').style.left = -window.innerWidth + "px"
           
           // Move the div back to the original position
           animejs({
             targets: '#riddleContainer',
-            translateX: movement / 1.7,
+            translateX: movement / 1.5,
             duration: 2000,
             delay : 200,
             easing: 'linear',
@@ -1365,7 +1374,7 @@ document.body.removeChild(textArea);
 
         shareRiddle : function(event) {
 
-            this.disabled = true
+            //this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1403,7 +1412,7 @@ document.body.removeChild(textArea);
         nextHint : function(event) {
 
             this.copiedToClipboard = false //just hide any previous clipboard stuff
-            this.disabled = true
+           // this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1434,8 +1443,14 @@ document.body.removeChild(textArea);
         deductCredit : function() {
 
             this.hintCount++
-
             this.riddle.score = this.riddle.score - 5
+
+            var vue = this
+
+            console.log(this.hintCount)
+
+
+           
 
 
             //localStorage.setItem('points', localStorage.getItem("points") - 1);
@@ -1447,7 +1462,7 @@ document.body.removeChild(textArea);
 
         clearKey : function(event) {
 
-            this.disabled = true
+           // this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1485,7 +1500,7 @@ document.body.removeChild(textArea);
 
         deleteKey : function(event,key,keyboard) {
 
-            this.disabled = true
+           // this.disabled = true
            
             this.animateKeyPress(event,keyboard,key)
 
@@ -1531,7 +1546,7 @@ document.body.removeChild(textArea);
 
         hintKey : function(event) {
 
-            this.disabled = true
+           // this.disabled = true
 
             this.animateKeyPress(event)
 
@@ -1592,6 +1607,10 @@ document.body.removeChild(textArea);
 
         animateKeyPress : function(event,keyboard, key) {
 
+            if ( this.disabled === true ) { return }
+
+            this.disabled = true
+
             this.started = true
 
             var vue = this
@@ -1639,6 +1658,8 @@ document.body.removeChild(textArea);
                     easing: 'easeInOutSine',
                     complete: async () => {
 
+                       
+                        
                         vue.disabled = false
 
 
@@ -1653,7 +1674,7 @@ document.body.removeChild(textArea);
 
             pressKey : function(event,key,keyboard) {
 
-                this.disabled = true
+               // this.disabled = true
 
                 //console.log(event)
 
@@ -1853,7 +1874,7 @@ this.makePersonalRiddle()
 
 
 
-<style scoped>
+<style>
 
 html, body {
   overflow: hidden;

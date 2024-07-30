@@ -239,7 +239,16 @@ export default {
 
         await this.delay(1000)
 
-        store.stripe = Stripe('pk_test_51PhhMRAf1FjVNxtqASumSmURU1lFSRcfC5oQaqo4RFdXhEcck5Wo3zr6Mr3vn2t3t5Uw6PRTTgiOsMjVtVFYAyEB006rbreBBJ');
+        if ( store.protocol === 'http:') {
+
+store.stripe = Stripe('pk_test_51PhhMRAf1FjVNxtqASumSmURU1lFSRcfC5oQaqo4RFdXhEcck5Wo3zr6Mr3vn2t3t5Uw6PRTTgiOsMjVtVFYAyEB006rbreBBJ');
+
+} else {
+
+store.stripe = Stripe('pk_live_51PhhMRAf1FjVNxtq0SbxRbF5ZSxWi09iuKO2vdDirtcIGaw7l2TEPvOGgQ8zQ9NGuALHihypz4ocYqIQn5VOlZIA00qik79R9H');
+
+
+}
         
 
         const options = {
@@ -319,7 +328,7 @@ store.paymentElement.mount('#payment-element');
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ note: this.note })
+    body: JSON.stringify({ note: this.note, protocol : store.protocol })
   })
 
          //   const response = await fetch('/api/getPaymentIntent');

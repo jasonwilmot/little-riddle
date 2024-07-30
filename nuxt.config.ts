@@ -9,6 +9,8 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   
   googleFonts: {
+    display: 'block', // 'auto' | 'block' | 'swap' | 'fallback' | 'optional'
+
     families: {
       Merriweather:true,
       Bitter:true,
