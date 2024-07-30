@@ -19,6 +19,9 @@ export default defineNuxtConfig({
     display: 'block', // 'auto' | 'block' | 'swap' | 'fallback' | 'optional'
 
     families: {
+      'Source Sans': true,
+      'Fira Sans': true,
+      'Noto Sans': true,
       Merriweather:true,
       Bitter:true,
       Roboto: true,

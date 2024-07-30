@@ -11,7 +11,7 @@
 }
 
 .lato {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .merriweather {

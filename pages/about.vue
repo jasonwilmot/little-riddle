@@ -8,15 +8,15 @@
 
        
 
-    <div :class='success?"bg-blue-200":"bg-gray-200"' class='p-1 rounded-l-lg'><img class='my-auto rounded round-xl h-16' src="/images/jasonAndGrandma.jpg" /></div>
-    <div :class='success?"bg-blue-200":"bg-gray-200"' class="text-2xl  grow flex rounded-r-lg"><div class='mx-auto my-auto lato font-bold'>{{ success ? "Thank You!!!!" : "About Little Riddle"}} </div></div>
+    <div :class='success?"bg-blue-200":"bg-white"' class='p-1 rounded-xl'><img class='my-auto rounded round-2xl h-16' src="/images/jasonAndGrandma.jpg" /></div>
+    <div :class='success?"bg-blue-200":"bg-white"' class="text-2xl  grow flex rounded-r-lg"><div class='text-gray-600 pl-4 my-auto merriweather font-bold'>{{ success ? "Thank You!!!!" : "About Little Riddle"}} </div></div>
 
 
     </div>
 
     <div v-show="!success">
 
-    <div class="text-gray-600 lato mx-6 my-4">
+    <div class="text-gray-600 merriweather mx-6 my-6">
 
        <div class="mb-2">I'm Jason (jason@bytejelly.com), the humble maker of Little Riddle, a puzzle game originally created as a gift to my grandmother who loves word games.</div> 
 

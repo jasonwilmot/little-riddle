@@ -4,19 +4,19 @@
     
     <div class="luckiest bg-white mt-4 md:mt-8 text-center text-4xl"><a href='/'>
 
-        <span id='hint1' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
-        <span :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
-        <span :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
-        <span :class='hintCount>=4?"text-blue-200":"text-blue-500"'>T</span>
-        <span :class='hintCount>=5?"text-blue-200":"text-blue-500"'>L</span>
-        <span :class='hintCount>=6?"text-blue-200":"text-blue-500"'>E</span>
+        <span id='hint1' class='inline-block' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
+        <span id='hint2' class='inline-block' :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
+        <span id='hint3' class='inline-block' :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
+        <span id='hint4' class='inline-block' :class='hintCount>=4?"text-blue-200":"text-blue-500"'>T</span>
+        <span id='hint5' class='inline-block' :class='hintCount>=5?"text-blue-200":"text-blue-500"'>L</span>
+        <span id='hint6' class='inline-block' :class='hintCount>=6?"text-blue-200":"text-blue-500"'>E</span>
         <span>&nbsp;</span>
-        <span :class='hintCount>=7?"text-blue-200":"text-blue-500"'>R</span>
-        <span :class='hintCount>=8?"text-blue-200":"text-blue-500"'>I</span>
-        <span :class='hintCount>=9?"text-blue-200":"text-blue-500"'>D</span>
-        <span :class='hintCount>=10?"text-blue-200":"text-blue-500"'>D</span>
-        <span :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
-        <span :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
+        <span id='hint7' class='inline-block' :class='hintCount>=7?"text-blue-200":"text-blue-500"'>R</span>
+        <span id='hint8' class='inline-block' :class='hintCount>=8?"text-blue-200":"text-blue-500"'>I</span>
+        <span id='hint9' class='inline-block' :class='hintCount>=9?"text-blue-200":"text-blue-500"'>D</span>
+        <span id='hint10' class='inline-block'  :class='hintCount>=10?"text-blue-200":"text-blue-500"'>D</span>
+        <span id='hint11' class='inline-block'  :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
+        <span id='hint12' class='inline-block'  :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
 
     </a></div>
 
@@ -70,31 +70,31 @@
 
                 <div class="text-xl text-gray-700 lato mb-2">Create your own riddle and share it:</div>
             
-                <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full uppercase' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full capitalize' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
                 
                 <span v-if='makeRiddle === "" && makerFocusIndex !== 1' class="my-auto text-gray-400">{{ placeholderArray[0] }}</span>
                 
                 </div>
 
-                <div style='height:44px' @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(2,$event)' :class='makerFocusIndex === 2?"border-blue-500":"border-gray-400",makeAnswer1===placeholderArray[1]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer1"></span><span v-if='makeAnswer1!=placeholderArray[1] && makerFocusIndex === 2' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeAnswer1 === "" && makerFocusIndex !== 2' class="text-gray-400">{{ placeholderArray[1] }}</span>
 
                 </div>
 
-                <div style='height:44px' @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(3,$event)' :class='makerFocusIndex === 3?"border-blue-500":"border-gray-400",makeAnswer2===placeholderArray[2]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeAnswer2"></span><span v-if='makeAnswer2!=placeholderArray[2] && makerFocusIndex === 3' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeAnswer2 === "" && makerFocusIndex !== 3' class="text-gray-400">{{ placeholderArray[2] }}</span>
                 
                 </div>
 
-                <div style='height:44px' @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(4,$event)' :class='makerFocusIndex === 4?"border-blue-500":"border-gray-400",makeClue1===placeholderArray[3]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue1"></span><span v-if='makeClue1!=placeholderArray[3] && makerFocusIndex === 4' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeClue1 === "" && makerFocusIndex !== 4' class="text-gray-400">{{ placeholderArray[3] }}</span>
                 
                 </div>
 
-                <div style='height:44px' @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full uppercase' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
+                <div style='height:44px' @click='focusMakerField(5,$event)' :class='makerFocusIndex === 5?"border-blue-500":"border-gray-400",makeClue2===placeholderArray[4]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato'><span  class='my-auto  text-left  w-full capitalize' v-html="makeClue2"></span><span v-if='makeClue2!=placeholderArray[4] && makerFocusIndex === 5' class=" my-1 cursor align-center"></span>
                 
                     <span v-if='makeClue2 === "" && makerFocusIndex !== 5' class="text-gray-400">{{ placeholderArray[4] }}</span>
                 
@@ -158,11 +158,11 @@
 
 <div v-show='!make' class="md:mt-8 mt-6">
     <transition name="fade">
-<div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-blue-100 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-700 border-blue-500 border-2 drop-shadow-sm' v-if="waitingForNextRiddle && started">
+<div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-200 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-500 border-blue-500 border-2 ' v-if="waitingForNextRiddle && started">
     
     <div class="flex">
-    <span class="my-auto bitter">Next Riddle</span>
-    <ChevronRightIcon class='my-auto text-blue-700 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
+    <span class="my-auto lato">Next Riddle</span>
+    <ChevronRightIcon class='my-auto text-blue-500 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
     </div>
 
 </div>
@@ -1095,6 +1095,16 @@ this.adjustFontSizeToFit()
 
         },
 
+        calculateSpeed : function(screenWidth) {
+      if (screenWidth < 600) {
+        return 225; // Slower speed for smaller screens (pixels per second)
+      } else if (screenWidth < 1200) {
+        return 300; // Medium speed for medium screens
+      } else {
+        return 400; // Faster speed for larger screens
+      }
+    },
+
         
 
 
@@ -1103,8 +1113,9 @@ this.adjustFontSizeToFit()
 
             animejs({
         targets: "#nextRiddleButton",
-        scale: [1, 0.85, 1],  // Scale down and then back to original size
-        duration: 200,       // Duration of the animation in milliseconds
+        scale: [1.05, 1, 0],  // Scale down and then back to original size
+        opacity: [1, 0],  // Scale down and then back to original size
+        duration: 500,       // Duration of the animation in milliseconds
         easing: 'easeInOutQuad'  // Easing function for smooth effect
       });
 
@@ -1154,7 +1165,8 @@ this.adjustFontSizeToFit()
 
 
             
-            var showAnimal = this.getRandomNumber(0,6) === 2 ? true : false
+            //var showAnimal = this.getRandomNumber(0,6) === 2 ? true : false
+            var showAnimal = this.getRandomNumber(0,0) === 0 ? true : false
 
 
 
@@ -1216,12 +1228,15 @@ this.adjustFontSizeToFit()
             
 
            // document.getElementById('riddleContainer').style.left = -window.innerWidth + "px"
+
+           const speed = this.calculateSpeed(movement)
+           const animalDuration = (movement / speed) * 1000
           
           // Move the div back to the original position
           animejs({
             targets: '#riddleContainer',
             translateX: movement / 1.5,
-            duration: 2000,
+            duration: animalDuration,
             delay : 200,
             easing: 'linear',
             complete: async () => {
@@ -1469,6 +1484,20 @@ document.body.removeChild(textArea);
             var vue = this
 
             console.log(this.hintCount)
+
+            animejs({
+        targets: '#hint' + this.hintCount,
+        rotate: [
+          { value: -360, duration: 300 },
+         // { value: 10, duration: 100 },
+         // { value: -10, duration: 100 },
+         // { value: 0, duration: 50 },
+         
+        ],
+        easing: 'easeInOutQuad'
+      });
+
+
 
 
            
