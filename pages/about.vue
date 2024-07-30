@@ -235,17 +235,20 @@ export default {
         this.pageLoaded = true
 
 
+        const config = useRuntimeConfig()
+
+       
         
 
-        await this.delay(1000)
+        await this.delay(2000)
 
         if ( store.protocol === 'http:') {
 
-store.stripe = Stripe('pk_test_51PhhMRAf1FjVNxtqASumSmURU1lFSRcfC5oQaqo4RFdXhEcck5Wo3zr6Mr3vn2t3t5Uw6PRTTgiOsMjVtVFYAyEB006rbreBBJ');
+store.stripe = Stripe(config.public.Stripe_Public_Prod);
 
 } else {
 
-store.stripe = Stripe('pk_live_51PhhMRAf1FjVNxtq0SbxRbF5ZSxWi09iuKO2vdDirtcIGaw7l2TEPvOGgQ8zQ9NGuALHihypz4ocYqIQn5VOlZIA00qik79R9H');
+store.stripe = Stripe(config.public.Stripe_Public_Prod);
 
 
 }

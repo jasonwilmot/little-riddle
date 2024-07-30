@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      Stripe_Public_Prod: process.env.Stripe_Public_Prod,
+      Stripe_Secret_Prod: process.env.Stripe_Secret_Prod,
+    }
+  },
   app: {
     head: {
       charset: 'utf-8',
