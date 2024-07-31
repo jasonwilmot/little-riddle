@@ -320,11 +320,11 @@ export default {
     ]
 
     store.successSounds = [
-            new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.10}),
-            new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.10}),
-            new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.10}),
-            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.10}),
-            new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.10}),
+            new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.07}),
+            new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.07}),
+            new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.07}),
+            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.07}),
+            new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.07}),
     ]
 
 
