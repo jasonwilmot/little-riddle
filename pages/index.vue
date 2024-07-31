@@ -310,7 +310,7 @@ export default {
 
         store.keySounds = [
             new Howl({src: "/sounds/click_soft_tap.mp3",preload: true, volume: 0.80}),
-            new Howl({src: "/sounds/click_plonk.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/click_plonk.mp3",preload: true,  volume: 0.05}),
             //new Howl({src: "/sounds/pop_hi_4.wav",preload: true,  volume: 0.15})
     ]
 
@@ -320,17 +320,17 @@ export default {
     ]
 
     store.successSounds = [
-            new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.15}),
-            new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.15}),
-            new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.15}),
-            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.15}),
-            new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.10}),
+            new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.10}),
+            new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.10}),
+            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.10}),
+            new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.10}),
     ]
 
 
 
         store.successSounds2 = [
-            new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true,  volume: 0.10}),
             new Howl({src: "/sounds/pad_glow_chord.mp3",preload: true,  volume: 0.15}),
             new Howl({src: "/sounds/pad_glow_coin.mp3",preload: true,  volume: 0.15}),
             new Howl({src: "/sounds/pad_glow_confirm_lo.mp3",preload: true,  volume: 0.15}),
@@ -342,7 +342,7 @@ export default {
 
 
         store.hintSounds = [
-            new Howl({src: "/sounds/click_snap.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_snap.mp3",preload: true,  volume: 0.05})
        
     ]
 
@@ -367,7 +367,7 @@ export default {
     ]
 
     store.makeSounds = [
-            new Howl({src: "/sounds/pad_glow_new.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_pen_on.mp3",preload: true,  volume: 0.15})
        
     ]
 
@@ -495,7 +495,8 @@ export default {
 
             if (this.solved) {
 
-                return "I solved this Little Riddle with " + this.hintCount + " hints:"
+                var hintsWord = this.hintCount === 1 ? "hint" : "hints"
+                return "I solved this Little Riddle with " + this.hintCount + " " + hintsWord + ":"
 
             } else {
 
