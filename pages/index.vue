@@ -309,8 +309,8 @@ export default {
     async mounted() {
 
         store.keySounds = [
-            new Howl({src: "/sounds/pop_hi.mp3",preload: true, volume: 0.15}),
-            new Howl({src: "/sounds/pop_lo_2.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/click_soft_tap.mp3",preload: true, volume: 0.80}),
+            new Howl({src: "/sounds/click_plonk.mp3",preload: true,  volume: 0.15}),
             //new Howl({src: "/sounds/pop_hi_4.wav",preload: true,  volume: 0.15})
     ]
 
@@ -319,7 +319,17 @@ export default {
             new Howl({src: "/sounds/music_marimba_lo_on.mp3",preload: true,  volume: 0.15}),
     ]
 
-        store.successSounds = [
+    store.successSounds = [
+            new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.15}),
+    ]
+
+
+
+        store.successSounds2 = [
             new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true,  volume: 0.15}),
             new Howl({src: "/sounds/pad_glow_chord.mp3",preload: true,  volume: 0.15}),
             new Howl({src: "/sounds/pad_glow_coin.mp3",preload: true,  volume: 0.15}),
@@ -332,7 +342,7 @@ export default {
 
 
         store.hintSounds = [
-            new Howl({src: "/sounds/music_kalimba_lo.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_snap.mp3",preload: true,  volume: 0.15})
        
     ]
 
@@ -342,17 +352,17 @@ export default {
     ]
 
     store.hintSounds2 = [
-            new Howl({src: "/sounds/music_kalimba_on.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_ting_glass.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.deleteSounds = [
-            new Howl({src: "/sounds/pop_clicklo.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_delete.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.nextSounds = [
-            new Howl({src: "/sounds/pad_soft_echo.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_marker_cap.mp3",preload: true,  volume: 0.15})
        
     ]
 
