@@ -197,9 +197,9 @@
          <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
          <!-- share in regular state -->
-         <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+         <a :class='solved?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-         <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+         <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-600"' v-if='!isMobile && !make' class='shareShake key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
       </div>
    </div>
    
@@ -367,7 +367,7 @@ export default {
     ]
 
     store.makeSounds = [
-            new Howl({src: "/sounds/click_pen_on.mp3",preload: true,  volume: 0.15})
+            new Howl({src: "/sounds/click_pen_on.mp3",preload: true,  volume: 0.10})
        
     ]
 
@@ -1720,6 +1720,30 @@ export default {
                     easing: 'easeOutCirc',
 
                 });
+
+
+                animejs({
+                    targets: '#answer',
+                    scale: 1.2,
+                    duration: 500,
+                    delay: 100,
+                    direction: 'alternate',
+                    easing: 'easeOutCirc',
+
+                });
+
+                animejs({
+                targets: '.shareShake',
+                rotate: [
+                    { value: -10, duration: 100 },
+                     { value: 10, duration: 100 },
+                     { value: -10, duration: 100 },
+                     { value: 0, duration: 50 },
+
+                ],
+                easing: 'easeInOutQuad',
+                loop : 6
+            });
 
                 this.newPlayer = false
 
