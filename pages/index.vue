@@ -268,7 +268,7 @@ export default {
             makeClue1: "",
             makeClue2: "",
 
-            placeholderArray: ["Enter your riddle", "Rhyming Word 1", "Rhyming Word 2", "Clue 1", "Clue 2"],
+            placeholderArray: ["Enter your riddle", "Rhyming Word 1", "Rhyming Word 2", "Hint 1", "Hint 2"],
 
             productDescription: "In this clever twist on classic word puzzles, players must guess two rhyming words based on a single, cryptic clue.",
             productName: "Little Riddle",
@@ -1552,7 +1552,7 @@ export default {
 
             if (this.make) {
 
-                if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
+                if ( !this.mute ) {store.keySounds[0].play()}
 
                 if (key === 'Space') {
 
