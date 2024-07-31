@@ -44,7 +44,7 @@
 
           <!-- maker -->
          <div class="w-full px-2 pt-1" v-show="make">
-            <div class="text-xl text-gray-700 lato mb-2">Create your own riddle and share it:</div>
+            <div class="text-lg text-gray-700 lato mb-2">Create a Little Riddle and share it:</div>
             <div style='height:44px' @click='focusMakerField(1,$event)' :class='makerFocusIndex === 1?"border-blue-500":"border-gray-400",makeRiddle===placeholderArray[0]?"text-gray-400":"text-gray-700"' class='border w-full text-left p-2 mb-3 rounded text-lg align-center lato '><span  class='my-auto  text-left  w-full capitalize' v-html="makeRiddle"></span><span v-if='makeRiddle!=placeholderArray[0] && makerFocusIndex === 1' class=" my-1  cursor align-center"></span>
                <span v-if='makeRiddle === "" && makerFocusIndex !== 1' class="my-auto text-gray-400">{{ placeholderArray[0] }}</span>
             </div>
@@ -174,8 +174,14 @@
       </div>
       <div class="w-full mt-2 flex justify-between roboto">
 
-         <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
+         <!-- <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
             +{{ hintCount }}
+         </div> -->
+         <div :disabled="disabled" id='deleteKey' @click='muteAudio()' class='bg-blue-100 border-blue-500 text-blue-600  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+            <div class='flex'>
+                <SpeakerXMarkIcon v-if='mute' class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+               <SpeakerWaveIcon v-else class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
+            </div>
          </div>
 
          <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
@@ -183,7 +189,7 @@
          <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
          <div :disabled="disabled" v-if='make' id='space' class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
-         <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="make = !make">Make</div>
+         <div class='bg-blue-100 key border-blue-500 text-blue-600  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="flipMake()">Make</div>
 
           <!-- share in make state -->
          <a :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-600"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
@@ -219,7 +225,9 @@ import {
     ChevronRightIcon,
     PuzzlePieceIcon,
     TrashIcon,
-    QuestionMarkCircleIcon
+    QuestionMarkCircleIcon,
+    SpeakerWaveIcon,
+    SpeakerXMarkIcon
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -233,7 +241,9 @@ export default {
         TrashIcon,
         ChevronRightIcon,
         PuzzlePieceIcon,
-        QuestionMarkCircleIcon
+        QuestionMarkCircleIcon,
+        SpeakerWaveIcon,
+    SpeakerXMarkIcon
     },
 
     //======================================================================================
@@ -241,6 +251,7 @@ export default {
     data: function() {
         return {
 
+            mute : false,
             clickSounds : [],
             randomNoteArray : [],
             animalImageArray : ["/images/cute-animated-cat-tutorial.gif" ,"/images/dog.webp","/images/cat.webp","/images/doggie2.webp","/images/sheep.gif","/images/corgieCrop.gif", "/images/ostrich.gif","/images/gorilla.gif" ],
@@ -296,6 +307,78 @@ export default {
     },
 
     async mounted() {
+
+        store.keySounds = [
+            new Howl({src: "/sounds/pop_hi.mp3",preload: true}),
+            new Howl({src: "/sounds/pop_hi_2.mp3",preload: true}),
+            new Howl({src: "/sounds/pop_hi_4.wav",preload: true})
+    ]
+
+    store.muteSounds = [
+            new Howl({src: "/sounds/music_marimba_lo_off.mp3",preload: true}),
+            new Howl({src: "/sounds/music_marimba_lo_on.mp3",preload: true}),
+    ]
+
+        store.successSounds = [
+            new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_glow_chord.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_glow_coin.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_glow_confirm_lo.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_glow_power_on.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_soft_hi_on.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_soft_on.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_confirm_lo.mp3",preload: true}),
+        ]
+
+
+        store.hintSounds = [
+            new Howl({src: "/sounds/music_kalimba_lo.mp3",preload: true})
+       
+    ]
+
+    store.shareSounds = [
+            new Howl({src: "/sounds/music_harp_chord_nice.mp3",preload: true})
+       
+    ]
+
+    store.hintSounds2 = [
+            new Howl({src: "/sounds/music_kalimba_on.mp3",preload: true})
+       
+    ]
+
+    store.deleteSounds = [
+            new Howl({src: "/sounds/pop_clicklo.mp3",preload: true})
+       
+    ]
+
+    store.nextSounds = [
+            new Howl({src: "/sounds/pad_soft_echo.mp3",preload: true})
+       
+    ]
+
+    store.makeSounds = [
+            new Howl({src: "/sounds/pad_glow_new.mp3",preload: true})
+       
+    ]
+
+
+
+        const mute = localStorage.getItem("mute");
+
+            //if this is a new user
+            if (mute === null) {
+
+                //set some points for them
+                localStorage.setItem('mute', this.mute);
+               
+
+                //if this is an exiting user, grab their existing points
+            } else {
+
+                this.mute = JSON.parse(localStorage.getItem("mute"))
+               
+
+            }
 
         
 
@@ -578,6 +661,35 @@ export default {
 
     methods: {
 
+
+        flipMake : function() {
+
+            if ( !this.mute ) {store.makeSounds[Math.floor(Math.random() * store.makeSounds.length)].play()}
+
+            this.make = !this.make
+
+
+        },
+
+
+        muteAudio : function() {
+
+            if ( !this.mute ) {
+                
+                store.muteSounds[0].play()
+            
+            } else {
+
+                store.muteSounds[1].play()
+
+            }
+
+            this.mute = !this.mute
+            localStorage.setItem('mute', this.mute);
+
+
+        },
+
         focusMakerField: function(makerFocusIndex, event) {
 
             console.log(event.target.innerHTML)
@@ -793,19 +905,10 @@ export default {
 
             this.postRiddle()
 
-            //grab a random instrument
-        var instrumentArray = ['telepluck', 'idiophone', 'flute', 'englishhorn', 'xyloclean', 'clarinet', 'newviola', 'newviolin', 'newpiano', 'newoldpiano', 'sitar', 'zither', 'bamblong']
-        this.randomInstrument = instrumentArray[Math.floor(Math.random() * instrumentArray.length)]
-
-
-        
-        this.keyPressSound1 = new Howl({src: "/sounds/click1.mp3",
-                preload: true
-        })
+            
         
 
        
-
         
 
         },
@@ -862,6 +965,8 @@ export default {
 
 
         nextRiddle: async function(event) {
+
+            if ( !this.mute ) {store.nextSounds[Math.floor(Math.random() * store.nextSounds.length)].play()}
 
             this.incrementRiddleCount()
 
@@ -1117,6 +1222,22 @@ export default {
 
             //this.disabled = true
 
+            if ( !this.mute ) {
+
+                if ( this.makeRiddle === "" || this.makeAnswer1 === "" || this. makeAnswer2 === "" ) { 
+
+                    
+                } else {
+
+                    store.shareSounds[Math.floor(Math.random() * store.shareSounds.length)].play()
+
+
+                }
+                
+               
+            
+            }
+
             this.animateKeyPress(event)
 
             this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + this.encrypt)
@@ -1142,6 +1263,8 @@ export default {
         //console.log(ciphertext.toString());
 
         nextHint: function(event) {
+
+            if ( !this.mute ) {store.hintSounds2[Math.floor(Math.random() * store.hintSounds2.length)].play()}
 
             this.copiedToClipboard = false //just hide any previous clipboard stuff
             // this.disabled = true
@@ -1240,6 +1363,8 @@ export default {
 
         deleteKey: function(event, key, keyboard) {
 
+            if ( !this.mute ) {store.deleteSounds[Math.floor(Math.random() * store.deleteSounds.length)].play()}
+
             // this.disabled = true
 
             this.animateKeyPress(event, keyboard, key)
@@ -1282,11 +1407,21 @@ export default {
 
         hintKey: function(event) {
 
+            
+
             // this.disabled = true
 
             this.animateKeyPress(event)
 
             if (!this.fullAnswer) {
+
+                if ( this.riddleWordArray.filter(item => item === '').length > 1 ) {
+
+                    if ( !this.mute ) {store.hintSounds[Math.floor(Math.random() * store.hintSounds.length)].play()}
+
+                }
+
+                
 
                 const blankIndex = this.riddleWordArray.findIndex(item => item === '');
                 if (blankIndex === 0) {
@@ -1392,7 +1527,10 @@ export default {
 
         pressKey: function(event, key, keyboard) {
 
-            this.keyPressSound1.play()
+           
+
+
+            //this.keyPressSound1.play()
 
 
             // this.disabled = true
@@ -1402,6 +1540,8 @@ export default {
             this.animateKeyPress(event, keyboard, key)
 
             if (this.make) {
+
+                if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
 
                 if (key === 'Space') {
 
@@ -1424,6 +1564,7 @@ export default {
 
                 if (!this.fullAnswer) {
 
+                    
                     const blankIndex = this.riddleWordArray.findIndex(item => item === '');
 
                     // Check if a blank entry was found
@@ -1437,7 +1578,14 @@ export default {
 
                         if (this.riddleWordArray[blankIndex] !== this.riddleWordLettersArray[blankIndex]) {
 
+                            if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
                             this.hintCount++
+
+                        } else {
+
+                            if ( this.riddleWordArray.filter(item => item === '').length > 0 ) {
+                            if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
+                            }
 
                         }
 
@@ -1528,6 +1676,8 @@ export default {
                 var scalar = 4;
                 var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
                 var blob = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
+
+                if ( !this.mute ) {store.successSounds[Math.floor(Math.random() * store.successSounds.length)].play()}
 
                 // Use confetti to create an effect that expands over the entire viewport
                 const duration = 5 * 1000;

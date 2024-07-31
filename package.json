@@ -31,6 +31,7 @@
     "animejs": "^3.2.2",
     "auto-text-size": "^0.2.3",
     "axios": "^1.7.2",
+    "bluebird": "^3.7.2",
     "canvas-confetti": "^1.9.3",
     "crypto": "^1.0.1",
     "crypto-js": "^4.2.0",
