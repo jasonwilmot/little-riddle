@@ -36,11 +36,11 @@
   <div id="payment-element" class="text-2xl text-center shadow appearance-none border rounded w-full py-2 bg-white px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     <!-- Elements will create form elements here -->
   </div>
-  <button @click='handlePayment($event)' class='flex flex-row  mt-2 rounded-xl bg-green-500 p-2 px-4 rounded border text-white text-xl'>
+  <button @click='handlePayment($event)' class='flex flex-row  mt-3 rounded-xl bg-green-500 p-2 px-4 rounded border text-white text-xl'>
 
     <CubeTransparentIcon v-if="processing" class="flex-none text-white spinner ml-1 mr-2 min-w-6 min-h-6 my-auto h-6 w-6 text-gray-700 cursor-pointer" />
-                    <CreditCardIcon v-else class="flex-none text-white ml-1 mr-2 my-auto min-w-6 min-h-6 h-6 w-6 text-gray-700 cursor-pointer" />
-                    <span class='flex-none my-auto mr-1 text-lg text-white'>Support ${{ ammount / 100 }}</span>
+                    <GiftIcon v-else class="flex-none text-white ml-1 mr-2 my-auto min-w-6 min-h-6 h-6 w-6 text-gray-700 cursor-pointer" />
+                    <span class='flex-none my-auto mr-1 text-lg text-white'>Buy us a coffee - ${{ ammount / 100 }}</span>
     
     
 
@@ -97,6 +97,7 @@ import {
 
 
 import {
+    GiftIcon,
     CheckIcon,
     HeartIcon,
     BackspaceIcon,
@@ -112,6 +113,7 @@ export default {
     name: 'home',
 
     components: {
+        GiftIcon,
         CheckIcon,
         HeartIcon, BackspaceIcon, TrashIcon, ChevronRightIcon, PuzzlePieceIcon, TableCellsIcon, CubeTransparentIcon, CreditCardIcon
     },
