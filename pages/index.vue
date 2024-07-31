@@ -309,7 +309,7 @@ export default {
     async mounted() {
 
         store.keySounds = [
-            new Howl({src: "/sounds/pop_hi.mp3",preload: true}),
+            new Howl({src: "/sounds/pop_hi.wav",preload: true}),
             new Howl({src: "/sounds/pop_error.wav",preload: true}),
             //new Howl({src: "/sounds/pop_hi_4.wav",preload: true})
     ]
