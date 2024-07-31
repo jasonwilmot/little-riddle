@@ -309,55 +309,55 @@ export default {
     async mounted() {
 
         store.keySounds = [
-            new Howl({src: "/sounds/pop_hi.wav",preload: true}),
-            new Howl({src: "/sounds/pop_error.wav",preload: true}),
-            //new Howl({src: "/sounds/pop_hi_4.wav",preload: true})
+            new Howl({src: "/sounds/pop_hi.mp3",preload: true, volume: 0.15}),
+            new Howl({src: "/sounds/pop_lo_2.mp3",preload: true,  volume: 0.15}),
+            //new Howl({src: "/sounds/pop_hi_4.wav",preload: true,  volume: 0.15})
     ]
 
     store.muteSounds = [
-            new Howl({src: "/sounds/music_marimba_lo_off.mp3",preload: true}),
-            new Howl({src: "/sounds/music_marimba_lo_on.mp3",preload: true}),
+            new Howl({src: "/sounds/music_marimba_lo_off.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/music_marimba_lo_on.mp3",preload: true,  volume: 0.15}),
     ]
 
         store.successSounds = [
-            new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_glow_chord.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_glow_coin.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_glow_confirm_lo.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_glow_power_on.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_soft_hi_on.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_soft_on.mp3",preload: true}),
-            new Howl({src: "/sounds/pad_confirm_lo.mp3",preload: true}),
+            new Howl({src: "/sounds/pad_glow_chime.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_glow_chord.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_glow_coin.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_glow_confirm_lo.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_glow_power_on.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_soft_hi_on.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_soft_on.mp3",preload: true,  volume: 0.15}),
+            new Howl({src: "/sounds/pad_confirm_lo.mp3",preload: true,  volume: 0.15}),
         ]
 
 
         store.hintSounds = [
-            new Howl({src: "/sounds/music_kalimba_lo.mp3",preload: true})
+            new Howl({src: "/sounds/music_kalimba_lo.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.shareSounds = [
-            new Howl({src: "/sounds/music_harp_chord_nice.mp3",preload: true})
+            new Howl({src: "/sounds/music_harp_chord_nice.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.hintSounds2 = [
-            new Howl({src: "/sounds/music_kalimba_on.mp3",preload: true})
+            new Howl({src: "/sounds/music_kalimba_on.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.deleteSounds = [
-            new Howl({src: "/sounds/pop_clicklo.mp3",preload: true})
+            new Howl({src: "/sounds/pop_clicklo.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.nextSounds = [
-            new Howl({src: "/sounds/pad_soft_echo.mp3",preload: true})
+            new Howl({src: "/sounds/pad_soft_echo.mp3",preload: true,  volume: 0.15})
        
     ]
 
     store.makeSounds = [
-            new Howl({src: "/sounds/pad_glow_new.mp3",preload: true})
+            new Howl({src: "/sounds/pad_glow_new.mp3",preload: true,  volume: 0.15})
        
     ]
 
