@@ -310,8 +310,8 @@ export default {
 
         store.keySounds = [
             new Howl({src: "/sounds/pop_hi.mp3",preload: true}),
-            new Howl({src: "/sounds/pop_hi_2.mp3",preload: true}),
-            new Howl({src: "/sounds/pop_hi_4.wav",preload: true})
+            new Howl({src: "/sounds/pop_error.wav",preload: true}),
+            //new Howl({src: "/sounds/pop_hi_4.wav",preload: true})
     ]
 
     store.muteSounds = [
@@ -1578,13 +1578,13 @@ export default {
 
                         if (this.riddleWordArray[blankIndex] !== this.riddleWordLettersArray[blankIndex]) {
 
-                            if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
+                            if ( !this.mute ) {store.keySounds[1].play()}
                             this.hintCount++
 
                         } else {
 
                             if ( this.riddleWordArray.filter(item => item === '').length > 0 ) {
-                            if ( !this.mute ) {store.keySounds[Math.floor(Math.random() * store.keySounds.length)].play()}
+                            if ( !this.mute ) {store.keySounds[0].play()}
                             }
 
                         }
