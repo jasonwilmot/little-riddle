@@ -378,6 +378,7 @@ export default {
         //if user has already been onboarded, we have cached the giant json file so load it now
         if ( localStorage.getItem("onboarded") !== null ) {
 
+           // alert('ok')
             this.riddles = await this.loadJsonData()
 
         }
