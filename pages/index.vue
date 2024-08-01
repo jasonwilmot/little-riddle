@@ -2,8 +2,17 @@
 
 <div class='h-screen'>
 
+    <div v-if='!solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+        <div class="px-4 text-white bg-blue-500 rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+      Little Riddle
+      </a>
+    </div>
+   </div>
+   
+
   <!-- logo -->
-   <div class="luckiest bg-white mt-5 md:mt-8 text-center text-4xl"><a href='/'>
+   <!-- <div v-if='!solved' class="luckiest bg-white mt-5 md:mt-8 text-center text-4xl"><a href='/'>
       <span id='hint1' class='inline-block' :class='hintCount>=1?"text-blue-200":"text-blue-500"'>L</span>
       <span id='hint2' class='inline-block' :class='hintCount>=2?"text-blue-200":"text-blue-500"'>I</span>
       <span id='hint3' class='inline-block' :class='hintCount>=3?"text-blue-200":"text-blue-500"'>T</span>
@@ -18,9 +27,56 @@
       <span id='hint11' class='inline-block'  :class='hintCount>=11?"text-blue-200":"text-blue-500"'>L</span>
       <span id='hint12' class='inline-block'  :class='hintCount>=12?"text-blue-200":"text-blue-500"'>E</span>
       </a>
+   </div> -->
+
+   
+
+   <div v-if='hintCount === 0 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+        <div :class='bgColorArray[0]' class="px-4  text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+        PERFECT SCORE!
+      </a>
+    </div>
    </div>
 
-   <div  class="text-center h-full">
+
+   <div v-if='hintCount === 1 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+    <div :class='bgColorArray[1]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+            ALMOST PERFECT!
+      </a>
+    </div>
+   </div>
+
+
+   <div v-if='hintCount === 2 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+    <div :class='bgColorArray[2]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+            STEADY EFFORT
+      </a>
+    </div>
+   </div>
+
+
+   <div v-if='hintCount === 3 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+    <div :class='bgColorArray[3]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+            NOT BAD
+      </a>
+    </div>
+   </div>
+
+
+
+   <div v-if='hintCount > 3 && solved' class="flex mt-5 md:mt-8 text-center text-4xl">
+    <div :class='bgColorArray[4]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <a class='' href='/'>
+            GOOD TRY
+      </a>
+    </div>
+   </div>
+
+   <div  class="text-center mt-1 h-full">
       <div class='flex' v-show='riddle.hint !== "" && !make || make' id="riddleContainer">
 
         <!-- nudge -->
@@ -105,15 +161,17 @@
          </div>
       </div>
 
+     
+
 
       <div v-show='!make' class="md:mt-8 mt-5">
 
          <!-- next riddle -->
          <transition name="fade">
-            <div @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-200 cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl text-blue-500 border-blue-500 border-2 ' v-if="waitingForNextRiddle && started">
+            <div :class='hintCount>3?[borderColorArray[4],textColorArray[4]]:[textColorArray[hintCount],borderColorArray[hintCount]]' @click='nextRiddle($event)' id='nextRiddleButton' class='  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-2 ' v-if="waitingForNextRiddle && started">
                <div class="flex">
                   <span class="my-auto lato">Next Riddle</span>
-                  <ChevronRightIcon class='my-auto text-blue-500 ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
+                  <ChevronRightIcon :class='hintCount>3?[textColorArray[4]]:[textColorArray[hintCount]]' class='my-auto ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
                </div>
             </div>
          </transition>
@@ -251,6 +309,15 @@ export default {
     data: function() {
         return {
 
+            borderColorArray : ['border-purple-500','border-fuchsia-500','border-indigo-500','border-cyan-500','border-gray-600'],
+
+            bgColorArray : ['bg-purple-500','bg-fuchsia-500','bg-indigo-500','bg-cyan-500','bg-gray-600'],
+
+            textColorArray : ['text-purple-500','text-fuchsia-500','text-indigo-500','text-cyan-500','text-gray-600'],
+
+
+
+
             mute : false,
             clickSounds : [],
             randomNoteArray : [],
@@ -259,7 +326,7 @@ export default {
             disabled: false,
             nudgeVariation: 1,
             nudge: false,
-            nudgeInterval: 5,
+            nudgeInterval: 500, //change later
             riddleCount: 0,
             makerFocusIndex: 0,
             makeRiddle: "",
@@ -308,6 +375,16 @@ export default {
 
     async mounted() {
 
+        store.failSounds = [
+            new Howl({src: "/sounds/chime_short_chord_down.mp3",preload: true, volume: 0.07}),
+            //new Howl({src: "/sounds/pop_hi_4.wav",preload: true,  volume: 0.15})
+    ]
+
+    store.perfectSounds = [
+    new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.07}),
+            //new Howl({src: "/sounds/pop_hi_4.wav",preload: true,  volume: 0.15})
+    ]
+
         store.keySounds = [
             new Howl({src: "/sounds/click_soft_tap.mp3",preload: true, volume: 0.80}),
             new Howl({src: "/sounds/click_plonk.mp3",preload: true,  volume: 0.05}),
@@ -323,7 +400,6 @@ export default {
             new Howl({src: "/sounds/chime_clickbell_confirm.mp3",preload: true,  volume: 0.07}),
             new Howl({src: "/sounds/chime_clickbell_confirm_hi.mp3",preload: true,  volume: 0.07}),
             new Howl({src: "/sounds/chime_reveal.mp3",preload: true,  volume: 0.07}),
-            new Howl({src: "/sounds/chime_clickbell_melody_up.mp3",preload: true,  volume: 0.07}),
             new Howl({src: "/sounds/chime_pretty.mp3",preload: true,  volume: 0.07}),
     ]
 
@@ -1309,22 +1385,7 @@ export default {
 
             var vue = this
 
-            console.log(this.hintCount)
-
-            //animejs({
-               // targets: '#hint' + this.hintCount,
-               // rotate: [
-                   // { value: -360, duration: 300 },
-                    // { value: 10, duration: 100 },
-                    // { value: -10, duration: 100 },
-                    // { value: 0, duration: 50 },
-
-               // ],
-               // easing: 'easeInOutQuad'
-           // });
-
-            //localStorage.setItem('points', localStorage.getItem("points") - 1);
-            //this.points = localStorage.getItem("points")
+         
 
         },
 
@@ -1437,7 +1498,7 @@ export default {
                 const blankIndex = this.riddleWordArray.findIndex(item => item === '');
                 if (blankIndex === 0) {
 
-                    console.log('first one')
+                   // console.log('first one')
                     this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
 
                     animejs({
@@ -1453,7 +1514,7 @@ export default {
 
                     this.addValueToRandomBlankSlot(this.riddleWordArray);
                     //this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
-                    console.log('second one')
+                  //  console.log('second one')
 
                 }
 
@@ -1482,21 +1543,18 @@ export default {
 
         animateKeyPress: function(event, keyboard, key) {
 
-            console.log(key)
+           
 
             if (this.disabled === true) { return }
 
             this.disabled = true
-
             this.started = true
-
             var vue = this
-
             var element
 
             if (keyboard) {
 
-                console.log('@@@@@@@@@@')
+              //  console.log('@@@@@@@@@@')
 
                 if (key === 'Space') {
 
@@ -1663,7 +1721,7 @@ export default {
 
         },
 
-        solved(newVal, oldVal) {
+        async solved(newVal, oldVal) {
 
             var vue = this
 
@@ -1680,7 +1738,14 @@ export default {
                 const viewportWidth = window.innerWidth;
                 const normalizedCenterY = elementCenterY / viewportHeight;
 
-                var emojiArray = ['💥', '💝', '💖', '🦄', '🐱️', '⭐️', '🌟️', '🍌️', '🍏️', '💜️', '🍊️']
+               
+
+                    var emojiArray = ['💥', '💝', '💖', '🦄', '🍏️', '💜️', '🍊️', '⭐️', '🌟️']
+
+
+                
+
+                
 
                 //var emojiArray = [this.riddle.rhyme]
 
@@ -1688,7 +1753,29 @@ export default {
                 var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
                 var blob = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
 
-                if ( !this.mute ) {store.successSounds[Math.floor(Math.random() * store.successSounds.length)].play()}
+                if ( !this.mute ) {
+
+                    if ( this.hintCount > 3 ) {
+
+                        store.failSounds[0].play()
+
+
+                    } else if ( this.hintCount === 0 ) {
+                        
+                        store.perfectSounds[0].play()
+                        
+                    }
+                    
+                    else {
+
+                        store.successSounds[Math.floor(Math.random() * store.successSounds.length)].play()
+
+
+                    }
+                    
+                    
+                
+                }
 
                 // Use confetti to create an effect that expands over the entire viewport
                 const duration = 5 * 1000;
@@ -1701,15 +1788,52 @@ export default {
                     zIndex: 0,
                     angle: 10
                 };
-                const particleCount = this.getRandomNumber(50, 150)
+
+                var particleCount
+
+                if ( this.hintCount > 3 ) {
+
+                    particleCount = 20
+
+
+                } else if ( this.hintCount === 0 ) { 
+
+                    particleCount = 150
+
+
+                } else {
+
+                    particleCount = this.getRandomNumber(50, 150)
+
+                }
+
+                console.log("@@@@" + particleCount)
+
+               
                 const angle = this.getRandomNumber(80, 100)
                 const startVelocity = this.getRandomNumber(20, 60)
                 const spread = this.getRandomNumber(Math.round(viewportWidth / 1.5), viewportWidth)
 
                 var unicorn = confetti.shapeFromText({ text: emojiArray[Math.floor(Math.random() * emojiArray.length)], scalar });
 
+                
+                if ( this.hintCount !== 0 ) {
+
                 // since particles fall down, start a bit higher than random
-                confetti(Object.assign({}, defaults, { startVelocity: 30, spread: spread, angle: angle, particleCount, origin: { x: .5, y: normalizedCenterY } }));
+                confetti(Object.assign({}, defaults, { startVelocity: 30, spread: spread, angle: angle, particleCount : particleCount, origin: { x: .5, y: normalizedCenterY } }));
+
+                } else {
+
+                    confetti(Object.assign({}, defaults, { startVelocity: 30, spread: spread, angle: angle, particleCount : particleCount, origin: { x: .5, y: normalizedCenterY } }));
+
+                    
+
+
+
+
+                }
+
+               
 
                 animejs({
                     targets: '#answer',
