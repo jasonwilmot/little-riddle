@@ -21,7 +21,7 @@
        <div class="mb-2 text-gray-600 ">I'm Jason (jason@bytejelly.com), the humble maker of Little Riddle, a puzzle game originally created as a gift to my mom who loves word games.</div> 
 
 
-       <div class="mb-2 text-gray-600 ">If you want to show your thanks and play 2000+ more riddles, consider buying myself and my mom two hot coffees for $5.00. ☕❤️ </div>
+       <div class="mb-2 text-gray-600 ">If you want to show your thanks, consider buying myself and my mom two hot coffees for $5.00. ☕❤️ </div>
 
        
 
