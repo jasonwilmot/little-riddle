@@ -270,7 +270,7 @@
 <script>
 import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
-import data from '@/assets/dualHints1722280784784.json';
+//import data from '@/assets/dualHints1722280784784.json';
 import confetti from 'canvas-confetti';
 import { store } from "../store/store.js";
 import { autoTextSize } from 'auto-text-size'
@@ -374,6 +374,15 @@ export default {
     },
 
     async mounted() {
+
+        //if user has already been onboarded, we have cached the giant json file so load it now
+        if ( localStorage.getItem("onboarded") !== null ) {
+
+            this.riddles = await this.loadJsonData()
+
+        }
+
+      
 
         store.failSounds = [
             new Howl({src: "/sounds/chime_short_chord_down.mp3",preload: true, volume: 0.07}),
@@ -489,7 +498,7 @@ export default {
         window.addEventListener('keydown', this.handleKeydown);
 
         //grab all of the riddles
-        this.riddles = data;
+        //this.riddles = data;
 
         this.buildRiddle()
 
@@ -749,6 +758,19 @@ export default {
     methods: {
 
 
+        loadJsonData : async function() {
+
+            return new Promise(async resolve =>  {
+      
+                 const data = await import('@/assets/dualHints1722280784784.json');
+                 resolve(data.default);
+
+
+            })
+     
+    },
+
+
         flipMake : function() {
 
             if ( !this.mute ) {store.makeSounds[Math.floor(Math.random() * store.makeSounds.length)].play()}
@@ -983,8 +1005,8 @@ export default {
                     //if this isn't a new user, grab a random puzzle
                     const randomIndex = Math.floor(Math.random() * this.riddles.length);
                     this.riddle = this.riddles[randomIndex];
-                    const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
-                    this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
+                   const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                   this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
 
                 }
 
@@ -1000,7 +1022,7 @@ export default {
 
         },
 
-        postRiddle: function() {
+        postRiddle: async function() {
 
             this.riddleWordArray = []
 
@@ -1016,6 +1038,19 @@ export default {
             //make the riddle fit into the fixed height box to prevent use expanding to far
             //for small screens.  we need to conserve real estate.
             this.adjustFontSizeToFit()
+
+            if ( localStorage.getItem("onboarded") === null || ( this.$route.query.riddle && this.firstRiddlePlayed === false ) ) {
+
+                console.log('gonna load json')
+                 this.riddles = await this.loadJsonData()
+                console.log('finished loading')
+                console.log(this.riddles)
+
+
+            }
+
+
+
 
         },
 
