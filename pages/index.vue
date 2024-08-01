@@ -2,7 +2,7 @@
 
 <div class='h-screen'>
 
-    <div v-if='!solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+    <div id='logo' v-show='!solved' class="flex  mt-5 md:mt-8 text-center text-4xl">
         <div class="px-4 text-blue-500 bg-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
       Little Riddle
@@ -31,7 +31,7 @@
 
    
 
-   <div v-if='hintCount === 0 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+   <div v-if='hintCount === 0 && solved' class="flex score mt-5 md:mt-8 text-center text-4xl">
         <div :class='bgColorArray[0]' class="px-4  text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
         PERFECT SCORE!
@@ -40,7 +40,7 @@
    </div>
 
 
-   <div v-if='hintCount === 1 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+   <div v-if='hintCount === 1 && solved' class="flex score  mt-5 md:mt-8 text-center text-4xl">
     <div :class='bgColorArray[1]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
             ALMOST PERFECT!
@@ -49,7 +49,7 @@
    </div>
 
 
-   <div v-if='hintCount === 2 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+   <div v-if='hintCount === 2 && solved' class="flex score   mt-5 md:mt-8 text-center text-4xl">
     <div :class='bgColorArray[2]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
             STEADY EFFORT
@@ -58,7 +58,7 @@
    </div>
 
 
-   <div v-if='hintCount === 3 && solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
+   <div v-if='hintCount === 3 && solved' class="flex  score  mt-5 md:mt-8 text-center text-4xl">
     <div :class='bgColorArray[3]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
             NOT BAD
@@ -68,7 +68,7 @@
 
 
 
-   <div v-if='hintCount > 3 && solved' class="flex mt-5 md:mt-8 text-center text-4xl">
+   <div v-if='hintCount > 3 && solved' class="score flex mt-5 md:mt-8 text-center text-4xl">
     <div :class='bgColorArray[4]' class="px-4  text-white text-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
             GOOD TRY
@@ -1065,6 +1065,13 @@ export default {
                 easing: 'easeInOutQuad' // Easing function for smooth effect
             });
 
+            animejs({
+                targets: ".score",
+                opacity: [1, 0], // Scale down and then back to original size
+                duration: 500, // Duration of the animation in milliseconds
+                easing: 'easeInOutQuad' // Easing function for smooth effect
+            });
+
             //handle nudging for payment
             if (this.riddleCount === this.nudgeInterval) {
 
@@ -1121,6 +1128,16 @@ export default {
                     //on the next term
                     localStorage.setItem('onboarded', 'onboarded');
                     this.newPlayer = false
+
+                    await this.delay(500)
+
+                    animejs({
+                targets: "#logo",
+                color: ['#FFFFFF','#000000'],
+                opacity: [0,1], // Scale down and then back to original size
+                duration: 1500, // Duration of the animation in milliseconds
+                easing: 'easeInOutQuad' // Easing function for smooth effect
+            });
 
                     //clear out the old and in with the new
                     this.clearKey(event)
