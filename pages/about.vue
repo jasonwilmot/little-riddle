@@ -18,10 +18,10 @@
 
     <div class="text-gray-600 merriweather mx-6 my-6">
 
-       <div class="mb-2">I'm Jason (jason@bytejelly.com), the humble maker of Little Riddle, a puzzle game originally created as a gift to my grandmother who loves word games.</div> 
+       <div class="mb-2">I'm Jason (jason@bytejelly.com), the humble maker of Little Riddle, a puzzle game originally created as a gift to my mom who loves word games.</div> 
 
 
-       <div class="mb-2">If you want to show your thanks, provide feedback, and play 2000+ more riddles, consider buying myself and grandma two hot coffees for $5.00. ☕❤️ </div>
+       <div class="mb-2">If you want to show your thanks, provide feedback, and play 2000+ more riddles, consider buying myself and my mom two hot coffees for $5.00. ☕❤️ </div>
 
        
 
