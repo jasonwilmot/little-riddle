@@ -3,7 +3,7 @@
 <div class='h-screen'>
 
     <div v-if='!solved' class="flex   mt-5 md:mt-8 text-center text-4xl">
-        <div class="px-4 text-white bg-blue-500 rounded rounded-xl luckiest pt-3 inline-block mx-auto">
+        <div class="px-4 text-blue-500 bg-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
       Little Riddle
       </a>
@@ -136,7 +136,7 @@
          <div class='grow' v-show="!catTime && !make && !nudge">
 
              <!-- new player -->
-            <div class='flex md:my-4 my-2 mx-4 text-lg text-gray-400 text-center' v-if='newPlayer'>
+            <div class='flex md:my-4 my-2 mx-5 text-base text-gray-400 text-center' v-if='newPlayer'>
                <div class='max-w-2xl mx-auto lato'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div>
             </div>
 
@@ -148,12 +148,12 @@
              <!-- answers / letters container -->
             <div id='answer' class="mt-1 mx-4">
                <div class="flex items-center justify-center mx-auto roboto">
-                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? hintCount>4?textColorArray[4]:textColorArray[hintCount]:"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
                      {{ riddleWordArray[index] || '\u00A0' }}
                   </div>
                </div>
                <div class="flex items-center justify-center mx-auto md:mt-4 mt-2">
-                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? hintCount>4?textColorArray[4]:textColorArray[hintCount]:" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
                      {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
                   </div>
                </div>
@@ -168,7 +168,7 @@
 
          <!-- next riddle -->
          <transition name="fade">
-            <div :class='hintCount>3?[borderColorArray[4],textColorArray[4]]:[textColorArray[hintCount],borderColorArray[hintCount]]' @click='nextRiddle($event)' id='nextRiddleButton' class='  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-2 ' v-if="waitingForNextRiddle && started">
+            <div :class='hintCount>3?[borderColorArray[4],textColorArray[4]]:[textColorArray[hintCount],borderColorArray[hintCount]]' @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-gray-100  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-2 ' v-if="waitingForNextRiddle && started">
                <div class="flex">
                   <span class="my-auto lato">Next Riddle</span>
                   <ChevronRightIcon :class='hintCount>3?[textColorArray[4]]:[textColorArray[hintCount]]' class='my-auto ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
