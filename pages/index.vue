@@ -270,7 +270,7 @@
 <script>
 import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
-//import data from '@/assets/dualHints1722280784784.json';
+//import data from '@/assets/cleanedHints1722532607791.json';
 import confetti from 'canvas-confetti';
 import { store } from "../store/store.js";
 import { autoTextSize } from 'auto-text-size'
@@ -762,7 +762,7 @@ export default {
 
             return new Promise(async resolve =>  {
       
-                 const data = await import('@/assets/dualHints1722280784784.json');
+                 const data = await import('@/assets/cleanedHints1722532607791.json');
                  resolve(data.default);
 
 
