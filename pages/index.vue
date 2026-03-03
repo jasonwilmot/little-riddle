@@ -1049,6 +1049,12 @@ export default {
             //remove any blank clues that came over from chatgpt
             this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
+            //start by showing the first clue instead of the hint
+            if (this.riddle.clues.length > 0) {
+                this.cluesIndex = 0
+                this.riddle.hint = this.riddle.clues[0]
+            }
+
             //create an empty array that we use to store letters entered by user
             var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
             riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })

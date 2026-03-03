@@ -1,4 +1,4 @@
 <script setup>
 const route = useRoute()
-navigateTo({ path: '/', query: { id: route.params.id } })
+await navigateTo({ path: '/', query: { id: route.params.id } }, { redirectCode: 302 })
 </script>
