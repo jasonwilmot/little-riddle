@@ -255,7 +255,7 @@
          <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
          <!-- share in regular state -->
-         <a :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+         <a :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/r/' + riddle.id)">Share</a>
 
          <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-600":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && !make' class='shareShake key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
       </div>
@@ -270,7 +270,7 @@
 <script>
 import CryptoJS from 'crypto-js'
 import animejs from 'animejs';
-//import data from '@/assets/cleanedHints1722533470094.json';
+//import data from '@/assets/rhyme-clues.json';
 import confetti from 'canvas-confetti';
 import { store } from "../store/store.js";
 import { autoTextSize } from 'auto-text-size'
@@ -763,7 +763,7 @@ export default {
 
             return new Promise(async resolve =>  {
       
-                 const data = await import('@/assets/cleanedHints1722533470094.json');
+                 const data = await import('@/assets/rhyme-clues.json');
                  resolve(data.default);
 
 
@@ -941,7 +941,7 @@ export default {
 
         },
 
-        buildRiddle: function() {
+        buildRiddle: async function() {
 
             this.hintCount = 0
 
@@ -963,8 +963,29 @@ export default {
 
             }
 
-            //if this is a shared riddle show that riddle, even if they are a new user
-            if (this.$route.query.riddle) {
+            //if this is a shared riddle via ID (e.g. /r/m8vPb -> /?id=m8vPb)
+            if (this.$route.query.id) {
+
+                //make sure riddles are loaded so we can look up by id
+                if (this.riddles.length === 0) {
+                    this.riddles = await this.loadJsonData()
+                }
+
+                const found = this.riddles.find(r => r.id === this.$route.query.id)
+                if (found) {
+                    this.riddle = { ...found }
+                    const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                    this.riddle.hint = this.riddle.hint[randomRiddleIndex]
+                } else {
+                    //id not found, fall back to random
+                    const randomIndex = Math.floor(Math.random() * this.riddles.length);
+                    this.riddle = this.riddles[randomIndex];
+                    const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
+                    this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
+                }
+
+            //legacy: shared riddle via encrypted query param
+            } else if (this.$route.query.riddle) {
 
                 if (this.firstRiddlePlayed) {
 
@@ -977,8 +998,6 @@ export default {
                 } else {
 
                     this.riddle = JSON.parse(this.decrypt(this.$route.query.riddle))
-                    //const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
-                    //this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
 
                 }
 
@@ -1380,7 +1399,7 @@ export default {
 
             this.animateKeyPress(event)
 
-            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?riddle=" + this.encrypt)
+            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/r/" + this.riddle.id)
 
         },
 
