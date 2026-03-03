@@ -148,12 +148,12 @@
              <!-- answers / letters container -->
             <div id='answer' class="mt-1 mx-4">
                <div class="flex items-center justify-center mx-auto roboto">
-                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  ":"text-green-500  ":"text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  " : sharedRoute ? "text-gray-700" : "text-green-500  " : sharedRoute ? "text-gray-700" : "text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
                      {{ riddleWordArray[index] || '\u00A0' }}
                   </div>
                </div>
                <div class="flex items-center justify-center mx-auto md:mt-4 mt-2">
-                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 ":" text-green-500 ":"text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 " : sharedRoute ? "text-gray-700" : " text-green-500 " : sharedRoute ? "text-gray-700" : "text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
                      {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
                   </div>
                </div>
@@ -345,6 +345,7 @@ export default {
             catTime: false,
             hintCount: 0,
             copiedToClipboard: false,
+            sharedRoute: false, //true when user arrived via /r/[id]
             firstRiddlePlayed: false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet: false,
             points: null,
@@ -964,6 +965,7 @@ export default {
             }
 
             //if this is a shared riddle via ID (e.g. /r/m8vPb -> /?id=m8vPb)
+            this.sharedRoute = !!this.$route.query.id
             if (this.$route.query.id) {
 
                 //make sure riddles are loaded so we can look up by id
@@ -1058,6 +1060,14 @@ export default {
             //create an empty array that we use to store letters entered by user
             var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
             riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
+
+            //for shared riddles, pre-fill the first letter of each word
+            if (this.sharedRoute) {
+                var words = this.riddle.rhyme.split(' ')
+                var firstWordLength = words[0].length
+                this.riddleWordArray[0] = words[0][0]
+                this.riddleWordArray[firstWordLength] = words[1][0]
+            }
 
             this.riddle.score = this.maxScore
 
