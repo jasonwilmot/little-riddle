@@ -41,9 +41,6 @@ export default defineNuxtConfig({
       }
     }
   },
-  routeRules: {
-    '/r/**': { ssr: false }
-  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',

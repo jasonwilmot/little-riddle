@@ -323,7 +323,7 @@
          <div v-show="false" :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
          <!-- share in regular state -->
-         <a v-show="false" :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/r/' + riddle.id)">Share</a>
+         <a v-show="false" :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?id=' + riddle.id)">Share</a>
 
          <div v-show="false" :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-600":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && !make' class='shareShake key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
       </div>
@@ -1086,7 +1086,7 @@ export default {
 
             }
 
-            //if this is a shared riddle via ID (e.g. /r/m8vPb or /?id=m8vPb)
+            //if this is a shared riddle via ID (e.g. /?id=m8vPb)
             const sharedId = this.$route.params.id || this.$route.query.id
             this.sharedRoute = !!sharedId
             if (sharedId) {
@@ -1550,7 +1550,7 @@ export default {
 
             this.animateKeyPress(event)
 
-            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/r/" + this.riddle.id)
+            this.copyTextToClipboard(store.protocol + "//" + store.hostName + "/?id=" + this.riddle.id)
 
         },
 
