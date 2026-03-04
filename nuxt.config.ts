@@ -41,11 +41,14 @@ export default defineNuxtConfig({
       }
     }
   },
+  routeRules: {
+    '/r/**': { ssr: false, prerender: false }
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
     "@nuxtjs/google-fonts",
-   
+
   ],
   
 
