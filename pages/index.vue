@@ -219,7 +219,7 @@
 
          <!-- next riddle -->
          <transition name="fade">
-            <div  @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-100  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-gray-600 text-gray-600 border-2 ' v-if="waitingForNextRiddle && started && !sharedRoute">
+            <div  @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-100  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-gray-600 text-gray-600 border-2 ' v-if="waitingForNextRiddle && started && (!sharedRoute || solved)">
                <div class="flex">
                   <span class="my-auto lato">Next Riddle</span>
                   <ChevronRightIcon  class='text-gray-600 my-auto ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
@@ -282,10 +282,10 @@
          </div>
       </div>
       <!-- bottom row: shared route version -->
-      <div v-if="sharedRoute && !gaveUp" class="w-full mt-2 flex justify-center roboto">
+      <div v-if="sharedRoute && !solved && !gaveUp" class="w-full mt-2 flex justify-center roboto">
          <div @click="gaveUp = true; waitingForNextRiddle = true; started = true" class='bg-red-500 key border-red-600 text-white grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>I don't know</div>
       </div>
-      <div v-else-if="sharedRoute && gaveUp" class="w-full mt-2 flex justify-center roboto">
+      <div v-else-if="sharedRoute && !solved && gaveUp" class="w-full mt-2 flex justify-center roboto">
          <div @click="nextRiddle($event)" class='bg-amber-100 key border-gray-600 text-gray-600 grow cursor-pointer lato rounded border-2 p-1 m-1 text-xl text-center'>Next Riddle</div>
       </div>
 
@@ -1254,8 +1254,8 @@ export default {
         nextRiddle: async function(event) {
 
             if (this.sharedRoute) {
-                window.location.href = '/'
-                return
+                this.sharedRoute = false
+                this.$router.replace({ query: {} })
             }
 
             if ( !this.mute ) {store.nextSounds[Math.floor(Math.random() * store.nextSounds.length)].play()}
