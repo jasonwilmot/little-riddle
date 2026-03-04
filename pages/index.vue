@@ -136,27 +136,31 @@
          <div class='grow' v-show="!catTime && !make && !nudge">
 
              <!-- new player -->
-            <div class='flex md:my-4 my-2 mx-5 text-base text-gray-400 text-center' v-if='newPlayer'>
+            <div class='flex md:my-4 my-2 mx-5 text-base text-gray-400 text-center' v-if='newPlayer || sharedRoute'>
                <div class='max-w-2xl mx-auto lato'>Use the keyboard to solve the rhyming riddle.  Every answer is a two word rhyme!</div>
             </div>
 
              <!-- riddle container -->
             <div  id='hintContainer' style='height : 76px; color:#ffffff;' class="flex bitter text-3xl mt-2 mb-2 md:mb-4 mx-6">
-               <div id='hint' class='mx-auto my-auto'>"{{  riddle.hint  }}"</div>
+               <div id='hint' class='mx-auto my-auto capitalize'>"{{  riddle.hint  }}"</div>
             </div>
 
              <!-- answers / letters container -->
-            <div id='answer' class="mt-1 mx-4">
+            <div id='answer' class="mt-1 mx-4" v-if="!gaveUp">
                <div class="flex items-center justify-center mx-auto roboto">
-                  <div :id='"letter" + index' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border text-3xl border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  " : sharedRoute ? "text-gray-700" : "text-green-500  " : sharedRoute ? "text-gray-700" : "text-red-500 "' class='uppercase flex items-center  mr-1 max-w-12 justify-center  rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                  <div :id='"letter" + index' :style='solved ? {} : letterBoxStyle' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  " : sharedRoute ? "text-gray-700" : "text-green-500  " : sharedRoute ? "text-gray-700" : "text-red-500 "' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
                      {{ riddleWordArray[index] || '\u00A0' }}
                   </div>
                </div>
                <div class="flex items-center justify-center mx-auto md:mt-4 mt-2">
-                  <div :id='"letter" + (index  + firstWordAnswer.length)' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 " : sharedRoute ? "text-gray-700" : " text-green-500 " : sharedRoute ? "text-gray-700" : "text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500 text-3xl"' class='uppercase flex items-center  max-w-12 mr-1 justify-center  rounded h-14 text-center   my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+                  <div :id='"letter" + (index  + firstWordAnswer.length)' :style='solved ? {} : letterBoxStyle' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 " : sharedRoute ? "text-gray-700" : " text-green-500 " : sharedRoute ? "text-gray-700" : "text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500"' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
                      {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
                   </div>
                </div>
+            </div>
+            <!-- gave up: show ???? ???? -->
+            <div v-else class="mt-4">
+               <div class="luckiest text-4xl text-gray-400">???? ????</div>
             </div>
          </div>
       </div>
@@ -168,7 +172,7 @@
 
          <!-- next riddle -->
          <transition name="fade">
-            <div  @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-100  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-gray-600 text-gray-600 border-2 ' v-if="waitingForNextRiddle && started">
+            <div  @click='nextRiddle($event)' id='nextRiddleButton' class=' bg-amber-100  cursor-pointer inline-block border rounded-xl mb-2 py-2 px-6 text-3xl  border-gray-600 text-gray-600 border-2 ' v-if="waitingForNextRiddle && started && !sharedRoute">
                <div class="flex">
                   <span class="my-auto lato">Next Riddle</span>
                   <ChevronRightIcon  class='text-gray-600 my-auto ml-1 my-auto  md:w-8 md:h-8 h-6 w-6' />
@@ -178,7 +182,7 @@
 
           <!-- clues -->
          <div>
-            <div v-if="!solved && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
+            <div v-if="!solved && !sharedRoute && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
          </div>
 
          <!-- copied to clipboard -->
@@ -230,7 +234,16 @@
             </div>
          </div>
       </div>
-      <div class="w-full mt-2 flex justify-between roboto">
+      <!-- bottom row: shared route version -->
+      <div v-if="sharedRoute && !gaveUp" class="w-full mt-2 flex justify-center roboto">
+         <div @click="gaveUp = true; waitingForNextRiddle = true; started = true" class='bg-red-500 key border-red-600 text-white grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>I don't know</div>
+      </div>
+      <div v-else-if="sharedRoute && gaveUp" class="w-full mt-2 flex justify-center roboto">
+         <div @click="nextRiddle($event)" class='bg-amber-100 key border-gray-600 text-gray-600 grow cursor-pointer lato rounded border-2 p-1 m-1 text-xl text-center'>Next Riddle</div>
+      </div>
+
+      <!-- bottom row: normal version -->
+      <div v-else class="w-full mt-2 flex justify-between roboto">
 
          <!-- <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
             +{{ hintCount }}
@@ -346,6 +359,7 @@ export default {
             hintCount: 0,
             copiedToClipboard: false,
             sharedRoute: false, //true when user arrived via /r/[id]
+            gaveUp: false, //true when user taps "I don't know" on shared riddle
             firstRiddlePlayed: false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet: false,
             points: null,
@@ -737,6 +751,19 @@ export default {
 
         },
 
+        longestWordLength() {
+            var words = this.riddle.rhyme.split(' ')
+            return Math.max(...words.map(w => w.length))
+        },
+
+        letterBoxStyle() {
+            var len = this.longestWordLength
+            if (len <= 5) return { maxWidth: '48px', marginRight: '4px', fontSize: '1.875rem' }
+            if (len <= 6) return { maxWidth: '44px', marginRight: '3px', fontSize: '1.7rem' }
+            if (len <= 7) return { maxWidth: '40px', marginRight: '2px', fontSize: '1.5rem' }
+            return { maxWidth: '36px', marginRight: '2px', fontSize: '1.35rem' }
+        },
+
         secondWord() {
 
             return this.riddle.rhyme.split(' ')[1].split("")
@@ -877,10 +904,11 @@ export default {
         adjustFontSizeToFit: async function() {
 
             await this.delay(200)
-            //await store.waitForElm("#hintContainer")
 
             const box = document.getElementById('hintContainer');
             const textElement = document.getElementById('hint');
+
+            if (!box || !textElement) return;
 
             autoTextSize({
 
@@ -964,16 +992,17 @@ export default {
 
             }
 
-            //if this is a shared riddle via ID (e.g. /r/m8vPb -> /?id=m8vPb)
-            this.sharedRoute = !!this.$route.query.id
-            if (this.$route.query.id) {
+            //if this is a shared riddle via ID (e.g. /r/m8vPb or /?id=m8vPb)
+            const sharedId = this.$route.params.id || this.$route.query.id
+            this.sharedRoute = !!sharedId
+            if (sharedId) {
 
                 //make sure riddles are loaded so we can look up by id
                 if (this.riddles.length === 0) {
                     this.riddles = await this.loadJsonData()
                 }
 
-                const found = this.riddles.find(r => r.id === this.$route.query.id)
+                const found = this.riddles.find(r => r.id === sharedId)
                 if (found) {
                     this.riddle = { ...found }
                     const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
@@ -1124,6 +1153,11 @@ export default {
 
         nextRiddle: async function(event) {
 
+            if (this.sharedRoute) {
+                window.location.href = '/'
+                return
+            }
+
             if ( !this.mute ) {store.nextSounds[Math.floor(Math.random() * store.nextSounds.length)].play()}
 
             this.incrementRiddleCount()
@@ -1215,6 +1249,7 @@ export default {
                     this.riddleWordArray = []
                     this.cluesIndex = -1
                     this.riddle.clues = []
+                    this.gaveUp = false
                     this.firstRiddlePlayed = true
                     this.buildRiddle()
 

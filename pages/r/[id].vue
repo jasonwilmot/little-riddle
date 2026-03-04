@@ -1,4 +1,9 @@
+<template>
+  <ClientOnly>
+    <IndexPage />
+  </ClientOnly>
+</template>
+
 <script setup>
-const route = useRoute()
-await navigateTo({ path: '/', query: { id: route.params.id } }, { redirectCode: 302 })
+import IndexPage from '~/pages/index.vue'
 </script>
