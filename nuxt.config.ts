@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     }
   },
   routeRules: {
-    '/r/**': { ssr: false, prerender: false }
+    '/r/**': { ssr: false }
   },
   modules: [
     '@nuxtjs/tailwindcss',
