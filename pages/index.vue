@@ -2,6 +2,53 @@
 
 <div class='h-screen'>
 
+    <!-- settings modal -->
+    <div v-if="showSettings" class="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-10 px-4" @click.self="showSettings = false">
+        <div class="bg-white rounded-2xl w-full max-w-md max-h-[85vh] overflow-y-auto p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold lato">Settings</h2>
+                <div @click="showSettings = false" class="bg-gray-800 text-white font-bold px-4 py-1 rounded-full cursor-pointer text-lg">Done</div>
+            </div>
+
+            <!-- Difficulty -->
+            <h3 class="text-lg font-bold text-gray-400 lato mb-2">Difficulty</h3>
+            <div class="bg-gray-100 rounded-xl mb-2">
+                <div v-for="level in ['easy','medium','hard','expert']" :key="level" class="flex justify-between items-center px-4 py-3 border-b border-gray-200 last:border-0">
+                    <span class="text-lg capitalize lato">{{ level }}</span>
+                    <div @click="toggleDifficulty(level)" class="w-12 h-7 rounded-full cursor-pointer flex items-center transition-colors duration-200" :class="settings.difficulties[level] ? 'bg-green-500 justify-end' : 'bg-gray-300 justify-start'">
+                        <div class="w-6 h-6 bg-white rounded-full shadow mx-0.5"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 lato mb-6">Select one or more. Riddles will be drawn from the selected levels.</p>
+
+            <!-- Starting Clues -->
+            <h3 class="text-lg font-bold text-gray-400 lato mb-2">Starting Clues</h3>
+            <div class="bg-gray-100 rounded-xl flex mb-2">
+                <div v-for="n in [0,1,2]" :key="n" @click="settings.startingClues = n; saveSettings()" class="flex-1 text-center py-2 text-lg cursor-pointer lato rounded-xl transition-colors duration-200" :class="settings.startingClues === n ? 'bg-blue-500 text-white' : 'text-gray-600'">{{ n }}</div>
+            </div>
+            <p class="text-sm text-gray-400 lato mb-6">Letters pre-filled when a new puzzle loads. <b>0</b> = no clues, <b>1</b> = first letter of word 1, <b>2</b> = first letter of both words.</p>
+
+            <!-- Fill Mode -->
+            <h3 class="text-lg font-bold text-gray-400 lato mb-2">Letter Reveal</h3>
+            <div class="bg-gray-100 rounded-xl flex mb-2">
+                <div @click="settings.fillMode = 'sequential'; saveSettings()" class="flex-1 text-center py-2 text-lg cursor-pointer lato rounded-xl transition-colors duration-200" :class="settings.fillMode === 'sequential' ? 'bg-blue-500 text-white' : 'text-gray-600'">Sequential</div>
+                <div @click="settings.fillMode = 'random'; saveSettings()" class="flex-1 text-center py-2 text-lg cursor-pointer lato rounded-xl transition-colors duration-200" :class="settings.fillMode === 'random' ? 'bg-blue-500 text-white' : 'text-gray-600'">Random</div>
+            </div>
+            <p class="text-sm text-gray-400 lato mb-6"><b>Random</b> fills a random empty slot. <b>Sequential</b> fills from left to right (easier).</p>
+
+            <!-- Feedback -->
+            <h3 class="text-lg font-bold text-gray-400 lato mb-2">Feedback</h3>
+            <div class="bg-gray-100 rounded-xl flex justify-between items-center px-4 py-3 mb-2">
+                <span class="text-lg lato">Show Letter Feedback</span>
+                <div @click="settings.showFeedback = !settings.showFeedback; saveSettings()" class="w-12 h-7 rounded-full cursor-pointer flex items-center transition-colors duration-200" :class="settings.showFeedback ? 'bg-green-500 justify-end' : 'bg-gray-300 justify-start'">
+                    <div class="w-6 h-6 bg-white rounded-full shadow mx-0.5"></div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-400 lato mb-4">Shows green for correct and red for incorrect letters as you type.</p>
+        </div>
+    </div>
+
     <div id='logo' v-show='!solved' class="flex  mt-5 md:mt-8 text-center text-4xl">
         <div class="px-4 text-blue-500 bg-white rounded rounded-xl luckiest pt-3 inline-block mx-auto">
         <a class='' href='/'>
@@ -148,12 +195,12 @@
              <!-- answers / letters container -->
             <div id='answer' class="mt-1 mx-4" v-if="!gaveUp">
                <div class="flex items-center justify-center mx-auto roboto">
-                  <div :id='"letter" + index' :style='solved ? {} : letterBoxStyle' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600  " : sharedRoute ? "text-gray-700" : "text-green-500  " : sharedRoute ? "text-gray-700" : "text-red-500 "' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
+                  <div :id='"letter" + index' :style='solved ? {} : letterBoxStyle' :class='index === nextBlankIndex?"bg-gray-100":"",solved?"bitter text-5xl font-bold shrink":"roboto grow border border-gray-500 border-dashed",riddleWordArray[index] === riddleWordLettersArray[index] ? solved ? "text-gray-600" : (sharedRoute || !settings.showFeedback) ? "text-gray-700" : "text-green-500" : (sharedRoute || !settings.showFeedback) ? "text-gray-700" : "text-red-500"' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(letter,index) in firstWordAnswer">
                      {{ riddleWordArray[index] || '\u00A0' }}
                   </div>
                </div>
                <div class="flex items-center justify-center mx-auto md:mt-4 mt-2">
-                  <div :id='"letter" + (index  + firstWordAnswer.length)' :style='solved ? {} : letterBoxStyle' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index  + firstWordAnswer.length] === riddleWordLettersArray[index  + firstWordAnswer.length] ? solved ? " text-gray-600 " : sharedRoute ? "text-gray-700" : " text-green-500 " : sharedRoute ? "text-gray-700" : "text-red-500 ",solved?"bitter shrink  text-5xl font-bold":"roboto grow border border-dashed border-gray-500"' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
+                  <div :id='"letter" + (index  + firstWordAnswer.length)' :style='solved ? {} : letterBoxStyle' :class='index + firstWordAnswer.length === nextBlankIndex?"bg-gray-100":"",riddleWordArray[index + firstWordAnswer.length] === riddleWordLettersArray[index + firstWordAnswer.length] ? solved ? "text-gray-600" : (sharedRoute || !settings.showFeedback) ? "text-gray-700" : "text-green-500" : (sharedRoute || !settings.showFeedback) ? "text-gray-700" : "text-red-500",solved?"bitter shrink text-5xl font-bold":"roboto grow border border-dashed border-gray-500"' class='uppercase flex items-center justify-center rounded h-14 text-center my-auto' v-for="(secondWordletter,index) in secondWordAnswer">
                      {{ riddleWordArray[index + firstWordAnswer.length] || '\u00A0' }}
                   </div>
                </div>
@@ -182,7 +229,7 @@
 
           <!-- clues -->
          <div>
-            <div v-if="!solved && !sharedRoute && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
+            <div v-show="false" v-if="!solved && !sharedRoute && cluesIndex > -1 && !copiedToClipboard && !newPlayer" class='bitter inline-block rounded py-2 px-4 capitalize border-blue-400 border text-blue-400  text-xl'>{{  riddle.clues[cluesIndex]  }}</div>
          </div>
 
          <!-- copied to clipboard -->
@@ -217,7 +264,7 @@
 
        <!-- keyboard row 3 -->
       <div class="w-full flex justify-between roboto">
-         <a href='/about' class="bg-blue-100 border-blue-500 text-blue-500  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto">
+         <a v-show="false" href='/about' class="bg-blue-100 border-blue-500 text-blue-500  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto">
             <div>
                <div class='flex'>
                   <QuestionMarkCircleIcon class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
@@ -248,29 +295,37 @@
          <!-- <div :class='hintHeat' class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'>
             +{{ hintCount }}
          </div> -->
-         <div :disabled="disabled" id='deleteKey' @click='muteAudio()' class='bg-blue-100 border-blue-500 text-blue-500  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
+         <!-- settings -->
+         <div @click="showSettings = true" class='bg-blue-100 border-blue-500 text-blue-500 key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl my-auto'>
+            <div class='flex'>
+               <Cog6ToothIcon class='text-blue-500 my-auto md:w-8 md:h-8 h-6 w-6' />
+            </div>
+         </div>
+
+         <!-- mute -->
+         <div :disabled="disabled" @click='muteAudio()' class='bg-blue-100 border-blue-500 text-blue-500  key cursor-pointer uppercase flex items-center grow mr-1 justify-center border rounded h-10 text-center text-3xl  my-auto'>
             <div class='flex'>
                 <SpeakerXMarkIcon v-if='mute' class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
                <SpeakerWaveIcon v-else class=' text-blue-500 my-auto text-black md:w-8 md:h-8 h-6 w-6' />
             </div>
          </div>
 
-         <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Hint</div>
+         <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="nextHint($event)">Clue</div>
 
          <div :disabled="disabled" v-if='!make' class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="hintKey($event)">Letter</div>
 
          <div :disabled="disabled" v-if='make' id='space' class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="pressKey($event,'Space')">Space</div>
-         <div class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="flipMake()">Make</div>
+         <div v-show="false" class='bg-blue-100 key border-blue-500 text-blue-500  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' @click="flipMake()">Make</div>
 
           <!-- share in make state -->
-         <a :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
+         <a v-show="false" :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 text-white border-green-500":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && make' @click="shareRiddle($event)" class='key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="makeRiddle === '' || makeAnswer1 === '' || makeAnswer2 === ''?'javascript:;':'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/?riddle=' + encrypt)">Share</a>
 
-         <div :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+         <div v-show="false" :disabled='makeRiddle === "" || makeAnswer1 === "" || makeAnswer2 === ""' :class='makeRiddle !== "" && makeAnswer1 != "" && makeAnswer2 != ""?"bg-green-500 border text-white border-green-500":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && make' class='key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
 
          <!-- share in regular state -->
-         <a :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/r/' + riddle.id)">Share</a>
+         <a v-show="false" :class='solved?"bg-green-500 text-white border-green-600":"bg-blue-100 border-blue-500 text-blue-500"' v-if='isMobile && !make' @click="shareRiddle($event)" class='inline-block shareShake key  grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center' :href="'sms:?body=' + shareCopy + ' ' + encodeURIComponent(dataStore.protocol + '//' + dataStore.hostName + '/r/' + riddle.id)">Share</a>
 
-         <div :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-600":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && !make' class='shareShake key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
+         <div v-show="false" :disabled="disabled" :class='solved?"bg-green-500 border text-white border-green-600":"bg-blue-100 border border-blue-500 text-blue-500"' v-if='!isMobile && !make' class='shareShake key grow cursor-pointer lato rounded border p-1 m-1 text-xl text-center'  @click="shareRiddle($event)">Share</div>
       </div>
    </div>
    
@@ -298,7 +353,8 @@ import {
     TrashIcon,
     QuestionMarkCircleIcon,
     SpeakerWaveIcon,
-    SpeakerXMarkIcon
+    SpeakerXMarkIcon,
+    Cog6ToothIcon
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -314,7 +370,8 @@ export default {
         PuzzlePieceIcon,
         QuestionMarkCircleIcon,
         SpeakerWaveIcon,
-    SpeakerXMarkIcon
+    SpeakerXMarkIcon,
+    Cog6ToothIcon
     },
 
     //======================================================================================
@@ -360,6 +417,13 @@ export default {
             copiedToClipboard: false,
             sharedRoute: false, //true when user arrived via /r/[id]
             gaveUp: false, //true when user taps "I don't know" on shared riddle
+            showSettings: false,
+            settings: {
+                difficulties: { easy: true, medium: false, hard: false, expert: false },
+                startingClues: 2,       // 0, 1, or 2
+                fillMode: 'sequential', // 'sequential' or 'random'
+                showFeedback: true
+            },
             firstRiddlePlayed: false, //need this to jump to next puzzle for shared puzzles
             fontSizeSet: false,
             points: null,
@@ -493,6 +557,15 @@ export default {
 
         
 
+
+        //load saved settings from localStorage
+        const savedSettings = localStorage.getItem('settings');
+        if (savedSettings) {
+            try {
+                const parsed = JSON.parse(savedSettings);
+                this.settings = { ...this.settings, ...parsed };
+            } catch (e) { /* use defaults */ }
+        }
 
         //preload the animals so they always show
         this.animalImageArray.forEach(animalImage => {
@@ -970,6 +1043,27 @@ export default {
 
         },
 
+        saveSettings: function() {
+            localStorage.setItem('settings', JSON.stringify(this.settings));
+        },
+
+        toggleDifficulty: function(level) {
+            this.settings.difficulties[level] = !this.settings.difficulties[level];
+            //ensure at least one is selected
+            const anySelected = Object.values(this.settings.difficulties).some(v => v);
+            if (!anySelected) {
+                this.settings.difficulties[level] = true;
+            }
+            this.saveSettings();
+        },
+
+        filteredRiddles: function() {
+            const activeTiers = Object.entries(this.settings.difficulties)
+                .filter(([_, v]) => v)
+                .map(([k]) => k);
+            return this.riddles.filter(r => activeTiers.includes(r.tier));
+        },
+
         buildRiddle: async function() {
 
             this.hintCount = 0
@@ -1009,10 +1103,11 @@ export default {
                     this.riddle.hint = this.riddle.hint[randomRiddleIndex]
                 } else {
                     //id not found, fall back to random
-                    const randomIndex = Math.floor(Math.random() * this.riddles.length);
-                    this.riddle = this.riddles[randomIndex];
+                    const pool = this.filteredRiddles();
+                    const randomIndex = Math.floor(Math.random() * pool.length);
+                    this.riddle = pool[randomIndex];
                     const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
-                    this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
+                    this.riddle.hint = pool[randomIndex].hint[randomRiddleIndex]
                 }
 
             //legacy: shared riddle via encrypted query param
@@ -1021,10 +1116,11 @@ export default {
                 if (this.firstRiddlePlayed) {
 
                     //if this isn't a new user, grab a random puzzle
-                    const randomIndex = Math.floor(Math.random() * this.riddles.length);
-                    this.riddle = this.riddles[randomIndex];
+                    const pool2 = this.filteredRiddles();
+                    const randomIndex = Math.floor(Math.random() * pool2.length);
+                    this.riddle = pool2[randomIndex];
                     const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
-                    this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
+                    this.riddle.hint = pool2[randomIndex].hint[randomRiddleIndex]
 
                 } else {
 
@@ -1054,10 +1150,11 @@ export default {
                 } else {
 
                     //if this isn't a new user, grab a random puzzle
-                    const randomIndex = Math.floor(Math.random() * this.riddles.length);
-                    this.riddle = this.riddles[randomIndex];
+                    const pool3 = this.filteredRiddles();
+                    const randomIndex = Math.floor(Math.random() * pool3.length);
+                    this.riddle = pool3[randomIndex];
                    const randomRiddleIndex = Math.floor(Math.random() * this.riddle.hint.length);
-                   this.riddle.hint = this.riddles[randomIndex].hint[randomRiddleIndex]
+                   this.riddle.hint = pool3[randomIndex].hint[randomRiddleIndex]
 
                 }
 
@@ -1080,9 +1177,9 @@ export default {
             //remove any blank clues that came over from chatgpt
             this.riddle.clues = this.riddle.clues.filter(item => item !== '' && item !== null && item !== undefined);
 
-            //start by showing the first clue instead of the hint
+            //if clues exist, show the first clue as the hint text at the top
+            //but keep cluesIndex at -1 so the clue box below doesn't show until user taps Hint
             if (this.riddle.clues.length > 0) {
-                this.cluesIndex = 0
                 this.riddle.hint = this.riddle.clues[0]
             }
 
@@ -1090,12 +1187,15 @@ export default {
             var riddleWordTmp = this.riddle.rhyme.replace(/\s+/g, '').split("");
             riddleWordTmp.forEach(letter => { this.riddleWordArray.push("") })
 
-            //for shared riddles, pre-fill the first letter of each word
-            if (this.sharedRoute) {
+            //pre-fill starting letters based on settings (or always 2 for shared routes)
+            var startClues = this.sharedRoute ? 2 : this.settings.startingClues;
+            if (startClues >= 1) {
                 var words = this.riddle.rhyme.split(' ')
                 var firstWordLength = words[0].length
                 this.riddleWordArray[0] = words[0][0]
-                this.riddleWordArray[firstWordLength] = words[1][0]
+                if (startClues >= 2) {
+                    this.riddleWordArray[firstWordLength] = words[1][0]
+                }
             }
 
             this.riddle.score = this.maxScore
@@ -1477,25 +1577,17 @@ export default {
             if ( !this.mute ) {store.hintSounds2[Math.floor(Math.random() * store.hintSounds2.length)].play()}
 
             this.copiedToClipboard = false //just hide any previous clipboard stuff
-            // this.disabled = true
 
             this.animateKeyPress(event)
 
-            if (this.cluesIndex === -1) {
-
-                this.cluesIndex = 0
-
+            //rotate through clues, updating the hint text at the top
+            //cluesIndex starts at -1, so first click jumps to 1 (skipping 0 which is already shown)
+            if (this.cluesIndex < 1) {
+                this.cluesIndex = this.riddle.clues.length > 1 ? 1 : 0
             } else {
-
                 this.cluesIndex = (this.cluesIndex + 1) % this.riddle.clues.length;
-
             }
-
-            if (this.newPlayer) {
-
-                this.riddle.hint = this.riddle.clues[this.cluesIndex]
-
-            }
+            this.riddle.hint = this.riddle.clues[this.cluesIndex]
 
             this.deductCredit()
 
@@ -1618,12 +1710,9 @@ export default {
 
                 
 
-                const blankIndex = this.riddleWordArray.findIndex(item => item === '');
-                if (blankIndex === 0) {
-
-                   // console.log('first one')
+                if (this.settings.fillMode === 'sequential') {
+                    const blankIndex = this.riddleWordArray.findIndex(item => item === '');
                     this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
-
                     animejs({
                         targets: '#letter' + blankIndex,
                         scale: 1.2,
@@ -1632,13 +1721,8 @@ export default {
                         direction: 'alternate',
                         easing: 'easeInOutSine'
                     });
-
                 } else {
-
                     this.addValueToRandomBlankSlot(this.riddleWordArray);
-                    //this.riddleWordArray[blankIndex] = this.riddleWordLettersArray[blankIndex]
-                  //  console.log('second one')
-
                 }
 
                 this.deductCredit()
